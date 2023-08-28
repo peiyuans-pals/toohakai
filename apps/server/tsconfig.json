@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "lib": ["ES2015"],
-    "module": "CommonJS",
+    "module": "Node16",
+    "moduleResolution": "node16",
     "outDir": "./dist",
     "rootDir": "./src"
   },

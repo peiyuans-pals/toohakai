@@ -2,10 +2,14 @@
   "name": "server",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
-    "build": "tsup src/index.ts --format cjs",
+    "build": "tsup src/index.ts --format esm",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "dev": "tsup src/index.ts --format cjs --watch --onSuccess \"node dist/index.js\"",
+    "dev": "tsup src/index.ts --format esm --watch --onSuccess \"node dist/index.js\"",
     "lint": "tsc --noEmit && eslint \"src/**/*.ts*\"",
     "start": "node dist/index.js",
     "test": "jest --detectOpenHandles"
@@ -14,7 +18,7 @@
     "preset": "jest-presets/jest/node"
   },
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "logger": "workspace:*",
@@ -24,8 +28,9 @@
     "@types/body-parser": "^1.19.0",
     "@types/cors": "^2.8.10",
     "@types/express": "^4.17.12",
+    "@types/express-serve-static-core": "^4.17.36",
     "@types/jest": "^26.0.22",
-    "@types/morgan": "^1.9.2",
+    "@types/morgan": "^1.9.5",
     "@types/node": "^15.12.2",
     "@types/supertest": "^2.0.12",
     "eslint": "^7.32.0",
