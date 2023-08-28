@@ -1,8 +1,11 @@
 import bodyParser from "body-parser";
-const { json, urlencoded } = bodyParser
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
+import {appRouter, createTRPCContext, trpcExpress} from "api"
+import { renderTrpcPanel } from "trpc-panel";
+
+const { json, urlencoded } = bodyParser
 
 export const createServer = () => {
   const app = express();
@@ -11,7 +14,10 @@ export const createServer = () => {
     .use(morgan("dev"))
     .use(urlencoded({ extended: true }))
     .use(json())
-    .use(cors())
+    .use(cors({
+        origin: "http://localhost:3002", // todo
+        credentials: true
+    }))
     .get("/", (req, res)=> {
       return res.json({hello: "world"})
     })
@@ -20,7 +26,21 @@ export const createServer = () => {
     })
     .get("/healthz", (req, res) => {
       return res.json({ ok: true });
-    });
+    })
+
+    .use(
+    '/trpc',
+    trpcExpress.createExpressMiddleware({
+      router: appRouter,
+      createContext: createTRPCContext,
+    }),
+  );
+
+  app.use("/trpc-panel", (_, res) => {
+    return res.send(
+      renderTrpcPanel(appRouter, { url: "http://localhost:5001/trpc" }) // todo
+    );
+  });
 
   return app;
 };

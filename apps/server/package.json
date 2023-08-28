@@ -12,17 +12,22 @@
     "dev": "tsup src/index.ts --format esm --watch --onSuccess \"node dist/index.js\"",
     "lint": "tsc --noEmit && eslint \"src/**/*.ts*\"",
     "start": "node dist/index.js",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "preinstall": "npx only-allow pnpm"
   },
   "jest": {
     "preset": "jest-presets/jest/node"
   },
   "dependencies": {
+    "@trpc/server": "^10.38.0",
+    "api": "workspace:*",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "logger": "workspace:*",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "trpc-panel": "^1.3.4",
+    "zod": "^3.22.2"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.0",
