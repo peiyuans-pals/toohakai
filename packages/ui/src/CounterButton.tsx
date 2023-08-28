@@ -35,7 +35,7 @@ export const CounterButton = () => {
             cursor: "pointer",
           }}
           type="button"
-          onClick={() => setCount((c) => c + 1)}
+          onClick={() => setCount((c) => c + 2)}
         >
           Count: {count}
         </button>
