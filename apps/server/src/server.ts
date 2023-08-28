@@ -14,7 +14,10 @@ export const createServer = () => {
     .use(morgan("dev"))
     .use(urlencoded({ extended: true }))
     .use(json())
-    .use(cors())
+    .use(cors({
+        origin: "http://localhost:3002", // todo
+        credentials: true
+    }))
     .get("/", (req, res)=> {
       return res.json({hello: "world"})
     })

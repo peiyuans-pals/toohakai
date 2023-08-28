@@ -11,7 +11,7 @@ export const userRouter = createTRPCRouter({
   }),
   get: publicProcedure
     .meta({
-      description: 'Get a user',
+      description: 'Get a user by passing user id as input',
     })
     .input(z.string()).query((opts: any) => {
     opts.input; // string

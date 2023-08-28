@@ -1,19 +1,27 @@
 "use client"
-import { log } from "logger";
-import { CounterButton, NewTabLink } from "ui";
+import {log} from "logger";
 import * as React from 'react';
-import { Spinner } from "@chakra-ui/react";
+import {Button, Heading, Spinner, Text} from "@chakra-ui/react";
+import {trpc} from "../utils/trpc";
+import Page from "../components/Page";
+import { Link } from '@chakra-ui/next-js'
 
-export default function Store() {
-  log("Hey! This is Home.");
+export default function Home() {
+  const user = trpc.user.get.useQuery("1234");
+  console.log("user", user)
+
   return (
-    <div className="container">
-      <h1 className="title">
-        Store <br />
-        <span>Kitchen Sink</span>
-      </h1>
-      <Spinner/>
-      <CounterButton />
-    </div>
+    <Page>
+      <Heading>Toohakai</Heading>
+      {/*<Text>*/}
+      {/*  user: {JSON.stringify(user.data)}*/}
+      {/*</Text>*/}
+      <Link href='/login' _hover={{ color: 'blue.500' }}>
+        <Button>
+          Login as Teacher
+        </Button>
+      </Link>
+      {/*<Spinner/>*/}
+    </Page>
   );
 }
