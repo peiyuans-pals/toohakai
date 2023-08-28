@@ -22,6 +22,9 @@ export default function Home() {
         </Button>
       </Link>
       {/*<Spinner/>*/}
+      <Link href="/Teacher/question_bank">
+        <Button>Teacher Page</Button>
+      </Link>
     </Page>
   );
 }
