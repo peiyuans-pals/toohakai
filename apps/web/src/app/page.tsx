@@ -2,18 +2,20 @@
 import { log } from "logger";
 import { CounterButton, NewTabLink } from "ui";
 import * as React from 'react';
-import { Spinner } from "@chakra-ui/react";
+import Link from "next/link";
+import { Button } from "@chakra-ui/react";
 
-export default function Store() {
+export default function Page() {
   log("Hey! This is Home.");
   return (
     <div className="container">
       <h1 className="title">
-        Store <br />
-        <span>Kitchen Sink</span>
+        Toohakai <br />
+        <span>Demo</span>
+       
       </h1>
-      <Spinner/>
-      <CounterButton />
+      <Link href="/Teacher/question_bank"><Button>Teacher Page</Button></Link>
+      
     </div>
   );
 }
