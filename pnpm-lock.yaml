@@ -144,9 +144,6 @@ importers:
       superjson:
         specifier: ^1.13.1
         version: 1.13.1
-      ui:
-        specifier: workspace:*
-        version: link:../../packages/ui
       zod:
         specifier: ^3.22.2
         version: 3.22.2
@@ -271,46 +268,6 @@ importers:
         version: 4.9.5
 
   packages/tsconfig: {}
-
-  packages/ui:
-    dependencies:
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.2.0(react@18.2.0)
-    devDependencies:
-      '@types/jest':
-        specifier: ^26.0.22
-        version: 26.0.24
-      '@types/react':
-        specifier: ^18.2.0
-        version: 18.2.5
-      '@types/react-dom':
-        specifier: ^18.2.0
-        version: 18.2.4
-      eslint:
-        specifier: ^7.32.0
-        version: 7.32.0
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../eslint-config-custom
-      jest:
-        specifier: ^26.6.3
-        version: 26.6.3
-      jest-presets:
-        specifier: workspace:*
-        version: link:../jest-presets
-      react:
-        specifier: ^18.2.0
-        version: 18.2.0
-      tsconfig:
-        specifier: workspace:*
-        version: link:../tsconfig
-      tsup:
-        specifier: ^6.2.3
-        version: 6.7.0(typescript@4.9.5)
-      typescript:
-        specifier: ^4.8.3
-        version: 4.9.5
 
 packages:
 
@@ -5872,6 +5829,7 @@ packages:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     dependencies:
       js-tokens: 4.0.0
+    dev: false
 
   /lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
@@ -6669,6 +6627,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
+    dev: false
 
   /read-pkg-up@7.0.1:
     resolution: {integrity: sha512-zK0TB7Xd6JpCLmlLmufqykGE+/TlOePD6qKClNW7hHDKFh/J7/7gCWGR7joEQEW1bKq3a3yUZSObOoWLFQ4ohg==}
