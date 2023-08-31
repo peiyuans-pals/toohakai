@@ -15,7 +15,7 @@ export default function QuizReport_Table({quizreport_summary}) {
               </Thead>
               <Tbody>
                 {
-                  //map json file
+                  //TODO: Fix mapping issue
                   quizreport_summary["quiz report"].map((record) => 
                   {
                     <>
