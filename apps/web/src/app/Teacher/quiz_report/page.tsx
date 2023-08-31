@@ -24,8 +24,23 @@ export default function Page() {
           <Flex
             className="selection column"
             flexDirection="row"
+            marginTop={50}
           >
-            <QuizReport_Filter quiz_topics={dummyTopicData}/>
+            <Select 
+              placeholder='Select Quiz Topic' 
+              width={(parent.innerWidth)*(2/3)}
+            >
+              <option value='option1'>Discrete Math</option>              
+            </Select>
+            <Box
+            width={50}>
+
+            </Box>
+            <Input
+              paddingLeft={50}
+              placeholder="Select Month and Year"
+              type="month"
+            />
           </Flex>
           <QuizReport_Table quizreport_summary={dummyTableData}/>
         </Flex>
