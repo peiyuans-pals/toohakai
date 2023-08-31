@@ -18,11 +18,11 @@ export default function QuizReport_Table({quizreport_summary}) {
                   //TODO: Fix mapping issue
                   quizreport_summary["quiz report"].map((record) => 
                   {
-                    <>
+                    <Tr>
                     <Td>{record["quiz topic"]}</Td>
                     <Td>{record.date}</Td>
                     <Td><Button>Expand</Button></Td>
-                    </>
+                    </Tr>
                   })
                 }
               </Tbody>
