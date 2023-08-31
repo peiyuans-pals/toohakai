@@ -1,0 +1,16 @@
+{
+    "quiz report": [
+        {
+            "quiz topic": "Discrete Math",
+            "date": "02/04/2023"
+        },
+        {
+            "quiz topic": "Discrete Math",
+            "date": "03/04/2023"
+        },
+        {
+            "quiz topic": "Intro to Computing",
+            "date": "02/04/2023"
+        }        
+    ]
+}
