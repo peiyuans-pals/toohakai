@@ -3,8 +3,10 @@ import { CounterButton } from "ui";
 import Sidebar from "../../Components/Sidebar";
 import * as React from "react";
 import { Box, Button, Flex, Input, Select, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import dummyData from "../../MockData/quiz_report.json" assert {type: 'json'};
+import dummyTableData from "../../MockData/quiz_report.json" assert {type: 'json'};
+import dummyTopicData from "../../MockData/quiz_topics.json" assert {type: 'json'};
 import QuizReport_Table from "../../Components/QuizReport_Table";
+import QuizReport_Filter from "../../Components/QuizReport_Filters";
 
 export default function Page() {
 
@@ -23,19 +25,9 @@ export default function Page() {
             className="selection column"
             flexDirection="row"
           >
-            <Select 
-              placeholder='Select Quiz Topic' 
-              width={(parent.innerWidth)*(2/3)}
-            >
-              <option value='option1'>Discrete Math</option>              
-            </Select>
-            <Input
-              paddingLeft={50}
-              placeholder="Select Month and Year"
-              type="month"
-            />
+            <QuizReport_Filter quiz_topics={dummyTopicData}/>
           </Flex>
-          <QuizReport_Table quizreport_summary={dummyData}/>
+          <QuizReport_Table quizreport_summary={dummyTableData}/>
         </Flex>
       </Box>
     </>
