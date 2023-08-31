@@ -6,10 +6,11 @@ export default function QuizReport_Filter({quiz_topics, parent_width})  {
             <Select 
               placeholder='Select Quiz Topic'
             >
-              {/* <option value='option1'>Discrete Math</option>               */}
               {
                 quiz_topics["quiz topics"].map((item) => {
-                    <option value={item.topic}>item.topic</option>
+                    return(
+                      <option value={item.topic}>{item.topic}</option>
+                    );
                 })
               }
             </Select>

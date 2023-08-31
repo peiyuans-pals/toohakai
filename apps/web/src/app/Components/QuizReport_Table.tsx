@@ -24,11 +24,13 @@ export default function QuizReport_Table({ quizreport_summary }) {
           <Tbody>
             {
               //map json file
-              quizreport_summary["quiz report"].map((record, key) => {
+              quizreport_summary["quiz report"].map((record) => {
+                const date = new Date(record.date);
+                console.log(date.getDate() + " " + (date.getMonth()+1) + date.getFullYear());
                 return (
-                  <Tr key={key}>
+                  <Tr>
                     <Td>{record["quiz topic"]}</Td>
-                    <Td>{record.date}</Td>
+                    <Td>{date.getDate() + " " + convertMonth(date.getMonth()+1) + " " + date.getFullYear()}</Td>
                     <Td>
                       <Button>Expand</Button>
                     </Td>
@@ -41,4 +43,33 @@ export default function QuizReport_Table({ quizreport_summary }) {
       </TableContainer>
     </>
   );
+}
+
+function convertMonth(month) {
+  switch(month) {
+    case 1:
+      return "Jan";
+    case 2:
+      return "Feb";
+    case 3:
+      return "Mar";
+    case 4:
+      return "Apr";
+    case 5:
+      return "May";
+    case 6:
+      return "Jun";
+    case 7:
+      return "Jul";
+    case 8:
+      return "Aug";
+    case 9:
+      return "Sep";
+    case 10:
+      return "Oct";
+    case 11:
+      return "Nov";
+    case 12:
+      return "Dec";
+  }
 }
