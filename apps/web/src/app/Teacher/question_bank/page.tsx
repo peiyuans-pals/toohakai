@@ -7,7 +7,7 @@ import { Select, Box, Flex, Button, Stack, Input } from "@chakra-ui/react";
 import QuestionBankData from "../../MockData/question_bank.json";
 import QuestionBank_Table from "../../Components/QuestionBank_Table";
 
-export default function QuestionBank() {
+export default function Page() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [openMode, setOpenMode] = React.useState();
   const [loadedData, setLoadedData] = React.useState();
