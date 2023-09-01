@@ -36,7 +36,7 @@ export default function QuestionBank() {
         >
           <h1 className="title">Question Bank Page</h1>
           <Select placeholder="-No Filter Selected-" marginTop={5}>
-            <option value="option1">Discrete Maths</option>
+            <option value="option1">Filter Function Unimplemented yet.</option>
           </Select>
           <Button
             ref={btnRef}
