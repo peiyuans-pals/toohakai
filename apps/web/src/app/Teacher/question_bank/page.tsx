@@ -1,86 +1,32 @@
 "use client";
 import Sidebar from "../../Components/Sidebar";
+import QuestionDetails from "../../Components/QuestionDetails";
 import * as React from "react";
 import { useDisclosure } from "@chakra-ui/react";
 import { Select, Box, Flex, Button, Stack, Input } from "@chakra-ui/react";
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-} from "@chakra-ui/react";
-
-import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-} from "@chakra-ui/react";
+import QuestionBankData from "../../MockData/question_bank.json";
+import QuestionBank_Table from "../../Components/QuestionBank_Table";
 
 export default function QuestionBank() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [openMode, setOpenMode] = React.useState();
+  const [loadedData, setLoadedData] = React.useState();
   const btnRef = React.useRef();
+  function handleNewQuestionButton() {
+    setOpenMode("New");
+    onOpen();
+  }
   return (
     <>
       <Sidebar />
-      <Drawer
-        size="md"
+      <QuestionDetails
         isOpen={isOpen}
-        placement="right"
+        onOpen={onOpen}
         onClose={onClose}
-        finalFocusRef={btnRef}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Create New Question</DrawerHeader>
-
-          <DrawerBody>
-            <Stack>
-            <FormControl isRequired>
-              <FormLabel>Question</FormLabel>
-              <Input type="text" />
-              <FormHelperText>Eg: What is the square root of 256?</FormHelperText>
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Topic</FormLabel>
-              <Input type="text" />
-              <FormHelperText>Eg: Discrete Mathematics</FormHelperText>
-            </FormControl>
-            <FormControl isRequired marginTop={12}>
-              <FormLabel>Option 1</FormLabel>
-              <Input type="text" />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Option 2</FormLabel>
-              <Input type="text" />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Option 3</FormLabel>
-              <Input type="text" />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Option 4</FormLabel>
-              <Input type="text" />
-            </FormControl>
-            </Stack>
-          </DrawerBody>
-
-          <DrawerFooter>
-              <Button colorScheme="blue" type="submit">Create New Question</Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+        btnRef={btnRef}
+        openMode={openMode}
+        loadedData={loadedData}
+      />
       <Box>
         <Flex
           flexDirection="column"
@@ -94,7 +40,7 @@ export default function QuestionBank() {
           </Select>
           <Button
             ref={btnRef}
-            onClick={onOpen}
+            onClick={handleNewQuestionButton}
             marginTop={5}
             marginRight={5}
             alignSelf="flex-end"
@@ -103,62 +49,15 @@ export default function QuestionBank() {
           >
             New
           </Button>
-          <TableContainer marginTop={5}>
-            <Table variant="simple" size="sm">
-              <Thead>
-                <Tr>
-                  <Th>Topic</Th>
-                  <Th>Question</Th>
-                  <Th colSpan={2}>Options</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                <Tr>
-                  <Td>Discrete Maths</Td>
-                  <Td>If a set B has n elements, then what is... </Td>
-                  <Td>
-                    <Button colorScheme="blue" size="sm">
-                      Edit
-                    </Button>
-                  </Td>
-                  <Td>
-                    <Button colorScheme="red" size="sm">
-                      Delete
-                    </Button>
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>Discrete Maths</Td>
-                  <Td>If X and y are the two finite sets, such that...</Td>
-
-                  <Td>
-                    <Button colorScheme="blue" size="sm">
-                      Edit
-                    </Button>
-                  </Td>
-                  <Td>
-                    <Button colorScheme="red" size="sm">
-                      Delete
-                    </Button>
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>Discrete Maths</Td>
-                  <Td>Find the missing number in the sequence: 5, 10...</Td>
-                  <Td>
-                    <Button colorScheme="blue" size="sm">
-                      Edit
-                    </Button>
-                  </Td>
-                  <Td>
-                    <Button colorScheme="red" size="sm">
-                      Delete
-                    </Button>
-                  </Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </TableContainer>
+          <QuestionBank_Table
+            QuestionBankData={QuestionBankData}
+            isOpen={isOpen}
+            onOpen={onOpen}
+            onClose={onClose}
+            btnRef={btnRef}
+            setOpenMode={setOpenMode}
+            setLoadedData={setLoadedData}
+          />
         </Flex>
       </Box>
     </>

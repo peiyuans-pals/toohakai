@@ -1,0 +1,22 @@
+{
+    "question_bank": [
+        {
+            "question": "a < b ? 1 : 2, where a=1 and b=2. What is the result?",
+            "topic": "Discrete Maths",
+            "option1": "I don't know",
+            "option2": "2",
+            "option3": "3",
+            "option4": "1",
+            "correct": "4"
+        },
+        {
+            "question": "a > b ? 3 : 7, where a=1 and b=2. What is the result?",
+            "topic": "Discrete Maths",
+            "option1": "3",
+            "option2": "6",
+            "option3": "7",
+            "option4": "0",
+            "correct": "2"
+        }
+    ]
+}
