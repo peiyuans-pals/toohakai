@@ -4,33 +4,43 @@
 datasource db {
   provider = "postgresql"
   // url      = env("DATABASE_URL")
-  url      = "postgresql://localhost:5432/toohakai"
+  url      = "postgresql://dyllon:dyllon@localhost:5432/toohakai?schema=public"
+}
+
+// generator
+generator client {
+  provider = "prisma-client-js"
 }
 
 // Questions
 model QuestionBank {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  author    User     @relation(fields: [authorId], references: [id])
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  title     String     @db.VarChar(255)
+  author    User       @relation(fields: [authorId], references: [id])
   authorId  Int
+  questions Question[]
 }
 
 model Question {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  answers   Answer[]
+  id             Int           @id @default(autoincrement())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  title          String        @db.VarChar(255)
+  answers        Answer[]
+  QuestionBank   QuestionBank? @relation(fields: [questionBankId], references: [id])
+  questionBankId Int?
 }
 
 model Answer {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  text      String
-  isCorrect Boolean
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  text       String
+  isCorrect  Boolean
+  Question   Question? @relation(fields: [questionId], references: [id])
+  questionId Int?
 }
 
 // User
@@ -41,11 +51,11 @@ enum UserRole {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  email     String     @unique
-  name      String?
-  role      UserRole
-  questions Question[]
+  id           Int            @id @default(autoincrement())
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  email        String         @unique
+  name         String         @db.VarChar(255)
+  role         UserRole
+  QuestionBank QuestionBank[]
 }
