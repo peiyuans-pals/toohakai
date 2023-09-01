@@ -14,7 +14,8 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "tsc -w",
     "lint": "eslint \"src/**/*.ts*\"",
-    "test": "jest"
+    "test": "jest",
+    "prisma:migrate": "npx prisma migrate dev --name init"
   },
   "jest": {
     "preset": "jest-presets/jest/node"
