@@ -23,7 +23,7 @@ export const userRouter = createTRPCRouter({
     .meta({
       description: 'Create a user!',
     })
-    .input(z.object({ name: z.string().min(5).max(250), email: z.string().email() }))
+    .input(z.object({ name: z.string().min(4).max(250), email: z.string().email() }))
     .mutation(async (opts) => {
       console.log("trying to create a user")
       const newUser = await prisma.user.create({
