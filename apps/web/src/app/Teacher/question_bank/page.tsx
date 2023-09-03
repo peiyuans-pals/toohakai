@@ -2,7 +2,7 @@
 import Sidebar from "../../../components/Sidebar";
 import * as React from "react";
 import { Heading, Box, Flex, Button, } from "@chakra-ui/react";
-import QuestionBankData from "../../MockData/question_bank.json";
+import QuestionBankData from "../../../MockData/question_bank.json";
 import QuestionTopics_Table from "../../../components/QuestionTopics_Table";
 
 export default function Page() {

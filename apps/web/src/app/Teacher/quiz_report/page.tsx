@@ -3,8 +3,8 @@
 import Sidebar from "../../../components/Sidebar";
 import * as React from "react";
 import { Box, Button, Flex, Input, Select, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import dummyTableData from "../../MockData/quiz_report.json" assert {type: 'json'};
-import dummyTopicData from "../../MockData/quiz_topics.json" assert {type: 'json'};
+import dummyTableData from "../../../MockData/quiz_report.json" assert {type: 'json'};
+import dummyTopicData from "../../../MockData/quiz_topics.json" assert {type: 'json'};
 import QuizReport_Table from "../../../components/QuizReport_Table";
 import QuizReport_Filter from "../../../components/QuizReport_Filters";
 
