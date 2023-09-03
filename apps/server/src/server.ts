@@ -27,13 +27,15 @@ export const createServer = () => {
     .get("/healthz", (req, res) => {
       return res.json({ ok: true });
     })
-
+    // trpc
     .use(
     '/trpc',
     trpcExpress.createExpressMiddleware({
       router: appRouter,
       createContext: createTRPCContext,
     }),
+    // next-auth
+    // todo
   );
 
   app.use("/trpc-panel", (_, res) => {

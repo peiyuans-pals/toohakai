@@ -7,7 +7,7 @@ import Page from "../components/Page";
 import { Link } from '@chakra-ui/next-js'
 
 export default function Home() {
-  const user = trpc.user.get.useQuery("1234");
+  const {data: user, isLoading, isError} = trpc.user.get.useQuery("1234");
   console.log("user", user)
 
   return (
