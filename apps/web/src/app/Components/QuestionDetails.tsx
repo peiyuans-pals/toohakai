@@ -23,6 +23,7 @@ export default function QuestionDetails({
 }) {
   function handleclick() {
     console.log("Unimplemented Yet");
+    console.log(loadedData)
   }
   return (
     <>
@@ -47,33 +48,32 @@ export default function QuestionDetails({
                 <>
                   <FormControl isRequired>
                     <FormLabel>Question</FormLabel>
-                    <Input type="text" defaultValue={loadedData.question} />
+                    <Input type="text" defaultValue={loadedData[2].question} />
                     <FormHelperText>
                       Eg: What is the square root of 256?
                     </FormHelperText>
                   </FormControl>
-                  <FormControl isRequired>
+                  <FormControl>
                     <FormLabel>Topic</FormLabel>
-                    <Input type="text" defaultValue={loadedData.topic} />
-                    <FormHelperText>Eg: Discrete Mathematics</FormHelperText>
+                    <Input type="text" readOnly defaultValue={loadedData[0]} />
                   </FormControl>
                   <FormControl isRequired marginTop={12}>
                     <FormLabel>Option 1</FormLabel>
-                    <Input type="text" defaultValue={loadedData.option1} />
+                    <Input type="text" defaultValue={loadedData[2].option1} />
                   </FormControl>
                   <FormControl isRequired>
                     <FormLabel>Option 2</FormLabel>
-                    <Input type="text" defaultValue={loadedData.option2} />
+                    <Input type="text" defaultValue={loadedData[2].option2} />
                   </FormControl>
                   <FormControl isRequired>
                     <FormLabel>Option 3</FormLabel>
-                    <Input type="text" defaultValue={loadedData.option3} />
+                    <Input type="text" defaultValue={loadedData[2].option3} />
                   </FormControl>
                   <FormControl isRequired>
                     <FormLabel>Option 4</FormLabel>
-                    <Input type="text" defaultValue={loadedData.option4} />
+                    <Input type="text" defaultValue={loadedData[2].option4} />
                   </FormControl>
-                  <RadioGroup defaultValue={loadedData.correct}>
+                  <RadioGroup defaultValue={loadedData[2].correct}>
                     <FormLabel marginTop={5}>Correct Option</FormLabel>
                     <Stack spacing={4} direction="row">
                       <Radio value="1">Option 1</Radio>

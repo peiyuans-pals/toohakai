@@ -24,11 +24,15 @@ export default function QuestionBank_Table({
   btnRef,
   setOpenMode,
   setLoadedData,
+  bank_id
 }) {
-  function handleclick(JsonData) {
+  // const bank_id = 0
+  function handleclick(question_id) {
+    console.log(question_id)
     onOpen();
     setOpenMode("Edit");
-    setLoadedData(JsonData);
+    // console.log(QuestionBankData.question_bank[bank_id].topic_name)
+    setLoadedData([QuestionBankData.question_bank[bank_id].topic_name, bank_id, QuestionBankData.question_bank[bank_id].question_list[question_id]]);
   }
 
   function showMore(id) {
@@ -55,15 +59,15 @@ export default function QuestionBank_Table({
           </Tr>
         </Thead>
         <Tbody>
-          {QuestionBankData["question_bank"].map((data, key) => {
+          {QuestionBankData.question_bank[bank_id].question_list.map((data) => {
             return (
               <>
-                <Tr key={key}>
+                <Tr key={data.id}>
                   {/* <Td>{data.topic}</Td> */}
                   <Td
                     _hover={{ color: "blue", cursor: "pointer" }}
                     style={{ wordBreak: "break-word" }}
-                    onClick={() => showMore(key)}
+                    onClick={() => showMore(data.id)}
                   >
                     <ArrowForwardIcon/>&nbsp;&nbsp;&nbsp;&nbsp;{data.question}
                   </Td>
@@ -72,7 +76,7 @@ export default function QuestionBank_Table({
                       colorScheme="blue"
                       size="sm"
                       ref={btnRef}
-                      onClick={() => handleclick(data)}
+                      onClick={() => handleclick(data.id)}
                     >
                       Edit
                     </Button>
@@ -86,7 +90,7 @@ export default function QuestionBank_Table({
                     </Button>
                   </Td>
                 </Tr>
-                <Tr id={key} display="none">
+                <Tr id={data.id} display="none">
                   <Td colSpan={4}>
                     <OrderedList paddingLeft="25px">
                       <ListItem>
