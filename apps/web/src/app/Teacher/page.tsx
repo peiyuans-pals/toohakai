@@ -1,6 +1,6 @@
 "use client";
 import { CounterButton } from "ui";
-import Sidebar from "../Components/Sidebar";
+import Sidebar from "../../components/Sidebar";
 import * as React from "react";
 
 export default function Page() {

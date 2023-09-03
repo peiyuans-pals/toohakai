@@ -1,11 +1,11 @@
 "use client";
-import Sidebar from "../../../Components/Sidebar";
-import QuestionDetails from "../../../Components/QuestionDetails";
+import Sidebar from "../../../../components/Sidebar";
+import QuestionDetails from "../../../../components/QuestionDetails";
 import * as React from "react";
 import { useDisclosure } from "@chakra-ui/react";
 import { Heading, Box, Flex, Button, Spacer } from "@chakra-ui/react";
 import QuestionBankData from "../../../MockData/question_bank.json";
-import QuestionBank_Table from "../../../Components/QuestionBank_Table";
+import QuestionBank_Table from "../../../../components/QuestionBank_Table";
 import Link from "next/link";
 
 export default function Page({

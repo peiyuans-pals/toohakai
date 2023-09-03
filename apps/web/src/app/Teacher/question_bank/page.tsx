@@ -1,9 +1,9 @@
 "use client";
-import Sidebar from "../../Components/Sidebar";
+import Sidebar from "../../../components/Sidebar";
 import * as React from "react";
 import { Heading, Box, Flex, Button, } from "@chakra-ui/react";
 import QuestionBankData from "../../MockData/question_bank.json";
-import QuestionTopics_Table from "../../Components/QuestionTopics_Table";
+import QuestionTopics_Table from "../../../components/QuestionTopics_Table";
 
 export default function Page() {
   const btnRef = React.useRef();

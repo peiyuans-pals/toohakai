@@ -1,7 +1,10 @@
-import { Table,Thead,Tbody,Tr,Th,Td,TableContainer, Button, } from "@chakra-ui/react"
+import {Table, Thead, Tbody, Tr, Th, Td, TableContainer, Button, interactivity,} from "@chakra-ui/react"
 
+interface Props {
+  quizreport_summary: any // TODO: @alan
+}
 
-export default function QuizReport_Table({quizreport_summary}) {
+export default function QuizReport_Table({quizreport_summary}: Props) {
     return(
         <>
             <TableContainer>
@@ -16,7 +19,7 @@ export default function QuizReport_Table({quizreport_summary}) {
               <Tbody>
                 {
                   //TODO: Fix mapping issue
-                  quizreport_summary["quiz report"].map((record) => 
+                  quizreport_summary["quiz report"].map((record) =>
                   {
                     <Tr>
                     <Td>{record["quiz topic"]}</Td>
