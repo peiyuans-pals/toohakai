@@ -44,14 +44,14 @@ export default function QuestionBank_Table({
     <>
       <Table
         marginTop="5"
-        width={{ base: "100%", md: "640px", lg: "800px" }}
+        
         variant="simple"
         size="sm"
       >
         <Thead>
           <Tr>
             <Th>Question</Th>
-            <Th>Options</Th>
+            <Th textAlign="center" colSpan={2}>Options</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -75,6 +75,14 @@ export default function QuestionBank_Table({
                       onClick={() => handleclick(data)}
                     >
                       Edit
+                    </Button>
+                  </Td>
+                  <Td>
+                    <Button
+                      colorScheme="red"
+                      size="sm"
+                    >
+                      Delete
                     </Button>
                   </Td>
                 </Tr>

@@ -31,12 +31,13 @@ export default function Page() {
         <Flex justifyContent="center">
           <Flex
             maxWidth="95vw"
+            width={{ base: "100%", md: "640px", lg: "800px" }}
             flexDirection="column"
             paddingTop={100}
             paddingRight="25px"
             paddingLeft="25px"
           >
-            <Heading as="h1" size="2xl">Question Bank for [Topic]</Heading>
+            <Heading as="h1" size="2xl">Question Bank for Computer Science</Heading>
             {/* <Select placeholder="-No Filter Selected-" marginTop={5}>
             <option value="option1">Filter Function Unimplemented yet.</option>
           </Select> */}
