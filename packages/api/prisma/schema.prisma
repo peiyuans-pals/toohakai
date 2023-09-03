@@ -3,8 +3,8 @@
 // Database
 datasource db {
   provider = "postgresql"
-  // url      = env("DATABASE_URL")
-  url      = "postgresql://dyllon:dyllon@localhost:5432/toohakai?schema=public"
+  url      = env("DATABASE_URL")
+  // url      = "postgresql://dyllon:dyllon@localhost:5432/toohakai?schema=public"
 }
 
 // generator
