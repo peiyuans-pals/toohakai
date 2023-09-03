@@ -13,17 +13,19 @@ export default function Login() {
         router.push("/dashboard")
       }
     })
+
   const handleLoginClick = () => {
+    // todo: next-auth + azure ad
     loginMutation.mutate({
-      name: "cherr", email: "cher@example.com"
+      name: "dyllon", email: "dyllon@example.com"
     })
   }
 
   return (
     <Page>
-      <Heading>Login</Heading>
+      <Heading>Sign in with your school email</Heading>
       <Button onClick={handleLoginClick}>
-        Sign in With School Email
+        Sign in
       </Button>
     </Page>
   );
