@@ -5,6 +5,8 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import superjson from "superjson";
 import {useState} from "react";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
+import {createRouteHandlerClient} from "@supabase/auth-helpers-nextjs";
+import {cookies} from "next/headers";
 
 function getBaseUrl() {
   // if (typeof window !== 'undefined')
@@ -38,6 +40,12 @@ export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const url = `${getBaseUrl()}/trpc`;
 
+  const supabase = createRouteHandlerClient({ cookies })
+
+  const jwt = supabase.auth.getSession().then((session) => {
+    return session.data.session?.access_token ?? null
+  })
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
@@ -46,6 +54,11 @@ export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
         }),
         httpBatchLink({
           url,
+          headers: () => {
+            return {
+              "Authorization": `Bearer ${null}`
+            }
+          },
           fetch: async (input, init?) => {
             const fetch = getFetch();
             return fetch(input, {

@@ -82,7 +82,8 @@ export const createTRPCContext = async (opts: trpcExpress.CreateExpressContextOp
  */
 const t = initTRPC
   .meta<TRPCPanelMeta>()
-  .context<typeof createTRPCContext>().create({
+  // .context<typeof createTRPCContext>()
+  .create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
     return {
@@ -122,17 +123,17 @@ export const publicProcedure = t.procedure;
  * Reusable middleware that enforces users are logged in before running the
  * procedure
  */
-const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session?.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED", message: "You are not authorized to access this route" });
-  }
-  return next({
-    ctx: {
-      // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
-    },
-  });
-});
+// const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+//   if (!ctx.session?.user) {
+//     throw new TRPCError({ code: "UNAUTHORIZED", message: "You are not authorized to access this route" });
+//   }
+//   return next({
+//     ctx: {
+//       // infers the `session` as non-nullable
+//       session: { ...ctx.session, user: ctx.session.user },
+//     },
+//   });
+// });
 
 /**
  * Protected (authed) procedure
@@ -143,4 +144,5 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+export const protectedProcedure = t.procedure
+  // .use(enforceUserIsAuthed);
