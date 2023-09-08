@@ -15,13 +15,13 @@ function getBaseUrl() {
   // if (process.env.VERCEL_URL)
   //   // reference for vercel.com
   //   return `https://${process.env.VERCEL_URL}`;
-  if (process.env.API_SERVER_URL)
+  if (process.env.NEXT_PUBLIC_TOOHAKAI_API_URL)
     // reference for render.com
-    return `http://${process.env.API_SERVER_URL}`;
+    return `http://${process.env.NEXT_PUBLIC_TOOHAKAI_API_URL}`;
   if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test")
     // assume localhost
     return `http://localhost:${process.env.PORT ?? 5001}`;
-  throw new Error("No API_SERVER_URL or PORT environment variable specified.");
+  throw new Error("No NEXT_PUBLIC_TOOHAKAI_API_URL or PORT environment variable specified.");
 }
 
 

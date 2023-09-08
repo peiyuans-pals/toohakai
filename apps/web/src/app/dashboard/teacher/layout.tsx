@@ -33,7 +33,7 @@ export default async function DashboardLayout({ children }: {
       <div className="flex flex-col w-64 bg-gray-100 p-4 gap-1">
         {
           sidebarItems.map((item) =>
-            <Link href={item.href} className="flex justify-stretch items-stretch">
+            <Link key={item.href} href={item.href} className="flex justify-stretch items-stretch">
               <button className="btn flex-1">{item.name}</button>
             </Link>)
         }
