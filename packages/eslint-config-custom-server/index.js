@@ -18,4 +18,29 @@ module.exports = {
       },
     },
   ],
+  rules: {
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
+      },
+    ],
+    // forbid usage of unused variables (marked with an _)
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        selector: ["parameter", "variable"],
+        leadingUnderscore: "forbid",
+        format: null,
+      },
+      {
+        selector: "parameter",
+        leadingUnderscore: "require",
+        format: null,
+        modifiers: ["unused"],
+      },
+    ],
+  }
 };

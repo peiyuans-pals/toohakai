@@ -4,7 +4,7 @@ import {TRPCPanelMeta} from "trpc-panel";
 import {trpcExpress} from "../index"
 import {supabase} from "./supabase";
 
-export const createTrpcContext = async ({req, res}: trpcExpress.CreateExpressContextOptions) => {
+export const createTrpcContext = async ({req, res: _res}: trpcExpress.CreateExpressContextOptions) => {
   // TODO
   async function getUserFromHeader() {
     if (req.headers.authorization) {

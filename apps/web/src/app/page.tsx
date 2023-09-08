@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import {trpc} from "../utils/trpc";
 import {createClientComponentClient} from "@supabase/auth-helpers-nextjs";
 import {Page, Heading, Button, Text} from "../components/ui/";
 import Link from "next/link";

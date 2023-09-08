@@ -18,13 +18,13 @@ export const createServer = () => {
         origin: "http://localhost:3002", // todo
         credentials: true
     }))
-    .get("/", (req, res)=> {
+    .get("/", (_req, res)=> {
       return res.json({hello: "world"})
     })
     .get("/message/:name", (req, res) => {
       return res.json({ message: `hello ${req.params.name}` });
     })
-    .get("/healthz", (req, res) => {
+    .get("/healthz", (_req, res) => {
       return res.json({ ok: true });
     })
     // trpc

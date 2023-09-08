@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import {createTRPCRouter, publicProcedure, protectedProcedure} from "../utils/trpc";
 import {prisma} from "../utils/prisma";
-import { log } from "logger";
 
 export const userRouter = createTRPCRouter({
   me: protectedProcedure
@@ -29,7 +28,7 @@ export const userRouter = createTRPCRouter({
     .meta({
       description: 'Get a user by passing user id as input',
     })
-    .input(z.string()).query((opts: any) => {
+    .input(z.string()).query((opts) => {
     opts.input; // string
     return { id: opts.input, name: 'Bilbo' }; // todo
   }),
@@ -38,17 +37,18 @@ export const userRouter = createTRPCRouter({
       description: 'Create a user!',
     })
     .input(z.object({ name: z.string().min(4).max(250), email: z.string().email() }))
-    .mutation(async (opts) => {
+    .mutation(async (_opts) => {
       console.log("trying to create a user")
-      const newUser = await prisma.user.create({
-        data: {
-          name: opts.input.name,
-          email: opts.input.email,
-          role: 'STUDENT',
-        }
-      }).catch(err => {
-        log(err)
-      });
+      // TODO
+      // const newUser = await prisma.user.create({
+      //   data: {
+      //     name: opts.input.name,
+      //     email: opts.input.email,
+      //     role: 'STUDENT',
+      //   }
+      // }).catch(err => {
+      //   log(err)
+      // });
       return { success: true, status: "user created successfully"}
     }),
 });

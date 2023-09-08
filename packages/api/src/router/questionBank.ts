@@ -1,4 +1,4 @@
-import {createTRPCRouter, protectedProcedure, publicProcedure} from "../utils/trpc";
+import {createTRPCRouter, protectedProcedure} from "../utils/trpc";
 import {z} from "zod";
 
 const mockData = [
@@ -27,7 +27,7 @@ export const questionBankRouter = createTRPCRouter({
       }
     )
     .input(z.string())
-    .query((opts: any) => {
+    .query((opts) => {
         opts.input; // string
         return mockData[0]; // todo
       }
@@ -40,7 +40,7 @@ export const questionBankRouter = createTRPCRouter({
       name: z.string().min(4).max(250
       )
     }))
-    .mutation(async (opts) => {
+    .mutation(async (_opts) => {
       console.log("trying to create a questionBank")
       // todo: prisma goes here
       return {success: true, status: "questionBank created successfully"}
@@ -52,7 +52,7 @@ export const questionBankRouter = createTRPCRouter({
     .input(z.object({
       id: z.string().min(4).max(250)
     }))
-    .mutation(async (opts) => {
+    .mutation(async (_opts) => {
       console.log("trying to delete a questionBank")
       // todo
       return {success: true, status: "questionBank deleted successfully"}

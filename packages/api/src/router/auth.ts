@@ -11,7 +11,7 @@ export const authRouter = createTRPCRouter({
       token: z.string(),
 
     }))
-    .mutation(async (opts) => {
+    .mutation(async (_opts) => {
 
     }),
 })
