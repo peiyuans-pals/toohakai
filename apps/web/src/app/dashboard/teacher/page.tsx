@@ -4,7 +4,9 @@ import {cookies} from "next/headers";
 
 export default async function DashboardRoot() {
 
-  const users = await trpcServer(cookies).user.list.query()
+  const users = await trpcServer(cookies).user.list.query() // debug
+
+  const questionBankCount = await trpcServer(cookies).questionBank.count.query()
 
   return (
     <div className="flex-1">
@@ -18,6 +20,7 @@ export default async function DashboardRoot() {
         ))}
       </div>
 
+      <Text>You have {questionBankCount} question banks</Text>
     </div>
   );
 }

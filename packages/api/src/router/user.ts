@@ -16,6 +16,8 @@ export const userRouter = createTRPCRouter({
       const {id, email, identities} = user
       return {id, email, identities}
     }),
+
+  // TODO: everything below should be disabled (admin only)
   list: publicProcedure
     .meta({
       description: 'List users',

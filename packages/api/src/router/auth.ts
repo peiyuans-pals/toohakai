@@ -14,7 +14,4 @@ export const authRouter = createTRPCRouter({
     .mutation(async (opts) => {
 
     }),
-  // todo: refresh, me
-
-
 })
