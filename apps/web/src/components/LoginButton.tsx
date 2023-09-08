@@ -20,7 +20,11 @@ export const LoginButton = () => {
   };
 
   return (
-    <button className="btn w-24" onClick={handleLoginClick}>
+    <button
+      className="btn w-24"
+      onClick={handleLoginClick}
+      data-cy="login-button"
+    >
       Login
     </button>
   );
