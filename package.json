@@ -1,5 +1,8 @@
 {
   "private": true,
+  "engines": {
+    "node": ">=18.15.0"
+  },
   "scripts": {
     "build": "turbo build",
     "clean": "turbo clean",
