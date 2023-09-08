@@ -12,14 +12,17 @@ export const ProfileButton = ({ initialData }: Props) => {
 
   const router = useRouter()
 
-  const me = trpc.user.me.useQuery(undefined, {
+  const {data: me} = trpc.user.me.useQuery(undefined, {
     initialData,
-    meta: {
-
-    }
   })
 
-  // const initials = me.data?.name.split(" ").map((name: string) => name[0]).join("")
+  const userIdentity = Array.isArray(me.identities) ? me.identities[0] : null
+
+  const userName: string = userIdentity?.identity_data?.name ?? "Z Z" // just in case there's no name default to ZZ
+  const userNameCleaned = userName.replace(/[^a-zA-Z ]/g, "")
+  const initials = userNameCleaned
+    .split(" ").map((name: string) => name[0]).join("")
+    .slice(0, 2)
 
   const handleLogoutClick = async () => {
     console.log("logout")
@@ -31,11 +34,11 @@ export const ProfileButton = ({ initialData }: Props) => {
     <div className="dropdown dropdown-end">
       <label tabIndex={0} className="btn btn-ghost rounded-btn">
         <p className="font-bold text-white">
-          AB
+          {initials}
         </p>
       </label>
       <ul tabIndex={0} className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4">
-        <li><a>User's name</a></li>
+        <li><a>{userNameCleaned}</a></li>
         <li><a>Settings</a></li>
         <li><a onClick={handleLogoutClick}>Logout</a></li>
       </ul>
