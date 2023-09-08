@@ -3,6 +3,7 @@ import * as React from 'react';
 import {createClientComponentClient} from "@supabase/auth-helpers-nextjs";
 import {Page, Heading, Button, Text} from "../components/ui/";
 import Link from "next/link";
+import {LoginButton} from "./LoginButton";
 
 export default function Home() {
   // const {data: user, isLoading, isError} = trpc.user.get.useQuery("1234");
@@ -16,12 +17,7 @@ export default function Home() {
     <Page>
       <Heading>Toohakai</Heading>
       <Text>A really cool quiz app</Text>
-      <Text>A really cool quiz app</Text>
-      <Link href='/login'>
-        <Button>
-          Login
-        </Button>
-      </Link>
+      <LoginButton />
     </Page>
   );
 }

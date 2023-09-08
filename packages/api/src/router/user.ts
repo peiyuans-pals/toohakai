@@ -1,9 +1,21 @@
 import { z } from 'zod';
-import {createTRPCRouter, publicProcedure} from "../utils/trpc";
+import {createTRPCRouter, publicProcedure, protectedProcedure} from "../utils/trpc";
 import {prisma} from "../utils/prisma";
 import { log } from "logger";
 
 export const userRouter = createTRPCRouter({
+  me: protectedProcedure
+    .meta({
+      description: 'Get current user',
+    })
+    .query((opts) => {
+      const {user} = opts.ctx.user.data
+      if (!user) {
+        throw new Error("You are not logged in")
+      }
+      const {id, email, identities} = user
+      return {id, email, identities}
+    }),
   list: publicProcedure
     .meta({
       description: 'List users',

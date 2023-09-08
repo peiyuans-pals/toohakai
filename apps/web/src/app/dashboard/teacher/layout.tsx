@@ -1,29 +1,31 @@
-import {ProfileButton} from "../../../components/profileButton";
+import {ProfileButton} from "../../../components/ProfileButton";
 import {Page} from "../../../components/ui";
 import Link from "next/link";
 
-export default function DashboardLayout({ children }: {
+const sidebarItems = [
+  {
+    name: "Home",
+    href: "/dashboard/teacher"
+  },
+  {
+    name: "Question Banks",
+    href: "/dashboard/teacher/question-banks"
+  },
+  {
+    name: "Quizzes",
+    href: "/dashboard/teacher/quizzes"
+  }
+]
+
+export default async function DashboardLayout({ children }: {
   children: React.ReactNode;
-}): JSX.Element {
-  const sidebarItems = [
-    {
-      name: "Home",
-      href: "/dashboard/teacher"
-    },
-    {
-      name: "Question Banks",
-      href: "/dashboard/teacher/question-banks"
-    },
-    {
-      name: "Quizzes",
-      href: "/dashboard/teacher/quizzes"
-    }
-  ]
+}) {
+  const me = {} // await trpcServer.user.me.query()
 
   return <Page>
     <div className="flex flex-row sticky h-16 bg-blue-300 items-center justify-between px-6">
       <p className="font-extrabold">toohakai</p>
-      <ProfileButton />
+      <ProfileButton initialData={me} />
     </div>
     <div className="flex flex-1 flex-row min-h-full bg-pink-300 justify-stretch items-stretch divide-x-2">
       <div className="flex flex-col w-64 bg-gray-100 p-4 gap-1">

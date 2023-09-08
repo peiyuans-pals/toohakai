@@ -1,12 +1,10 @@
-import {createClientComponentClient} from "@supabase/auth-helpers-nextjs";
 import {Text} from "../../../components/ui";
 import {trpcServer} from "../../../utils/trpc/server";
+import {cookies} from "next/headers";
 
 export default async function DashboardRoot() {
 
-  const supabase = createClientComponentClient()
-
-  const users = await trpcServer.user.list()
+  const users = await trpcServer(cookies).user.list.query()
 
   return (
     <div className="flex-1">

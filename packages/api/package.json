@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.2.0",
+    "@supabase/supabase-js": "^2.33.1",
     "@trpc/server": "^10.38.0",
     "prisma": "^5.2.0",
     "superjson": "^1.13.1",

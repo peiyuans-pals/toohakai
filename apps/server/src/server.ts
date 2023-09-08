@@ -2,7 +2,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-import {appRouter, createTRPCContext, trpcExpress} from "api"
+import {appRouter, createTrpcContext, trpcExpress} from "api"
 import { renderTrpcPanel } from "trpc-panel";
 
 const { json, urlencoded } = bodyParser
@@ -32,7 +32,7 @@ export const createServer = () => {
     '/trpc',
     trpcExpress.createExpressMiddleware({
       router: appRouter,
-      createContext: createTRPCContext,
+      createContext: createTrpcContext,
     }),
     // next-auth
     // todo

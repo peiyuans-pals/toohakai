@@ -5,7 +5,7 @@ import {QuestionBankDataTable} from "./DataTable";
 
 export default async function QuestionBanks () {
 
-  const questionBanks = await trpcServer.questionBank.list()
+  const questionBanks = await trpcServer.questionBank.list.query()
 
   return (
     <DashboardView>
