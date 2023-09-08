@@ -1,6 +1,6 @@
 import { createTRPCRouter } from "./trpc";
 import { userRouter } from "../router/user";
-import {questionBankRouter} from "../router/questionBank";
+import { questionBankRouter } from "../router/questionBank";
 
 export const appRouter = createTRPCRouter({
   user: userRouter,

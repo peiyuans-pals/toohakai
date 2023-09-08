@@ -1,10 +1,10 @@
 import React from "react";
 
 interface Props {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
-export const Page = ({children}: Props ) => {
+export const Page = ({ children }: Props) => {
   return (
     <div
       // minHeight="100vh"
@@ -21,7 +21,7 @@ export const Page = ({children}: Props ) => {
       // textAlign="center"
       className="min-h-screen bg-gray-100 flex flex-col justify-start" // TODO: fix
     >
-        {children}
+      {children}
     </div>
-  )
-}
+  );
+};

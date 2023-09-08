@@ -1,14 +1,10 @@
 import TrpcProvider from "../utils/trpc/provider";
-import {ConfigProvider} from "../context/configContext";
+import { ConfigProvider } from "../context/configContext";
 
-export function Providers({ children }: {
-  children: React.ReactNode
-}) {
+export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ConfigProvider>
-      <TrpcProvider>
-        {children}
-      </TrpcProvider>
+      <TrpcProvider>{children}</TrpcProvider>
     </ConfigProvider>
-  )
+  );
 }

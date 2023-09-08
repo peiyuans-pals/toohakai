@@ -1,22 +1,27 @@
 module.exports = {
-  extends: ["eslint:recommended","plugin:@typescript-eslint/recommended", "turbo", "prettier"],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "turbo",
+    "prettier"
+  ],
   env: {
     node: true,
-    es6: true,
+    es6: true
   },
   parser: "@typescript-eslint/parser",
   parserOptions: {
-  //   ecmaVersion: "latest",
-    sourceType: "module",
+    //   ecmaVersion: "latest",
+    sourceType: "module"
   },
   plugins: ["@typescript-eslint"],
   overrides: [
     {
       files: ["**/__tests__/**/*"],
       env: {
-        jest: true,
-      },
-    },
+        jest: true
+      }
+    }
   ],
   rules: {
     "@typescript-eslint/no-unused-vars": [
@@ -24,8 +29,8 @@ module.exports = {
       {
         argsIgnorePattern: "^_",
         varsIgnorePattern: "^_",
-        caughtErrorsIgnorePattern: "^_",
-      },
+        caughtErrorsIgnorePattern: "^_"
+      }
     ],
     // forbid usage of unused variables (marked with an _)
     "@typescript-eslint/naming-convention": [
@@ -33,14 +38,14 @@ module.exports = {
       {
         selector: ["parameter", "variable"],
         leadingUnderscore: "forbid",
-        format: null,
+        format: null
       },
       {
         selector: "parameter",
         leadingUnderscore: "require",
         format: null,
-        modifiers: ["unused"],
-      },
-    ],
+        modifiers: ["unused"]
+      }
+    ]
   }
 };

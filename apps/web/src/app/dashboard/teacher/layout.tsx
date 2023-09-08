@@ -1,8 +1,8 @@
-import {ProfileButton} from "../../../components/ProfileButton";
-import {Page} from "../../../components/ui";
+import { ProfileButton } from "../../../components/ProfileButton";
+import { Page } from "../../../components/ui";
 import Link from "next/link";
-import {trpcServer} from "../../../utils/trpc/server";
-import {cookies} from "next/headers";
+import { trpcServer } from "../../../utils/trpc/server";
+import { cookies } from "next/headers";
 
 const sidebarItems = [
   {
@@ -17,32 +17,37 @@ const sidebarItems = [
     name: "Quizzes",
     href: "/dashboard/teacher/quizzes"
   }
-]
+];
 
-export default async function DashboardLayout({ children }: {
+export default async function DashboardLayout({
+  children
+}: {
   children: React.ReactNode;
 }) {
-  const me = await trpcServer(cookies).user.me.query()
+  const me = await trpcServer(cookies).user.me.query();
 
-  return <Page>
-    <div className="flex flex-row sticky h-16 bg-blue-300 items-center justify-between px-6">
-      <p className="font-extrabold">toohakai</p>
-      <ProfileButton initialData={me} />
-    </div>
-    <div className="flex flex-1 flex-row min-h-full bg-pink-300 justify-stretch items-stretch divide-x-2">
-      <div className="flex flex-col w-64 bg-gray-100 p-4 gap-1">
-        {
-          sidebarItems.map((item) =>
-            <Link key={item.href} href={item.href} className="flex justify-stretch items-stretch">
+  return (
+    <Page>
+      <div className="flex flex-row sticky h-16 bg-blue-300 items-center justify-between px-6">
+        <p className="font-extrabold">toohakai</p>
+        <ProfileButton initialData={me} />
+      </div>
+      <div className="flex flex-1 flex-row min-h-full bg-pink-300 justify-stretch items-stretch divide-x-2">
+        <div className="flex flex-col w-64 bg-gray-100 p-4 gap-1">
+          {sidebarItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex justify-stretch items-stretch"
+            >
               <button className="btn flex-1">{item.name}</button>
-            </Link>)
-        }
+            </Link>
+          ))}
+        </div>
+        <div className="bg-orange-300 flex-1">{children}</div>
       </div>
-      <div className="bg-orange-300 flex-1">
-        {children}
-      </div>
-    </div>
-  </Page>
+    </Page>
+  );
 
   // return <Page>
   //   <Flex

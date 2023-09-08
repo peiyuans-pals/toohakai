@@ -1,8 +1,8 @@
-import {type AppRouter} from "api";
-import {createTRPCProxyClient, httpBatchLink} from "@trpc/client";
+import { type AppRouter } from "api";
+import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 import superjson from "superjson";
-import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
-import {cookies} from "next/headers";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
 function getBaseUrl() {
   // if (typeof window !== 'undefined')
@@ -18,32 +18,39 @@ function getBaseUrl() {
     // assume localhost
     // return `http://localhost:${String(Stringprocess.env.PORT ?? 5001)}`;
     return `http://localhost:5001`;
-  throw new Error("No NEXT_PUBLIC_TOOHAKAI_API_URL or PORT environment variable specified.");
+  throw new Error(
+    "No NEXT_PUBLIC_TOOHAKAI_API_URL or PORT environment variable specified."
+  );
 }
 
-export const trpcServer = (cookies: any) => createTRPCProxyClient<AppRouter>({
-  links: [
-    httpBatchLink({
-      url: `${getBaseUrl()}/trpc`,
-      headers: async () => {
+export const trpcServer = (cookies: any) =>
+  createTRPCProxyClient<AppRouter>({
+    links: [
+      httpBatchLink({
+        url: `${getBaseUrl()}/trpc`,
+        headers: async () => {
+          const supabaseServer = createServerComponentClient(
+            {
+              cookies
+            },
+            {
+              supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL
+            }
+          );
 
-        const supabaseServer = createServerComponentClient({
-          cookies
-        }, {
-          supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-        })
-
-        const {data: {session}} = await supabaseServer.auth.getSession();
-        console.log("trpc/server -> session", session)
-        if (!session) return {}
-        return {
-          Authorization: `Bearer ${session.access_token}`
-        };
-      },
-    })
-  ],
-  transformer: superjson
-})
+          const {
+            data: { session }
+          } = await supabaseServer.auth.getSession();
+          console.log("trpc/server -> session", session);
+          if (!session) return {};
+          return {
+            Authorization: `Bearer ${session.access_token}`
+          };
+        }
+      })
+    ],
+    transformer: superjson
+  });
 
 // TODO: change this to use remote url (not local package)
 // export const trpcServer = appRouter.createCaller({

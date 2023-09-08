@@ -1,9 +1,9 @@
-import {DashboardView, Heading} from "../../../../../components/ui";
+import { DashboardView, Heading } from "../../../../../components/ui";
 
 export default function Quiz({ params }: { params: { slug: string } }) {
-  return(
+  return (
     <DashboardView>
       <Heading>Quiz {params.slug}</Heading>
     </DashboardView>
-  )
+  );
 }

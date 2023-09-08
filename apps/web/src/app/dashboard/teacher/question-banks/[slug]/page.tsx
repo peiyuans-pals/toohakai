@@ -1,4 +1,4 @@
-import {DashboardView, Heading} from "../../../../../components/ui";
+import { DashboardView, Heading } from "../../../../../components/ui";
 
 export default function QuestionBank() {
   return (

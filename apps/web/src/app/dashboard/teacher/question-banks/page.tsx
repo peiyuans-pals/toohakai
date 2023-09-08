@@ -1,11 +1,10 @@
-import {DashboardView, Heading} from "../../../../components/ui";
-import {trpcServer} from "../../../../utils/trpc/server";
-import {QuestionBankDataTable} from "./DataTable";
-import {cookies} from "next/headers";
+import { DashboardView, Heading } from "../../../../components/ui";
+import { trpcServer } from "../../../../utils/trpc/server";
+import { QuestionBankDataTable } from "./DataTable";
+import { cookies } from "next/headers";
 
-export default async function QuestionBanks () {
-
-  const questionBanks = await trpcServer(cookies).questionBank.list.query()
+export default async function QuestionBanks() {
+  const questionBanks = await trpcServer(cookies).questionBank.list.query();
 
   return (
     <DashboardView>
