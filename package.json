@@ -6,11 +6,14 @@
     "dev": "turbo dev --no-cache  --continue",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo lint",
+    "lint:fix": "turbo lint --fix",
+    "prettier": "prettier . --check",
+    "prettier:fix": "prettier . --write",
     "test": "turbo test",
     "preinstall": "npx only-allow pnpm"
   },
   "devDependencies": {
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.7",
     "turbo": "latest"
   },
   "packageManager": "pnpm@8.6.10"
