@@ -1,6 +1,8 @@
 import {ProfileButton} from "../../../components/ProfileButton";
 import {Page} from "../../../components/ui";
 import Link from "next/link";
+import {trpcServer} from "../../../utils/trpc/server";
+import {cookies} from "next/headers";
 
 const sidebarItems = [
   {
@@ -20,7 +22,7 @@ const sidebarItems = [
 export default async function DashboardLayout({ children }: {
   children: React.ReactNode;
 }) {
-  const me = {} // await trpcServer.user.me.query()
+  const me = await trpcServer(cookies).user.me.query()
 
   return <Page>
     <div className="flex flex-row sticky h-16 bg-blue-300 items-center justify-between px-6">

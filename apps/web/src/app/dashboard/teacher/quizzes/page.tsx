@@ -4,10 +4,15 @@ import Link from "next/link";
 export default function Quizzes() {
   return (
     <DashboardView>
-      <Heading>Quizzes</Heading>
+      <div className="flex flex-row justify-between items-center">
+        <Heading>Quizzes</Heading>
+        <Button primary>
+          Create New
+        </Button>
+      </div>
       <Link href="/dashboard/teacher/quizzes/1234">
-        <Button>
-          Debug: Open a quiz
+        <Button primary>
+          Debug: Open a completed quiz from the past
         </Button>
       </Link>
     </DashboardView>
