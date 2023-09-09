@@ -16,7 +16,8 @@
     "lint": "eslint \"src/**/*.ts*\"",
     "test": "jest",
     "prisma:migrate": "prisma migrate dev --name init",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "postinstall": "pnpm run prisma:generate"
   },
   "jest": {
     "preset": "jest-presets/jest/node"

@@ -21,16 +21,16 @@ jobs:
         run: pnpm install
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm run lint
 
       - name: Prettier check
-        run: pnpm prettier
+        run: pnpm run prettier
 
       - name: Build
-        run: pnpm build
+        run: pnpm run build
 
       #      - name: Unit Tests
       #        run: pnpm test
 
       - name: E2E Tests
-        run: pnpm cypress:headless
+        run: pnpm run cypress:headless
