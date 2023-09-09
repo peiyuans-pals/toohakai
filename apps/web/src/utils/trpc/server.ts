@@ -12,13 +12,13 @@ function getBaseUrl() {
   //   return `https://${process.env.VERCEL_URL}`;
   if (process.env.NEXT_PUBLIC_TOOHAKAI_API_URL)
     // reference for render.com
-    return `http://${process.env.NEXT_PUBLIC_TOOHAKAI_API_URL}`;
+    return process.env.NEXT_PUBLIC_TOOHAKAI_API_URL;
   if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test")
     // assume localhost
     // return `http://localhost:${String(Stringprocess.env.PORT ?? 5001)}`;
     return `http://localhost:5001`;
   throw new Error(
-    "No NEXT_PUBLIC_TOOHAKAI_API_URL or PORT environment variable specified."
+    "No NEXT_PUBLIC_TOOHAKAI_API_URL environment variable specified."
   );
 }
 
