@@ -35,7 +35,6 @@ jobs:
 
       #      - name: Unit Tests
       #        run: pnpm test
-
 #      - name: E2E Tests
 #        run: ./.github/scripts/e2e.sh
 #        env:
