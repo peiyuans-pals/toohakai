@@ -44,7 +44,7 @@
       ]
     },
     "cypress:headless": {
-      "dependsOn": ["^build", "build"],
+      "dependsOn": [],
       "dotEnv": ["apps/web/.env", "apps/server/.env"],
       "env": [
         // apps/web/.env
