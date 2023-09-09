@@ -5,6 +5,7 @@
   },
   "scripts": {
     "build": "turbo build",
+    "start": "turbo start",
     "clean": "turbo clean",
     "dev": "turbo dev --no-cache  --continue",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
@@ -13,6 +14,7 @@
     "prettier": "prettier . --check",
     "prettier:fix": "prettier . --write",
     "test": "turbo test",
+    "cypress:headless": "turbo cypress:headless",
     "preinstall": "npx only-allow pnpm"
   },
   "devDependencies": {

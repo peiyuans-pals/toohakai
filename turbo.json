@@ -16,6 +16,19 @@
         "SUPABASE_KEY"
       ]
     },
+    "start": {
+      "dependsOn": ["^build", "build"],
+      "dotEnv": ["apps/web/.env", "apps/server/.env"],
+      "env": [
+        // apps/web/.env
+        "NODE_ENV",
+        "NEXT_PUBLIC_TOOHAKAI_API_URL",
+        "NEXT_PUBLIC_SUPABASE_URL",
+        // apps/server/.env
+        "SUPABASE_URL",
+        "SUPABASE_KEY"
+      ]
+    },
     "test": {
       "outputs": ["coverage/**"],
       "dependsOn": [],
@@ -29,6 +42,19 @@
         "SUPABASE_URL",
         "SUPABASE_KEY"
       ]
+    },
+    "cypress:headless": {
+        "dependsOn": ["^build", "build"],
+        "dotEnv": ["apps/web/.env", "apps/server/.env"],
+        "env": [
+            // apps/web/.env
+            "NODE_ENV",
+            "NEXT_PUBLIC_TOOHAKAI_API_URL",
+            "NEXT_PUBLIC_SUPABASE_URL",
+            // apps/server/.env
+            "SUPABASE_URL",
+            "SUPABASE_KEY"
+        ]
     },
     "lint": {
       "dependsOn": ["^build"]
