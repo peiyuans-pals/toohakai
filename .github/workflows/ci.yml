@@ -38,6 +38,13 @@ jobs:
 
       - name: E2E Tests
         run: ./.github/scripts/e2e.sh
+        env:
+          NEXT_PUBLIC_TOOHAKAI_API_URL: "https://api.toohakai.fun"
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
       - name: Upload e2e screenshots
         uses: actions/upload-artifact@v3
