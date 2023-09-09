@@ -1,4 +1,5 @@
 # CZ3002 - Advanced Software Engineering Project
+
 # Toohakai - A classroom learning tool
 
 This is an official starter Turborepo with multiple meta-frameworks all working in harmony and sharing packages.
@@ -18,10 +19,12 @@ This Turborepo includes the following packages and apps:
 ### Apps and Packages
 
 Apps:
+
 - `sevrer`: an [Express](https://expressjs.com/) server
 - `web`: a [Next.js](https://nextjs.org/) app
 
 Packages:
+
 - `logger`: isomorphic logger (a small wrapper around console.log)
 - `ui`: a dummy React UI library (which contains a single `<CounterButton>` component)
 - `scripts`: Jest and ESLint configurations

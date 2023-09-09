@@ -1,0 +1,52 @@
+name: Continuous Integration
+on:
+  push:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.16.1
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Prettier check
+        run: pnpm run prettier
+
+      - name: Build
+        run: pnpm run build
+        env:
+          NEXT_PUBLIC_TOOHAKAI_API_URL: "https://api.toohakai.fun"
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      #      - name: Unit Tests
+      #        run: pnpm test
+#      - name: E2E Tests
+#        run: ./.github/scripts/e2e.sh
+#        env:
+#          NEXT_PUBLIC_TOOHAKAI_API_URL: "https://api.toohakai.fun"
+#          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+#          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+#          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+#          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+#          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+#
+#      - name: Upload e2e screenshots
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: e2e-screenshots
+#          path: apps/web/cypress/screenshots

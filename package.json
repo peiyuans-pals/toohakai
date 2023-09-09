@@ -1,16 +1,26 @@
 {
   "private": true,
+  "engines": {
+    "node": ">=18.15.0"
+  },
   "scripts": {
     "build": "turbo build",
+    "start": "turbo start",
     "clean": "turbo clean",
     "dev": "turbo dev --no-cache  --continue",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo lint",
+    "lint:fix": "turbo lint --fix",
+    "prettier": "prettier . --check",
+    "prettier:fix": "prettier . --write",
     "test": "turbo test",
+    "cypress:headless": "turbo cypress:headless",
+    "cypress:ci": "start-server-and-test start http://localhost:3002 'turbo run cypress:headless'",
     "preinstall": "npx only-allow pnpm"
   },
   "devDependencies": {
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.8",
+    "start-server-and-test": "^2.0.0",
     "turbo": "latest"
   },
   "packageManager": "pnpm@8.6.10"

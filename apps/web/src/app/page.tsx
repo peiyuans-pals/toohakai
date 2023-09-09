@@ -1,27 +1,22 @@
-"use client"
-import {log} from "logger";
-import * as React from 'react';
-import {Button, Heading, Spinner, Text} from "@chakra-ui/react";
-import {trpc} from "../utils/trpc";
-import Page from "../components/Page";
-import { Link } from '@chakra-ui/next-js'
+import * as React from "react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Page, Heading, Button, Text } from "../components/ui/";
+import Link from "next/link";
+import { LoginButton } from "../components/LoginButton";
 
 export default function Home() {
-  const {data: user, isLoading, isError} = trpc.user.get.useQuery("1234");
-  console.log("user", user)
+  // const {data: user, isLoading, isError} = trpc.user.get.useQuery("1234");
+  // console.log("user", user)
+
+  const supabase = createClientComponentClient();
+
+  const user = supabase.auth.getUser();
 
   return (
     <Page>
       <Heading>Toohakai</Heading>
-      {/*<Text>*/}
-      {/*  user: {JSON.stringify(user.data)}*/}
-      {/*</Text>*/}
-      <Link href='/login' _hover={{ color: 'blue.500' }}>
-        <Button>
-          Login as Teacher
-        </Button>
-      </Link>
-      {/*<Spinner/>*/}
+      <Text>A really cool quiz app</Text>
+      <LoginButton />
     </Page>
   );
 }
