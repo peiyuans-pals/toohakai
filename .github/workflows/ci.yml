@@ -15,19 +15,22 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build
-        run: pnpm build
-
       - name: Lint
         run: pnpm lint
 
-#      - name: Unit Tests
-#        run: pnpm test
+      - name: Prettier check
+        run: pnpm prettier:check
+
+      - name: Build
+        run: pnpm build
+
+      #      - name: Unit Tests
+      #        run: pnpm test
 
       - name: E2E Tests
         run: pnpm cypress:headless

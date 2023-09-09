@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { Text } from "../../../components/ui";
 import { trpcServer } from "../../../utils/trpc/server";

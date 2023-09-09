@@ -1,6 +1,6 @@
 module.exports = {
   reactStrictMode: true,
-    experimental: {
-      serverActions: true,
-    }
+  experimental: {
+    serverActions: true
+  }
 };

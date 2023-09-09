@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { ProfileButton } from "../../../components/ProfileButton";
 import { Page } from "../../../components/ui";

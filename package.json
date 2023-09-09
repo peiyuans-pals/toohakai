@@ -15,10 +15,12 @@
     "prettier:fix": "prettier . --write",
     "test": "turbo test",
     "cypress:headless": "turbo cypress:headless",
+    "cypress:ci": "start-server-and-test start http://localhost:3002 'turbo run cypress:headless'",
     "preinstall": "npx only-allow pnpm"
   },
   "devDependencies": {
     "prettier": "^2.8.8",
+    "start-server-and-test": "^2.0.0",
     "turbo": "latest"
   },
   "packageManager": "pnpm@8.6.10"
