@@ -37,7 +37,7 @@ jobs:
       #        run: pnpm test
 
       - name: E2E Tests
-        run: pnpm run cypress:ci
+        run: ./.github/scripts/e2e.sh
 
       - name: Upload e2e screenshots
         uses: actions/upload-artifact@v3
