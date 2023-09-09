@@ -12,7 +12,7 @@ export async function middleware(req: NextRequest) {
   // const supabase = createMiddlewareClient<Database>({ req, res }) // TODO
   const supabase = createMiddlewareClient({ req, res });
 
-  await supabase.auth.getSession();
+  // await supabase.auth.getSession();
 
   const {
     data: { user }

@@ -2,7 +2,6 @@ import { type AppRouter } from "api";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 import superjson from "superjson";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
 
 function getBaseUrl() {
   // if (typeof window !== 'undefined')

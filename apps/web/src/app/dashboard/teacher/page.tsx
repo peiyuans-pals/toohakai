@@ -1,3 +1,5 @@
+"use server"
+
 import { Text } from "../../../components/ui";
 import { trpcServer } from "../../../utils/trpc/server";
 import { cookies } from "next/headers";

@@ -1,3 +1,5 @@
+"use server"
+
 import { ProfileButton } from "../../../components/ProfileButton";
 import { Page } from "../../../components/ui";
 import Link from "next/link";
