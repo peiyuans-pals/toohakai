@@ -2,28 +2,37 @@ version: "3"
 
 services:
   web:
-    container_name: web
+    container_name: toohakai-web
     build:
       context: .
       dockerfile: ./apps/web/Dockerfile
     restart: always
     ports:
-      - 3000:3000
+      - "3000:3000"
+    env_file: ./docker/local/web.env
     networks:
-      - toohakai_network
+      toohakai_network:
+        ipv4_address: 10.5.0.1
 
-#  server:
-#    container_name: server
-#    build:
-#      context: .
-#      dockerfile: ./apps/server/Dockerfile
-#    restart: always
-#    ports:
-#      - 5001:5001
-#    networks:
-#      - toohakai_network
+  server:
+    container_name: toohakai-server
+    build:
+      context: .
+      dockerfile: ./apps/server/Dockerfile
+    restart: always
+    ports:
+      - "5001:5001"
+    env_file: ./docker/local/server.env
+    networks:
+      toohakai_network:
+        ipv4_address: 10.5.0.2
 
 # Define a network, which allows containers to communicate
 # with each other, by using their container name as a hostname
 networks:
   toohakai_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
