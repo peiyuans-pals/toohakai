@@ -13,6 +13,7 @@ pnpm install
 ```
 
 Then populate the following files:
+
 - apps/server/.env
 - apps/web/.env
 - packages/api/.env
