@@ -12,6 +12,11 @@ This example also shows how to use [Workspace Configurations](https://turbo.buil
 pnpm install
 ```
 
+Then populate the following files:
+- apps/server/.env
+- apps/web/.env
+- packages/api/.env
+
 ## What's inside?
 
 This Turborepo includes the following packages and apps:
