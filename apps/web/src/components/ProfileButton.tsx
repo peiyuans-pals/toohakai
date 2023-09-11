@@ -3,6 +3,15 @@
 import { trpc } from "../utils/trpc/client";
 import { supabase } from "../utils/supabase/client";
 import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 interface Props {
   initialData: any;
@@ -32,26 +41,40 @@ export const ProfileButton = ({ initialData }: Props) => {
   };
 
   return (
-    <div className="flex items-center justify-center rounded-full h-12 w-12 bg-green-600">
+<DropdownMenu>
+  <DropdownMenuTrigger>
+  <div className="flex items-center justify-center rounded-full mr-10 h-12 w-12 bg-green-600">
       <div className="dropdown dropdown-end">
         <label tabIndex={0} className="btn btn-ghost rounded-btn">
           <p className="font-bold text-white">{initials}</p>
         </label>
-        <ul
-          tabIndex={0}
-          className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4"
-        >
-          <li>
-            <a>{userNameCleaned}</a>
-          </li>
-          <li>
-            <a>Settings</a>
-          </li>
-          <li>
-            <a onClick={handleLogoutClick}>Logout</a>
-          </li>
-        </ul>
-      </div>
+        </div>
     </div>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>{userNameCleaned}</DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem>Settings</DropdownMenuItem>
+    <DropdownMenuItem><a onClick={handleLogoutClick}>Logout</a></DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+
+
+    
+        // {/* <ul
+        //   tabIndex={0}
+        //   className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4"
+        // >
+        //   <li>
+        //     <a>{userNameCleaned}</a>
+        //   </li>
+        //   <li>
+        //     <a>Settings</a>
+        //   </li>
+        //   <li>
+        //     <a onClick={handleLogoutClick}>Logout</a>
+        //   </li>
+        // </ul> */}
+
   );
 };

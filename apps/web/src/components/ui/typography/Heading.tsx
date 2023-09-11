@@ -8,6 +8,6 @@ interface Props {
 export const Heading = ({ children, level }: Props) => {
   return (
     // TODO: add support for other heading levels
-    <h1 className="text-2xl font-bold text-gray-900">{children}</h1>
+    <h1 className="text-4xl font-bold text-gray-900">{children}</h1>
   );
 };
