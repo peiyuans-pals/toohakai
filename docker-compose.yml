@@ -8,22 +8,22 @@ services:
       dockerfile: ./apps/web/Dockerfile
     restart: always
     ports:
-      - 3002:3002
+      - 3000:3000
     networks:
       - toohakai_network
-  api:
-    container_name: server
-    build:
-      context: .
-      dockerfile: ./apps/server/Dockerfile
-    restart: always
-    ports:
-      - 5001:5001
-    networks:
-      - toohakai_network
+
+#  server:
+#    container_name: server
+#    build:
+#      context: .
+#      dockerfile: ./apps/server/Dockerfile
+#    restart: always
+#    ports:
+#      - 5001:5001
+#    networks:
+#      - toohakai_network
 
 # Define a network, which allows containers to communicate
 # with each other, by using their container name as a hostname
 networks:
   toohakai_network:
-    external: true
