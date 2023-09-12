@@ -1,15 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { supabase } from "../utils/supabase/client";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 export const LoginButton = () => {
   const handleLoginClick = async () => {
-    // loginMutation.mutate({
-    //   name: "dyllon", email: "dyllon@example.com"
-    // })
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "azure",
       options: {
@@ -18,6 +13,7 @@ export const LoginButton = () => {
       }
     });
     console.log(data, error);
+    // todo: report error to glitchtip
   };
 
   return (

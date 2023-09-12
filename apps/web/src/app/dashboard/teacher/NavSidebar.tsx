@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { cn } from "../../../utils/shadcn";
@@ -21,11 +21,9 @@ const sidebarItems = [
 ];
 
 export const NavSidebar = () => {
-  const pathname = usePathname()
+  const pathname = usePathname();
   return (
-    <nav
-      className="flex flex-1 space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 p-0 pr-4 border-r"
-    >
+    <nav className="flex flex-1 space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 p-0 pr-4 border-r">
       {sidebarItems.map((item) => (
         <Link
           key={item.href}
@@ -42,6 +40,5 @@ export const NavSidebar = () => {
         </Link>
       ))}
     </nav>
-  )
-}
-
+  );
+};

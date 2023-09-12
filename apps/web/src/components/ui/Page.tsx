@@ -21,10 +21,7 @@ export const Page = ({ children, className }: Props) => {
       // paddingY={0}
       // paddngX={4}
       // textAlign="center"
-      className={cn(
-      "min-h-screen flex flex-col justify-start",
-        className
-      )}
+      className={cn("min-h-screen flex flex-col justify-start", className)}
     >
       {children}
     </div>

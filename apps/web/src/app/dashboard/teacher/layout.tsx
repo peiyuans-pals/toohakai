@@ -2,11 +2,9 @@
 
 import { ProfileButton } from "../../../components/ProfileButton";
 import { Page } from "../../../components/ui";
-import Link from "next/link";
 import { trpcServer } from "../../../utils/trpc/server";
 import { cookies } from "next/headers";
 import { Input } from "@/components/ui/input";
-import { cn } from "../../../utils/shadcn";
 import { NavSidebar } from "./NavSidebar";
 
 export default async function DashboardLayout({
@@ -20,7 +18,7 @@ export default async function DashboardLayout({
     <Page>
       <div className="flex flex-row sticky h-16 items-center justify-between px-6 border-b bg-white">
         <div>
-        <p className="font-extrabold">toohakai</p>
+          <p className="font-extrabold">toohakai</p>
         </div>
         <div className="flex flex-row items-center">
           <Input type="search" placeholder="Search..." className="mr-4 w-80" />

@@ -1,19 +1,21 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 
 import { trpc } from "../utils/trpc/client";
 import { supabase } from "../utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { getCleanedNameFromIdentities, getInitialsFromCleanedName } from "../utils/strings";
+import {
+  getCleanedNameFromIdentities,
+  getInitialsFromCleanedName
+} from "../utils/strings";
 
 interface Props {
   initialData: any;
@@ -49,7 +51,12 @@ export const ProfileButton = ({ initialData }: Props) => {
           <DropdownMenuItem>Profile</DropdownMenuItem>
           <DropdownMenuItem>Settings</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuLabel className="cursor-pointer" onClick={handleLogoutClick}>Log Out</DropdownMenuLabel>
+          <DropdownMenuLabel
+            className="cursor-pointer"
+            onClick={handleLogoutClick}
+          >
+            Log Out
+          </DropdownMenuLabel>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

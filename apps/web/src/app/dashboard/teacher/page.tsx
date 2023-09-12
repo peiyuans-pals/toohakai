@@ -4,14 +4,9 @@ import { DashboardView, Text } from "../../../components/ui";
 import { trpcServer } from "../../../utils/trpc/server";
 import { cookies } from "next/headers";
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { SummaryCard, SummaryCardProps } from "./SummaryCard";
 import { getCleanedNameFromIdentities } from "../../../utils/strings";
-
 
 const summaryData: SummaryCardProps[] = [
   {
@@ -23,8 +18,8 @@ const summaryData: SummaryCardProps[] = [
     title: "Quiz Banks",
     currentValue: "12",
     changeInValue: "+2"
-  },
-]
+  }
+];
 
 export default async function DashboardRoot() {
   const questionBankCount = await trpcServer(
@@ -32,7 +27,7 @@ export default async function DashboardRoot() {
   ).questionBank.count.query();
 
   const me = await trpcServer(cookies).user.me.query();
-  const name = getCleanedNameFromIdentities(me.identities)
+  const name = getCleanedNameFromIdentities(me.identities);
 
   return (
     <DashboardView>
@@ -43,14 +38,14 @@ export default async function DashboardRoot() {
       </Card>
 
       <div className="grid grid-cols-4 gap-4">
-        {summaryData.map(summaryItem =>
-
-        <SummaryCard
-          title={summaryItem.title}
-          currentValue={summaryItem.currentValue}
-          changeInValue={summaryItem.changeInValue}
-        />
-        )}
+        {summaryData.map((summaryItem) => (
+          <SummaryCard
+            key={summaryItem.title}
+            title={summaryItem.title}
+            currentValue={summaryItem.currentValue}
+            changeInValue={summaryItem.changeInValue}
+          />
+        ))}
       </div>
     </DashboardView>
   );

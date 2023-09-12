@@ -1,23 +1,20 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export interface SummaryCardProps {
-  title: string
-  currentValue: string
-  changeInValue: string
+  title: string;
+  currentValue: string;
+  changeInValue: string;
 }
 
-  export const SummaryCard = ({title, currentValue, changeInValue}: SummaryCardProps) => {
+export const SummaryCard = ({
+  title,
+  currentValue,
+  changeInValue
+}: SummaryCardProps) => {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">
-          {title}
-        </CardTitle>
+        <CardTitle className="text-sm font-medium">{title}</CardTitle>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -38,5 +35,5 @@ export interface SummaryCardProps {
         </p>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
