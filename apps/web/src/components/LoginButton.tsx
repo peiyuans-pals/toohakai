@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { supabase } from "../utils/supabase/client";
+import { Button } from "@/components/ui/button"
 
 export const LoginButton = () => {
   const handleLoginClick = async () => {
@@ -20,12 +21,12 @@ export const LoginButton = () => {
   };
 
   return (
-    <button
+    <Button
       className="btn w-24"
       onClick={handleLoginClick}
       data-cy="login-button"
     >
       Login
-    </button>
+    </Button>
   );
 };
