@@ -31,7 +31,7 @@ export const NavSidebar = () => {
           className={cn(
             buttonVariants({ variant: "ghost" }),
             pathname === item.href
-              ? "bg-blue-400 hover:bg-blue-400 text-white hover:text-white"
+              ? "bg-primary hover:bg-primary text-white hover:text-white"
               : "hover:bg-muted",
             "justify-start"
           )}
