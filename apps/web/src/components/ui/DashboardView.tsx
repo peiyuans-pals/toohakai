@@ -7,7 +7,7 @@ interface Props {
 export const DashboardView = ({ children }: Props) => {
   return (
     <div
-      className="min-h-full bg-gray-100 p-4 flex flex-col justify-start" // TODO: fix
+      className="min-h-full p-4 flex flex-col justify-start" // TODO: fix
     >
       {children}
     </div>

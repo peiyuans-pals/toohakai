@@ -1,29 +1,52 @@
 "use server";
 
-import { Text } from "../../../components/ui";
+import { DashboardView, Text } from "../../../components/ui";
 import { trpcServer } from "../../../utils/trpc/server";
 import { cookies } from "next/headers";
 
-export default async function DashboardRoot() {
-  const users = await trpcServer(cookies).user.list.query(); // debug
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { SummaryCard, SummaryCardProps } from "./SummaryCard";
+import { getCleanedNameFromIdentities } from "../../../utils/strings";
 
+const summaryData: SummaryCardProps[] = [
+  {
+    title: "Average Quiz Score",
+    currentValue: "82%",
+    changeInValue: "+6%"
+  },
+  {
+    title: "Quiz Banks",
+    currentValue: "12",
+    changeInValue: "+2"
+  }
+];
+
+export default async function DashboardRoot() {
   const questionBankCount = await trpcServer(
     cookies
   ).questionBank.count.query();
 
-  return (
-    <div className="flex-1">
-      <Text>Main pane</Text>
+  const me = await trpcServer(cookies).user.me.query();
+  const name = getCleanedNameFromIdentities(me.identities);
 
-      <div>
-        {users.map((user) => (
-          <div key={user.id}>
-            {user.name} - ({user.email})
-          </div>
+  return (
+    <DashboardView>
+      <Card className="shadow-stone-50 mb-4">
+        <CardHeader>
+          <CardTitle>Good afternoon, {name}</CardTitle>
+        </CardHeader>
+      </Card>
+
+      <div className="grid grid-cols-4 gap-4">
+        {summaryData.map((summaryItem) => (
+          <SummaryCard
+            key={summaryItem.title}
+            title={summaryItem.title}
+            currentValue={summaryItem.currentValue}
+            changeInValue={summaryItem.changeInValue}
+          />
         ))}
       </div>
-
-      <Text>You have {questionBankCount} question banks</Text>
-    </div>
+    </DashboardView>
   );
 }

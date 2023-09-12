@@ -72,6 +72,9 @@
     "lint": {
       "dependsOn": ["^build"]
     },
+    "lint:fix": {
+      "dependsOn": ["^build"]
+    },
     "dev": {
       "dependsOn": ["^build"],
       "cache": false,
