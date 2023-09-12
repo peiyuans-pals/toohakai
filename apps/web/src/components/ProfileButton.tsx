@@ -13,6 +13,7 @@ import {
 import { trpc } from "../utils/trpc/client";
 import { supabase } from "../utils/supabase/client";
 import { useRouter } from "next/navigation";
+import { getCleanedNameFromIdentities, getInitialsFromCleanedName } from "../utils/strings";
 
 interface Props {
   initialData: any;
@@ -25,15 +26,8 @@ export const ProfileButton = ({ initialData }: Props) => {
     initialData
   });
 
-  const userIdentity = Array.isArray(me.identities) ? me.identities[0] : null;
-
-  const userName: string = userIdentity?.identity_data?.name ?? "Z Z"; // just in case there's no name default to ZZ
-  const userNameCleaned = userName.replace(/[^a-zA-Z ]/g, "");
-  const initials = userNameCleaned
-    .split(" ")
-    .map((name: string) => name[0])
-    .join("")
-    .slice(0, 2);
+  const usersName = getCleanedNameFromIdentities(me.identities);
+  const initials = getInitialsFromCleanedName(usersName);
 
   const handleLogoutClick = async () => {
     console.log("logout");
@@ -50,7 +44,7 @@ export const ProfileButton = ({ initialData }: Props) => {
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{userNameCleaned}</DropdownMenuLabel>
+          <DropdownMenuLabel>{usersName}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Profile</DropdownMenuItem>
           <DropdownMenuItem>Settings</DropdownMenuItem>

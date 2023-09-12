@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { SummaryCard, SummaryCardProps } from "./SummaryCard";
+import { getCleanedNameFromIdentities } from "../../../utils/strings";
 
 
 const summaryData: SummaryCardProps[] = [
@@ -31,12 +32,13 @@ export default async function DashboardRoot() {
   ).questionBank.count.query();
 
   const me = await trpcServer(cookies).user.me.query();
+  const name = getCleanedNameFromIdentities(me.identities)
 
   return (
     <DashboardView>
       <Card className="shadow-stone-50 mb-4">
         <CardHeader>
-          <CardTitle>Good afternoon, name</CardTitle>
+          <CardTitle>Good afternoon, {name}</CardTitle>
         </CardHeader>
       </Card>
 

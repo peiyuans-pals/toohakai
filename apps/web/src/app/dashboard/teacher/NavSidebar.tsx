@@ -24,7 +24,7 @@ export const NavSidebar = () => {
   const pathname = usePathname()
   return (
     <nav
-      className="flex flex-1 space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 p-2 pr-4 border-r"
+      className="flex flex-1 space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 p-0 pr-4 border-r"
     >
       {sidebarItems.map((item) => (
         <Link

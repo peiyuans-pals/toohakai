@@ -1,16 +1,8 @@
 import * as React from "react";
-// import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Page, Heading, Button, Text } from "../components/ui/";
-import Link from "next/link";
 import { LoginButton } from "../components/LoginButton";
 
-export default function Home() {
-  // const {data: user, isLoading, isError} = trpc.user.get.useQuery("1234");
-  // console.log("user", user)
-
-  // const supabase = createClientComponentClient();
-
-  // const user = supabase.auth.getUser();
+export default function LoginPage() {
 
   return (
     <div className="flex flex-row min-h-screen justify-center bg-gradient-to-br from-blue-900 to-blue-400">
