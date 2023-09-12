@@ -30,6 +30,8 @@ export default async function DashboardRoot() {
     cookies
   ).questionBank.count.query();
 
+  const me = await trpcServer(cookies).user.me.query();
+
   return (
     <DashboardView>
       <Card className="shadow-stone-50 mb-4">

@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "../../lib/utils/shadcn";
+import { cn } from "../../utils/shadcn";
 
 interface Props {
   children: React.ReactNode;

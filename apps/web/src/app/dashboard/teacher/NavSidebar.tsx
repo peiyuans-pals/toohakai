@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import { cn } from "../../../lib/utils/shadcn";
+import { cn } from "../../../utils/shadcn";
 import { usePathname } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
 

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { trpcServer } from "../../../utils/trpc/server";
 import { cookies } from "next/headers";
 import { Input } from "@/components/ui/input";
-import { cn } from "../../../lib/utils/shadcn";
+import { cn } from "../../../utils/shadcn";
 import { NavSidebar } from "./NavSidebar";
 
 export default async function DashboardLayout({
