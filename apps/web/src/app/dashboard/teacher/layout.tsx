@@ -5,21 +5,9 @@ import { Page } from "../../../components/ui";
 import Link from "next/link";
 import { trpcServer } from "../../../utils/trpc/server";
 import { cookies } from "next/headers";
-
-const sidebarItems = [
-  {
-    name: "Home",
-    href: "/dashboard/teacher"
-  },
-  {
-    name: "Question Banks",
-    href: "/dashboard/teacher/question-banks"
-  },
-  {
-    name: "Quizzes",
-    href: "/dashboard/teacher/quizzes"
-  }
-];
+import { Input } from "@/components/ui/input";
+import { cn } from "../../../lib/utils/shadcn";
+import { NavSidebar } from "./NavSidebar";
 
 export default async function DashboardLayout({
   children
@@ -30,23 +18,20 @@ export default async function DashboardLayout({
 
   return (
     <Page>
-      <div className="flex flex-row sticky h-16 bg-blue-300 items-center justify-between px-6">
+      <div className="flex flex-row sticky h-16 items-center justify-between px-6 border-b bg-white">
+        <div>
         <p className="font-extrabold">toohakai</p>
-        <ProfileButton initialData={me} />
-      </div>
-      <div className="flex flex-1 flex-row min-h-full bg-pink-300 justify-stretch items-stretch divide-x-2">
-        <div className="flex flex-col w-64 bg-gray-100 p-4 gap-1">
-          {sidebarItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="flex justify-stretch items-stretch"
-            >
-              <button className="btn flex-1">{item.name}</button>
-            </Link>
-          ))}
         </div>
-        <div className="bg-orange-300 flex-1">{children}</div>
+        <div className="flex flex-row items-center">
+          <Input type="search" placeholder="Search..." className="mr-4 w-80" />
+          <ProfileButton initialData={me} />
+        </div>
+      </div>
+      <div className="flex flex-1 flex-row min-h-full justify-stretch items-stretch">
+        <div className="flex flex-col w-64 p-4 gap-1 items-stretch">
+          <NavSidebar />
+        </div>
+        <div className="flex-1">{children}</div>
       </div>
     </Page>
   );
