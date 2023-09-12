@@ -20,8 +20,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build
-        run: pnpm run build
+      #      - name: Build
+      #        run: pnpm run build
 
       #      - name: Build web image
       #        run: docker build -t toohakai/web:latest -f ./apps/web/Dockerfile .
@@ -41,6 +41,10 @@ jobs:
 
       - name: web - build and push to ghcr
         uses: docker/build-push-action@v2
+        env:
+          NEXT_PUBLIC_TOOHAKAI_API_URL: "https://api.toohakai.fun"
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         with:
           file: ./apps/web/Dockerfile
           context: .
