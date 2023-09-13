@@ -23,17 +23,13 @@ export const NewQuestionBankButton = () => {
         <DialogHeader>
           <DialogTitle>New Question Bank</DialogTitle>
           <DialogDescription>
-            Create a new question bank. Click &quot;Create&quot; when you&apos;re done.
+            Create a new question bank. Click &quot;New Question Bank&quot; when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label className="text-right">Quiz Name</Label>
+            <Label className="text-right">Topic Name</Label>
             <Input placeholder="Physics Quiz Revision" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label className="text-right">Topic</Label>
-            <Input placeholder="Physics" className="col-span-3" />
           </div>
         </div>
         <DialogFooter>
