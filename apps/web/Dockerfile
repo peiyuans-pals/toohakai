@@ -85,6 +85,9 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 
+# workaround for a nextjs bug: https://github.com/vercel/next.js/issues/54133
+ENV HOSTNAME "0.0.0.0"
+
 CMD node apps/web/server.js
 
 EXPOSE 3000
