@@ -32,20 +32,3 @@ export const trpcServer = (cookies: any) =>
     ],
     transformer: superjson
   });
-
-// TODO: change this to use remote url (not local package)
-// export const trpcServer = appRouter.createCaller({
-//   links: [
-//     httpBatchLink({
-//       url: `${getBaseUrl()}/trpc `,
-//       // headers: () => {
-//       //   // @ts-ignore
-//       //   const {session} = supabase.auth.getSession().then(({data}) => data)
-//       //   if (!session) return {}
-//       //   return {
-//       //     Authorization: `Bearer ${session.access_token}`
-//       //   };
-//       // },
-//     })
-//   ],
-// })
