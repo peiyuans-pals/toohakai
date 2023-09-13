@@ -79,7 +79,7 @@ jobs:
           context: .
           push: true
           build-args: |
-            NEXT_PUBLIC_TOOHAKAI_API_URL=${{ env.NEXT_PUBLIC_TOOHAKAI_API_URL }}}
+            NEXT_PUBLIC_TOOHAKAI_API_URL=${{ env.NEXT_PUBLIC_TOOHAKAI_API_URL }}
             NEXT_PUBLIC_SUPABASE_URL=${{ env.NEXT_PUBLIC_SUPABASE_URL }}
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ env.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           tags: |
