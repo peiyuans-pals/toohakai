@@ -86,3 +86,7 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/we
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 
 CMD node apps/web/server.js
+
+EXPOSE 3000
+
+HEALTHCHECK CMD curl --fail http://localhost:3000 || exit 1

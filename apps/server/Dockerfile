@@ -63,3 +63,7 @@ USER expressjs
 COPY --from=installer /app .
 
 CMD node apps/server/dist/index.js
+
+EXPOSE 5001
+
+HEALTHCHECK CMD curl --fail http://localhost:5001 || exit 1
