@@ -23,6 +23,7 @@ RUN turbo prune --scope=server --docker
 FROM base AS installer
 RUN apk add --no-cache libc6-compat
 RUN apk update
+RUN apk add curl
 
 # Install pnpm
 RUN corepack enable
