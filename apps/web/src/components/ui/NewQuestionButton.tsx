@@ -25,7 +25,7 @@ export const NewQuestionButton = () => {
         <DialogHeader>
           <DialogTitle>New Question</DialogTitle>
           <DialogDescription>
-            Create a new question. Click "Create" when you're done.
+            Create a new question. Click &quot;Create&quot; when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

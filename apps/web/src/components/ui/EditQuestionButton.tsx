@@ -35,7 +35,7 @@ export const EditQuestionButton = ({ initialData }: Props) => {
         <DialogHeader>
           <DialogTitle>Edit Question</DialogTitle>
           <DialogDescription>
-            Edit Question. Click "Save Changes" when you're done.
+            Edit Question. Click &quot;Save Changes&quot; when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -47,13 +47,29 @@ export const EditQuestionButton = ({ initialData }: Props) => {
               placeholder="Type your question here."
             />
             <Label className="text-right">Option 1</Label>
-            <Input value={questionBanksData.option1} placeholder="Option 1" className="col-span-3" />
+            <Input
+              value={questionBanksData.option1}
+              placeholder="Option 1"
+              className="col-span-3"
+            />
             <Label className="text-right">Option 2</Label>
-            <Input value={questionBanksData.option2} placeholder="Option 2" className="col-span-3" />
+            <Input
+              value={questionBanksData.option2}
+              placeholder="Option 2"
+              className="col-span-3"
+            />
             <Label className="text-right">Option 3</Label>
-            <Input value={questionBanksData.option3} placeholder="Option 3" className="col-span-3" />
+            <Input
+              value={questionBanksData.option3}
+              placeholder="Option 3"
+              className="col-span-3"
+            />
             <Label className="text-right">Option 4</Label>
-            <Input value={questionBanksData.option4} placeholder="Option 4" className="col-span-3" />
+            <Input
+              value={questionBanksData.option4}
+              placeholder="Option 4"
+              className="col-span-3"
+            />
             <Label className="text-right self-start mt-2">Correct Answer</Label>
             <RadioGroup
               className="col-span-3 grid grid-cols-1 items-center gap-4 self-start mt-2"

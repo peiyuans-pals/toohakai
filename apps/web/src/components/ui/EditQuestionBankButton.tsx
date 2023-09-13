@@ -35,14 +35,17 @@ export const EditQuestionBankButton = ({ initialData }: Props) => {
         <DialogHeader>
           <DialogTitle>Edit Question Bank</DialogTitle>
           <DialogDescription>
-            Edit Question Bank. Click "Save Changes" when you're done.
+            Edit Question Bank. Click &quot;Save Changes&quot; when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-
             <Label className="text-right">Topic Name</Label>
-            <Input value={questionBanksData.topic_name} placeholder="Option 1" className="col-span-3" />
+            <Input
+              value={questionBanksData.topic_name}
+              placeholder="Option 1"
+              className="col-span-3"
+            />
           </div>
         </div>
         <DialogFooter>

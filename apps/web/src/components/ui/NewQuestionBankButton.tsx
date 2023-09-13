@@ -23,7 +23,7 @@ export const NewQuestionBankButton = () => {
         <DialogHeader>
           <DialogTitle>New Question Bank</DialogTitle>
           <DialogDescription>
-            Create a new question bank. Click "Create" when you're done.
+            Create a new question bank. Click &quot;Create&quot; when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
