@@ -1,14 +1,17 @@
 import { DashboardView, Heading } from "../../../../../components/ui";
-
+import { NewQuestionButton } from "src/components/ui/NewQuestionButton";
+import MockData from "../../../../../../public/mockdata/question-bank.json";
+import { QuestionBankDataTable } from "../DataTable";
 export default function QuestionBank() {
   return (
     <DashboardView>
-      <Heading>QuestionBank 1234</Heading>
-      <p>question 1</p>
-      <p>- answer 1</p>
-      <p>- answer 2</p>
-      <p>- answer 3</p>
-      <p>- answer 4</p>
+      <div className="flex flex-row justify-between items-center mb-4">
+        <Heading>Question Bank - Bank</Heading>
+        <div>
+          <NewQuestionButton />
+        </div>
+      </div>
+      <QuestionBankDataTable initialData={MockData} />
     </DashboardView>
   );
 }
