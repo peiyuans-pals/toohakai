@@ -6,6 +6,7 @@ on:
 jobs:
   build-server:
     runs-on: ubuntu-latest
+    concurrency: cd-build-server
     permissions:
       contents: read
       packages: write
@@ -44,6 +45,7 @@ jobs:
 
   build-web:
     runs-on: ubuntu-latest
+    concurrency: cd-build-web # ensure only 1 runs at a time
     permissions:
       contents: read
       packages: write
@@ -93,6 +95,7 @@ jobs:
   deploy:
     needs: [build-server, build-web]
     runs-on: ubuntu-latest
+    concurrency: cd-deploy # ensure only 1 runs at a time
     permissions:
       contents: read
       packages: read
