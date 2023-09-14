@@ -7,6 +7,7 @@ import { CreateTRPCClientOptions, httpBatchLink } from "@trpc/client";
 import superjson from "superjson";
 import { supabase } from "../supabase/client";
 import { AppRouter } from "api";
+import { getBaseUrl } from "./lib";
 
 interface Props {
   children: React.ReactNode;
@@ -24,7 +25,7 @@ export default function TrpcProvider({ children }: Props) {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: `http://localhost:5001/trpc`, // TODO
+          url: `${getBaseUrl()}/trpc`, // TODO
           headers: async () => {
             const {
               data: { session }
