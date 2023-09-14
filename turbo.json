@@ -10,7 +10,9 @@
         // apps/web/.env
         "NODE_ENV",
         "NEXT_PUBLIC_TOOHAKAI_API_URL",
+        "NEXT_PUBLIC_DEPLOYMENT_DOMAIN",
         "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
         "SUPABASE_KEY"
@@ -23,7 +25,9 @@
         // apps/web/.env
         "NODE_ENV",
         "NEXT_PUBLIC_TOOHAKAI_API_URL",
+        "NEXT_PUBLIC_DEPLOYMENT_DOMAIN",
         "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
         "SUPABASE_KEY"
@@ -37,7 +41,9 @@
         // apps/web/.env
         "NODE_ENV",
         "NEXT_PUBLIC_TOOHAKAI_API_URL",
+        "NEXT_PUBLIC_DEPLOYMENT_DOMAIN",
         "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
         "SUPABASE_KEY"
@@ -50,7 +56,9 @@
         // apps/web/.env
         "NODE_ENV",
         "NEXT_PUBLIC_TOOHAKAI_API_URL",
+        "NEXT_PUBLIC_DEPLOYMENT_DOMAIN",
         "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
         "SUPABASE_KEY"
@@ -63,7 +71,9 @@
         // apps/web/.env
         "NODE_ENV",
         "NEXT_PUBLIC_TOOHAKAI_API_URL",
+        "NEXT_PUBLIC_DEPLOYMENT_DOMAIN",
         "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
         "SUPABASE_KEY"

@@ -22,5 +22,5 @@ export async function GET(request: NextRequest) {
   }
 
   // URL to redirect to after sign in process completes
-  return nextRedirect("/dashboard", request.url)
+  return nextRedirect("/dashboard", request.url);
 }
