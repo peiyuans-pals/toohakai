@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/form";
 
 interface Props {
-  initialData: unknown;
+  initialData: any;
 }
 
 const formSchema = z.object({
@@ -52,7 +52,6 @@ const formSchema = z.object({
 });
 
 export const EditQuestionButton = ({ initialData }: Props) => {
-  const questionBanksData = initialData;
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

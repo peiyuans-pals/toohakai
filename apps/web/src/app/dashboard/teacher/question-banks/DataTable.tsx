@@ -22,7 +22,7 @@ import { EditQuestionButton } from "src/components/ui/EditQuestionButton";
 import { RemoveQuestionButton } from "src/components/ui/RemoveQuestionButton";
 interface Props {
   // initialData: any[];
-  initialData: unknown;
+  initialData: any;
 }
 
 export const QuestionBankDataTable = ({ initialData }: Props) => {
@@ -46,7 +46,7 @@ export const QuestionBankDataTable = ({ initialData }: Props) => {
         </TableHeader>
         <TableBody>
           {questionBanksData.question_bank[0].question_list.map(
-            (questionBank) => (
+            (questionBank:any) => (
               <TableRow key={questionBank.id}>
                 {/* <TableCell className="font-medium">{questionBank.id}</TableCell> */}
                 <TableCell>

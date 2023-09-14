@@ -12,13 +12,13 @@ import { RemoveQuestionBankButton } from "src/components/ui/RemoveQuestionBankBu
 
 interface Props {
   // initialData: Record<string, any>[]; // todo: set as trpc type
-  initialData: unknown;
+  initialData: any;
 }
 
 export const QuestionBankCards = ({ initialData }: Props) => {
   return (
     <div className="grid grid-cols-4 gap-4">
-      {initialData.question_bank.map((item) => (
+      {initialData.question_bank.map((item:any) => (
         <Card key={item.id} className="h-fit">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">

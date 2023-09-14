@@ -23,7 +23,7 @@ import {
   FormMessage
 } from "@/components/ui/form";
 interface Props {
-  initialData: unknown;
+  initialData: any;
 }
 const formSchema = z.object({
   topic_name: z.string().min(2, {
