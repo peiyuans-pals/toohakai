@@ -46,7 +46,7 @@ export const QuestionBankDataTable = ({ initialData }: Props) => {
         </TableHeader>
         <TableBody>
           {questionBanksData.question_bank[0].question_list.map(
-            (questionBank:any) => (
+            (questionBank: any) => (
               <TableRow key={questionBank.id}>
                 {/* <TableCell className="font-medium">{questionBank.id}</TableCell> */}
                 <TableCell>
