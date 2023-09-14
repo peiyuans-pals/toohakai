@@ -118,7 +118,7 @@ jobs:
 
       - name: Prisma Migrate
         env:
-            DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: cd packages/api && pnpm exec prisma migrate deploy
 
       - name: Deploy and run docker images

@@ -29,7 +29,7 @@ export default async function DashboardRoot() {
   const me = await trpcServer(cookies).user.me.query();
   const name = getCleanedNameFromIdentities(me.identities);
 
-  const summaryData: (SummaryCardProps & {href?: string})[] = [
+  const summaryData: (SummaryCardProps & { href?: string })[] = [
     {
       title: "Average Quiz Score",
       currentValue: "82%",
