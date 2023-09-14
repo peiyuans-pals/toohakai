@@ -1,5 +1,6 @@
 import { createTRPCRouter, protectedProcedure } from "../utils/trpc";
 import { z } from "zod";
+import { prisma } from "../utils/prisma";
 
 const mockData = [
   { id: "101", name: "Physics", questions: [] },
@@ -11,24 +12,62 @@ export const questionBankRouter = createTRPCRouter({
     .meta({
       description: "List user's questionBanks"
     })
-    .query(() => {
-      return mockData; // todo
+    .query(async (opts) => {
+      const { user } = opts.ctx.user.data;
+      const userId = user!.id;
+
+      const questionBanks = await prisma.questionBank.findMany({
+        where: {
+          authorId: userId
+        },
+        include: {
+          _count: {
+            select: { questions: true }
+          }
+        }
+      });
+      return questionBanks.map((questionBank) => {
+        return {
+          ...questionBank,
+          questionsCount: questionBank._count?.questions
+        };
+      });
     }),
   count: protectedProcedure
     .meta({
       description: "Count user's questionBanks"
     })
-    .query(() => {
-      return mockData.length; // todo
+    .query(async (opts) => {
+      const { user } = opts.ctx.user.data;
+      const userId = user!.id;
+      return await prisma.questionBank.count({
+        where: {
+          authorId: userId
+        }
+      });
     }),
   get: protectedProcedure
     .meta({
       description: "Get a questionBank by passing questionBank id as input"
     })
-    .input(z.string())
-    .query((opts) => {
-      opts.input; // string
-      return mockData[0]; // todo
+    .input(z.number())
+    .query(async (opts) => {
+      const id = opts.input; // string
+
+      const questionBank = await prisma.questionBank.findUnique({
+        where: {
+          id
+        },
+        include: {
+          questions: {
+            include: {
+              answers: true
+            }
+          }
+        }
+      });
+
+      return questionBank;
     }),
   create: protectedProcedure
     .meta({
@@ -36,13 +75,32 @@ export const questionBankRouter = createTRPCRouter({
     })
     .input(
       z.object({
-        name: z.string().min(4).max(250)
+        title: z.string().min(4).max(32)
       })
     )
-    .mutation(async (_opts) => {
+    .mutation(async (opts) => {
       console.log("trying to create a questionBank");
-      // todo: prisma goes here
-      return { success: true, status: "questionBank created successfully" };
+
+      const questionBank = await prisma.questionBank.create({
+        data: {
+          title: opts.input.title,
+          // authorId: opts.ctx.user.data.user!.id,
+          author: {
+            connect: {
+              id: opts.ctx.user.data.user!.id
+            }
+          }
+        },
+        include: {
+          author: true
+        }
+      });
+
+      return {
+        success: true,
+        status: "questionBank created successfully",
+        questionBank
+      };
     }),
   delete: protectedProcedure
     .meta({
@@ -50,12 +108,156 @@ export const questionBankRouter = createTRPCRouter({
     })
     .input(
       z.object({
-        id: z.string().min(4).max(250)
+        id: z.number()
       })
     )
     .mutation(async (_opts) => {
       console.log("trying to delete a questionBank");
       // todo
       return { success: true, status: "questionBank deleted successfully" };
+    }),
+  update: protectedProcedure
+    .meta({
+      description: "Update a questionBank!"
+    })
+    .input(
+      z.object({
+        id: z.number(),
+        title: z.string().min(4).max(32).optional()
+      })
+    )
+    .mutation(async (opts) => {
+      const newQuestionBank = await prisma.questionBank.update({
+        where: {
+          id: opts.input.id
+        },
+        data: {
+          ...(opts.input.title ? { title: opts.input.title } : {})
+        }
+      });
+      return {
+        success: true,
+        status: "questionBank updated successfully",
+        questionBank: newQuestionBank
+      };
+    }),
+  addQuestion: protectedProcedure
+    .meta({
+      description: "Add a question to a questionBank!"
+    })
+    .input(
+      z.object({
+        id: z.number(),
+        title: z.string().min(4).max(100),
+        answers: z.array(z.string().min(1).max(32)).length(4),
+        correctAnswer: z.number().min(1).max(4)
+      })
+    )
+    .mutation(async (opts) => {
+      const questionBank = await prisma.questionBank.update({
+        where: {
+          id: opts.input.id
+        },
+        data: {
+          questions: {
+            create: {
+              title: opts.input.title,
+              answers: {
+                create: opts.input.answers.map((answer, index) => {
+                  return {
+                    text: answer,
+                    isCorrect: index + 1 === opts.input.correctAnswer
+                  };
+                })
+              }
+            }
+          }
+        }
+      });
+      return {
+        success: true,
+        status: "question added successfully",
+        questionBank
+      };
+    }),
+  updateQuestion: protectedProcedure
+    .meta({
+      description: "Update a question in a questionBank!"
+    })
+    .input(
+      z.object({
+        id: z.number(),
+        questionId: z.number(),
+        title: z.string().min(4).max(100).optional(),
+        answers: z.array(z.string().min(1).max(32)).length(4).optional(),
+        correctAnswer: z.number().min(1).max(4).optional()
+      })
+    )
+    .mutation(async (opts) => {
+      const questionBank = await prisma.questionBank.update({
+        where: {
+          id: opts.input.id
+        },
+        data: {
+          questions: {
+            update: {
+              where: {
+                id: opts.input.questionId
+              },
+              data: {
+                ...(opts.input.title ? { title: opts.input.title } : {}),
+                answers: {
+                  updateMany: opts.input.answers?.map((answer, index) => {
+                    return {
+                      where: {
+                        questionId: opts.input.questionId,
+                        id: index + 1
+                      },
+                      data: {
+                        text: answer,
+                        isCorrect: index + 1 === opts.input.correctAnswer
+                      }
+                    };
+                  })
+                }
+              }
+            }
+          }
+        }
+      });
+      return {
+        success: true,
+        status: "question updated successfully",
+        questionBank
+      };
+    }),
+  deleteQuestion: protectedProcedure
+    .meta({
+      description: "Delete a question from a questionBank!"
+    })
+    .input(
+      z.object({
+        id: z.number(),
+        questionId: z.number()
+      })
+    )
+    .mutation(async (opts) => {
+      const questionBank = await prisma.questionBank.update({
+        where: {
+          id: opts.input.id
+        },
+        data: {
+          questions: {
+            delete: {
+              id: opts.input.questionId
+            }
+          }
+        }
+      });
+      return {
+        success: true,
+        status: "question deleted successfully",
+        questionBank
+      };
     })
 });

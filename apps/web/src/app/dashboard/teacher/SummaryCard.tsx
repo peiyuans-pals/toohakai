@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 
 export interface SummaryCardProps {
   title: string;
@@ -7,6 +8,20 @@ export interface SummaryCardProps {
 }
 
 export const SummaryCard = ({
+  href,
+  ...props
+}: SummaryCardProps & { href?: string }) => {
+  if (href) {
+    return (
+      <Link href={href}>
+        <SummaryCardContent {...props} />
+      </Link>
+    );
+  }
+  return <SummaryCardContent {...props} />;
+};
+
+const SummaryCardContent = ({
   title,
   currentValue,
   changeInValue

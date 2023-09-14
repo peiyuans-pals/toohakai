@@ -1,3 +1,6 @@
+import { inferReactQueryProcedureOptions } from "@trpc/react-query";
+import { AppRouter, RouterInputs, RouterOutputs } from "api";
+
 export function getBaseUrl() {
   // if (typeof window !== 'undefined')
   //   // browser should use relative path
@@ -16,3 +19,7 @@ export function getBaseUrl() {
     "No NEXT_PUBLIC_TOOHAKAI_API_URL environment variable specified."
   );
 }
+
+export type TrpcReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>;
+export type TrpcRouterInputs = RouterInputs;
+export type TrpcRouterOutputs = RouterOutputs;
