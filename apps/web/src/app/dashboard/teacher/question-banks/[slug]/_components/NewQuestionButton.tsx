@@ -25,10 +25,8 @@ import {
   FormLabel,
   FormMessage
 } from "@/components/ui/form";
-
-interface Props {
-  initialData: any;
-}
+import { trpc } from "../../../../../../utils/trpc/client";
+import { useState } from "react";
 
 const formSchema = z.object({
   question_name: z.string().min(2, {
@@ -51,31 +49,55 @@ const formSchema = z.object({
   })
 });
 
-export const EditQuestionButton = ({ initialData }: Props) => {
+interface Props {
+  questionBankId: number;
+}
+
+export const NewQuestionButton = ({ questionBankId }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      question_name: initialData.question,
-      option1: initialData.option1,
-      option2: initialData.option2,
-      option3: initialData.option3,
-      option4: initialData.option4,
-      correct: initialData.correct
+      question_name: "",
+      option1: "",
+      option2: "",
+      option3: "",
+      option4: ""
     }
   });
+
+  const [isOpen, setOpen] = useState<boolean>(false);
+
+  const trpcUtils = trpc.useContext();
+
+  const mutation = trpc.questionBank.addQuestion.useMutation({
+    onSuccess: () => {
+      form.reset();
+      setOpen(false);
+      trpcUtils.questionBank.get.invalidate(questionBankId); // force a refetch
+    }
+  });
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    mutation.mutate({
+      id: questionBankId,
+      title: values.question_name,
+      answers: [values.option1, values.option2, values.option3, values.option4],
+      correctAnswer: parseInt(values.correct)
+    });
   }
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="mr-1">Edit</Button>
+        <Button>New Question</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
-          <DialogTitle>Edit Question</DialogTitle>
+          <DialogTitle>New Question</DialogTitle>
           <DialogDescription>
-            Edit Question. Click &quot;Save Changes&quot; when you&apos;re done.
+            Create a new question. Click &quot;Create New Question&quot; when
+            you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -215,7 +237,7 @@ export const EditQuestionButton = ({ initialData }: Props) => {
               )}
             />
             <DialogFooter className="mt-5">
-              <Button type="submit">Save Changes</Button>
+              <Button type="submit">Create New Question</Button>
             </DialogFooter>
           </form>
         </Form>

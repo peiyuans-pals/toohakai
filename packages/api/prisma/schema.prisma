@@ -15,10 +15,10 @@ generator client {
 model QuestionBank {
   id        Int        @id @default(autoincrement())
   createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  updatedAt DateTime   @default(now()) @updatedAt
   title     String     @db.VarChar(255)
   author    User       @relation(fields: [authorId], references: [id])
-  authorId  Int
+  authorId  String
   questions Question[]
 }
 
@@ -50,11 +50,9 @@ enum UserRole {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  email        String         @unique
-  name         String         @db.VarChar(255)
-  role         UserRole
+  id           String         @id
+  firstLoginAt DateTime       @default(now())
+  lastLoginAt  DateTime       @default(now())
+  role         UserRole       @default(STUDENT)
   QuestionBank QuestionBank[]
 }

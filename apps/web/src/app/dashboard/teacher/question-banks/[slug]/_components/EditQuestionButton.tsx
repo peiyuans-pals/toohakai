@@ -25,6 +25,20 @@ import {
   FormLabel,
   FormMessage
 } from "@/components/ui/form";
+import {
+  TrpcReactQueryOptions,
+  TrpcRouterInputs,
+  TrpcRouterOutputs
+} from "../../../../../../utils/trpc/lib";
+import { trpc } from "../../../../../../utils/trpc/client";
+import { useState } from "react";
+
+interface Props {
+  questionBankId: number;
+  previousData: NonNullable<
+    TrpcRouterOutputs["questionBank"]["get"]
+  >["questions"][0];
+}
 
 const formSchema = z.object({
   question_name: z.string().min(2, {
@@ -47,32 +61,56 @@ const formSchema = z.object({
   })
 });
 
-export const NewQuestionButton = () => {
+export const EditQuestionButton = ({ questionBankId, previousData }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      question_name: "",
-      option1: "",
-      option2: "",
-      option3: "",
-      option4: ""
+      question_name: previousData.title,
+      option1: previousData.answers[0].text,
+      option2: previousData.answers[1].text,
+      option3: previousData.answers[2].text,
+      option4: previousData.answers[3].text,
+      correct: (
+        previousData.answers.findIndex(
+          (answer: any) => answer.isCorrect === true
+        ) + 1
+      ).toString() as "1" | "2" | "3" | "4"
     }
   });
+
+  const trpcUtils = trpc.useContext();
+
+  const [isOpen, setOpen] = useState<boolean>(false);
+
+  const mutation = trpc.questionBank.updateQuestion.useMutation({
+    onSuccess: () => {
+      form.reset(); // TODO: make defaultValues reflect the new data
+      trpcUtils.questionBank.get.invalidate(questionBankId); // force a refetch
+      setOpen(false);
+    }
+  });
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    mutation.mutate({
+      id: questionBankId,
+      questionId: previousData.id,
+      title: values.question_name,
+      answers: [values.option1, values.option2, values.option3, values.option4],
+      correctAnswer: parseInt(values.correct)
+    });
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>New Question</Button>
+        <Button className="mr-1">Edit</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
-          <DialogTitle>New Question</DialogTitle>
+          <DialogTitle>Edit Question</DialogTitle>
           <DialogDescription>
-            Create a new question. Click &quot;Create New Question&quot; when
-            you&apos;re done.
+            Edit Question. Click &quot;Save Changes&quot; when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -212,7 +250,7 @@ export const NewQuestionButton = () => {
               )}
             />
             <DialogFooter className="mt-5">
-              <Button type="submit">Create New Question</Button>
+              <Button type="submit">Save Changes</Button>
             </DialogFooter>
           </form>
         </Form>

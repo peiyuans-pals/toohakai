@@ -29,6 +29,20 @@ export default async function DashboardRoot() {
   const me = await trpcServer(cookies).user.me.query();
   const name = getCleanedNameFromIdentities(me.identities);
 
+  const summaryData: (SummaryCardProps & {href?: string})[] = [
+    {
+      title: "Average Quiz Score",
+      currentValue: "82%",
+      changeInValue: "+6%"
+    },
+    {
+      title: "Quiz Banks",
+      currentValue: questionBankCount.toString(),
+      changeInValue: "+0",
+      href: "/dashboard/teacher/question-banks"
+    }
+  ];
+
   return (
     <DashboardView>
       <Card className="shadow-stone-50 mb-4">
@@ -44,6 +58,7 @@ export default async function DashboardRoot() {
             title={summaryItem.title}
             currentValue={summaryItem.currentValue}
             changeInValue={summaryItem.changeInValue}
+            href={summaryItem.href}
           />
         ))}
       </div>

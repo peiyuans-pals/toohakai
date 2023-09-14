@@ -22,26 +22,45 @@ import {
   FormLabel,
   FormMessage
 } from "@/components/ui/form";
+import { trpc } from "../../../../../utils/trpc/client";
+import { useState } from "react";
 
 const formSchema = z.object({
-  topic_name: z.string().min(2, {
-    message: "Topic Name must contain at least 2 characters"
-  })
+  topic_name: z
+    .string()
+    .min(4, {
+      message: "Topic Name must contain at least 4 characters"
+    })
+    .max(32, { message: "Topic Name must contain at most 32 characters" })
 });
 
 export const NewQuestionBankButton = () => {
+  const [isOpen, setOpen] = useState<boolean>(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       topic_name: ""
     }
   });
+
+  const mutation = trpc.questionBank.create.useMutation({
+    onSuccess: () => {
+      form.reset();
+      setOpen(false);
+    }
+  });
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+
+    mutation.mutate({
+      title: values.topic_name
+    });
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Create New Question Bank</Button>
       </DialogTrigger>

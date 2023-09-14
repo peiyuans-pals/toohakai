@@ -22,28 +22,49 @@ import {
   FormLabel,
   FormMessage
 } from "@/components/ui/form";
+import { trpc } from "../../../../../../utils/trpc/client";
+import { useState } from "react";
 interface Props {
-  initialData: any;
+  id: number;
+  currentName: string;
 }
 const formSchema = z.object({
-  topic_name: z.string().min(2, {
-    message: "Topic Name must contain at least 2 characters"
+  topic_name: z.string().min(4, {
+    message: "Topic Name must contain at least 4 characters"
   })
 });
-export const EditQuestionBankButton = ({ initialData }: Props) => {
+export const EditQuestionBankButton = ({ id, currentName }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      topic_name: initialData.topic_name
+      topic_name: currentName
     }
   });
+
+  const [isOpen, setOpen] = useState<boolean>(false);
+
+  const trpcUtils = trpc.useContext();
+
+  const mutation = trpc.questionBank.update.useMutation({
+    onSuccess: () => {
+      form.reset();
+      setOpen(false);
+      trpcUtils.questionBank.get.invalidate(id); // force a refetch
+    }
+  });
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    mutation.mutate({
+      id,
+      title: values.topic_name
+    });
   }
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="mr-1">Edit</Button>
+        <Button>Edit Question Bank Name</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>

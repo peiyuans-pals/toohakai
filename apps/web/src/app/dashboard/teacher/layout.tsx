@@ -14,6 +14,8 @@ export default async function DashboardLayout({
 }) {
   const me = await trpcServer(cookies).user.me.query();
 
+  const login = await trpcServer(cookies).user.login.query();
+
   return (
     <Page>
       <div className="flex flex-row sticky h-16 items-center justify-between px-6 border-b bg-white">
