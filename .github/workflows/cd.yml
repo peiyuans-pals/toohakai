@@ -72,6 +72,7 @@ jobs:
         uses: docker/build-push-action@v4
         env:
           NEXT_PUBLIC_TOOHAKAI_API_URL: "https://api.toohakai.fun"
+          NEXT_PUBLIC_DEPLOYMENT_DOMAIN: "https://www.toohakai.fun"
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         with:
@@ -80,6 +81,7 @@ jobs:
           push: true
           build-args: |
             NEXT_PUBLIC_TOOHAKAI_API_URL=${{ env.NEXT_PUBLIC_TOOHAKAI_API_URL }}
+            NEXT_PUBLIC_DEPLOYMENT_DOMAIN=${{ env.NEXT_PUBLIC_DEPLOYMENT_DOMAIN }}
             NEXT_PUBLIC_SUPABASE_URL=${{ env.NEXT_PUBLIC_SUPABASE_URL }}
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ env.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           tags: |

@@ -2,6 +2,7 @@ import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse } from "next/server";
 
 import type { NextRequest } from "next/server";
+import { nextRedirect } from "./utils/next/redirect";
 
 // TODO: https://supabase.com/docs/guides/auth/auth-helpers/nextjs#managing-session-with-middleware
 // import type { Database } from '@/lib/database.types'
@@ -20,12 +21,12 @@ export async function middleware(req: NextRequest) {
 
   // if user is signed in and the current path is /login redirect the user to /dashboard
   if (user && req.nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+    return nextRedirect("/dashboard", req.url)
   }
 
   // if user is not signed in and the current path is not / redirect the user to /
   if (!user && req.nextUrl.pathname !== "/") {
-    return NextResponse.redirect(new URL("/", req.url));
+    return nextRedirect("/", req.url)
   }
 
   return res;

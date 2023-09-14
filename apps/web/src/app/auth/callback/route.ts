@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import type { NextRequest } from "next/server";
+import { nextRedirect } from "../../../utils/next/redirect";
 // import type { Database } from '@/lib/database.types' // TODO
 
 export const dynamic = "force-dynamic";
@@ -21,5 +22,5 @@ export async function GET(request: NextRequest) {
   }
 
   // URL to redirect to after sign in process completes
-  return NextResponse.redirect(new URL("/dashboard", request.url));
+  return nextRedirect("/dashboard", request.url)
 }

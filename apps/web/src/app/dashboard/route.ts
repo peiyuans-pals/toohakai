@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as process from "process";
+import { nextRedirect } from "../../utils/next/redirect";
 
 export async function GET(request: NextRequest) {
   // TODO: check if its a teacher or student, and redirect accordingly
 
-  return NextResponse.redirect(new URL("/dashboard/teacher", request.url));
+  return nextRedirect("/dashboard/teacher", request.url)
 }
