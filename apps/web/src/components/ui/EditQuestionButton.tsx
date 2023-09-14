@@ -46,11 +46,10 @@ const formSchema = z.object({
   option4: z.string().min(1, {
     message: "Must contain at least 1 character"
   }),
-  correct: z.enum(["1","2","3","4"], {
+  correct: z.enum(["1", "2", "3", "4"], {
     required_error: "You need to select the correct option for this question"
   })
-})
-
+});
 
 export const EditQuestionButton = ({ initialData }: Props) => {
   const questionBanksData = initialData;
@@ -90,7 +89,9 @@ export const EditQuestionButton = ({ initialData }: Props) => {
               name="question_name"
               render={({ field }) => (
                 <FormItem className="grid grid-cols-4 items-center gap-2 col-span-4">
-                  <FormLabel className="text-right col-span-1 mt-2">Question</FormLabel>
+                  <FormLabel className="text-right col-span-1 mt-2">
+                    Question
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       className="col-span-3"
@@ -107,7 +108,9 @@ export const EditQuestionButton = ({ initialData }: Props) => {
               name="option1"
               render={({ field }) => (
                 <FormItem className="grid grid-cols-4 items-center gap-2 col-span-4">
-                  <FormLabel className="text-right col-span-1 mt-2">Option 1</FormLabel>
+                  <FormLabel className="text-right col-span-1 mt-2">
+                    Option 1
+                  </FormLabel>
                   <FormControl>
                     <Input
                       className="col-span-3"
@@ -124,7 +127,9 @@ export const EditQuestionButton = ({ initialData }: Props) => {
               name="option2"
               render={({ field }) => (
                 <FormItem className="grid grid-cols-4 items-center gap-2 col-span-4">
-                  <FormLabel className="text-right col-span-1 mt-2">Option 2</FormLabel>
+                  <FormLabel className="text-right col-span-1 mt-2">
+                    Option 2
+                  </FormLabel>
                   <FormControl>
                     <Input
                       className="col-span-3"
@@ -141,7 +146,9 @@ export const EditQuestionButton = ({ initialData }: Props) => {
               name="option3"
               render={({ field }) => (
                 <FormItem className="grid grid-cols-4 items-center gap-2 col-span-4">
-                  <FormLabel className="text-right col-span-1 mt-2">Option 3</FormLabel>
+                  <FormLabel className="text-right col-span-1 mt-2">
+                    Option 3
+                  </FormLabel>
                   <FormControl>
                     <Input
                       className="col-span-3"
@@ -158,7 +165,9 @@ export const EditQuestionButton = ({ initialData }: Props) => {
               name="option4"
               render={({ field }) => (
                 <FormItem className="grid grid-cols-4 items-center gap-2 col-span-4">
-                  <FormLabel className="text-right col-span-1 mt-2">Option 4</FormLabel>
+                  <FormLabel className="text-right col-span-1 mt-2">
+                    Option 4
+                  </FormLabel>
                   <FormControl>
                     <Input
                       className="col-span-3"
@@ -175,12 +184,15 @@ export const EditQuestionButton = ({ initialData }: Props) => {
               name="correct"
               render={({ field }) => (
                 <FormItem className="grid grid-cols-4 items-center gap-2 col-span-4 mt-5">
-                  <FormLabel className="self-start text-right mt-2">Correct Answer</FormLabel>
+                  <FormLabel className="self-start text-right mt-2">
+                    Correct Answer
+                  </FormLabel>
                   <FormControl>
-                    <RadioGroup 
-                    className="col-span-3 grid grid-cols-1 items-center gap-4 self-start"
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}>
+                    <RadioGroup
+                      className="col-span-3 grid grid-cols-1 items-center gap-4 self-start"
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="1" id="r1" />
                         <Label htmlFor="r1">Option 1</Label>
@@ -208,8 +220,6 @@ export const EditQuestionButton = ({ initialData }: Props) => {
             </DialogFooter>
           </form>
         </Form>
-
-        
       </DialogContent>
     </Dialog>
   );
