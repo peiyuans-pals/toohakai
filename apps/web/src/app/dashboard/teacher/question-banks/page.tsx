@@ -4,6 +4,8 @@ import { QuestionBankDataTable } from "./DataTable";
 import { cookies } from "next/headers";
 import { Button } from "@/components/ui/button";
 import { QuestionBankCards } from "./Cards";
+import { NewQuestionBankButton } from "src/components/ui/NewQuestionBankButton";
+import MockData from "../../../../../public/mockdata/question-bank.json";
 
 export default async function QuestionBanks() {
   const questionBanks = await trpcServer(cookies).questionBank.list.query();
@@ -11,12 +13,12 @@ export default async function QuestionBanks() {
   return (
     <DashboardView>
       <div className="flex flex-row justify-between items-center mb-4">
-        <Heading>QuestionBanks</Heading>
+        <Heading>Question Bank - Topics</Heading>
         <div>
-          <Button variant="secondary" className="mr-2">
+          {/* <Button variant="secondary" className="mr-2">
             Edit
-          </Button>
-          <Button>Create New</Button>
+          </Button> */}
+          <NewQuestionBankButton />
         </div>
       </div>
       {/*<Link href="/dashboard/teacher/question-banks/1234">*/}
@@ -24,7 +26,8 @@ export default async function QuestionBanks() {
       {/*</Link>*/}
       {/*<QuestionBankDataTable initialData={questionBanks} />*/}
 
-      <QuestionBankCards initialData={questionBanks} />
+      {/* <QuestionBankCards initialData={questionBanks} /> */}
+      <QuestionBankCards initialData={MockData} />
     </DashboardView>
   );
 }

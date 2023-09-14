@@ -1,0 +1,72 @@
+{
+  "question_bank": [
+    {
+      "topic_id": 0,
+      "topic_name": "Discrete Mathematics",
+      "created_by": "Teacher_FK",
+      "question_list": [
+        {
+          "id": 0,
+          "question": "a < b ? 1 : 2, where a=1 and b=2. What is the result?",
+          "option1": "I don't know",
+          "option2": "2",
+          "option3": "3",
+          "option4": "1",
+          "correct": "4"
+        },
+        {
+          "id": 1,
+          "question": "a > b ? 3 : 7, where a=1 and b=2. What is the result?",
+          "option1": "3",
+          "option2": "6",
+          "option3": "7",
+          "option4": "0",
+          "correct": "2"
+        },
+        {
+          "id": 2,
+          "question": "If x ∈ N and x is prime, then x is ________ set.",
+          "option1": "Infinite set",
+          "option2": "Finite set",
+          "option3": "Empty set",
+          "option4": "Not a set",
+          "correct": "1"
+        },
+        {
+          "id": 3,
+          "question": "Which of the following is a subset of set {1, 2, 3, 4}?",
+          "option1": "{1, 2}",
+          "option2": "{1, 2, 3}",
+          "option3": "{1}",
+          "option4": "All of the mentioned",
+          "correct": "4"
+        }
+      ]
+    },
+    {
+      "topic_id": 1,
+      "topic_name": "Operating System",
+      "created_by": "Teacher_FK",
+      "question_list": [
+        {
+          "id": 0,
+          "question": "What is an operating system?",
+          "option1": "interface between the hardware and application programs",
+          "option2": "collection of programs that manages hardware resources",
+          "option3": "system service provider to the application programs",
+          "option4": "all of the mentioned",
+          "correct": "4"
+        },
+        {
+          "id": 1,
+          "question": " To access the services of the operating system, the interface is provided by the ___________",
+          "option1": "Library",
+          "option2": "System calls",
+          "option3": "Assembly instructions",
+          "option4": "API",
+          "correct": "2"
+        }
+      ]
+    }
+  ]
+}
