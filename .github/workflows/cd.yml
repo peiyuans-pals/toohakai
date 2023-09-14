@@ -92,25 +92,25 @@ jobs:
     needs: [build-server, build-web]
     runs-on: ubuntu-latest
     permissions:
-     contents: read
-     packages: read
+      contents: read
+      packages: read
     steps:
-     - name: Deploy and run docker images
-       env:
-         PRIVATE_KEY: ${{ secrets.DEPLOYMENT_SERVER_PRIVATE_KEY  }}
-         HOSTNAME: ${{ secrets.DEPLOYMENT_SERVER_HOSTNAME  }}
-         USER_NAME: ${{ secrets.DEPLOYMENT_SERVER_USERNAME  }}
-       run: |
-         pwd
-         ls
-         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-         scp -o StrictHostKeyChecking=no -i private_key ./deployment/docker-compose.yml ${USER_NAME}@${HOSTNAME}:/home/ubuntu/deployment
-         ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
-           cd /root/containers &&
-           docker compose pull &&
-           docker compose up -d &&
-           docker system prune --force
-         '
+      - name: Deploy and run docker images
+        env:
+          PRIVATE_KEY: ${{ secrets.DEPLOYMENT_SERVER_PRIVATE_KEY  }}
+          HOSTNAME: ${{ secrets.DEPLOYMENT_SERVER_HOSTNAME  }}
+          USER_NAME: ${{ secrets.DEPLOYMENT_SERVER_USERNAME  }}
+        run: |
+          pwd
+          ls
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          scp -o StrictHostKeyChecking=no -i private_key ./deployment/docker-compose.yml ${USER_NAME}@${HOSTNAME}:/home/ubuntu/deployment
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+            cd /root/containers &&
+            docker compose pull &&
+            docker compose up -d &&
+            docker system prune --force
+          '
 
   # 1. sftp into machine
   # 2. send over docker-compose.yml
