@@ -87,8 +87,8 @@ export const QuestionBankDataTable = ({ initialData }: Props) => {
                   </Accordion>
                 </TableCell>
                 <TableCell className="flex">
-                  <EditQuestionButton initialData={questionBank}/>
-                  <RemoveQuestionButton initialData={questionBank}/>
+                  <EditQuestionButton initialData={questionBank} />
+                  <RemoveQuestionButton initialData={questionBank} />
                 </TableCell>
               </TableRow>
             )

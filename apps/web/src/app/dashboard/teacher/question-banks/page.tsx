@@ -18,7 +18,7 @@ export default async function QuestionBanks() {
           {/* <Button variant="secondary" className="mr-2">
             Edit
           </Button> */}
-          <NewQuestionBankButton/>
+          <NewQuestionBankButton />
         </div>
       </div>
       {/*<Link href="/dashboard/teacher/question-banks/1234">*/}
