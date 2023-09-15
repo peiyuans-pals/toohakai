@@ -15,21 +15,22 @@ export const createServer = () => {
     .use(urlencoded({ extended: true }))
     .use(json())
     .use(
-      cors({
-        // origin: "http://localhost:3002", // todo
-        origin: (origin, callback) => {
-          if (
-            ["https://toohakai.fun", "http://localhost:3002"].includes(
-              origin ?? ""
-            )
-          ) {
-            callback(null, true);
-          } else {
-            callback(new Error("Not allowed by CORS"));
-          }
-        },
-        credentials: true
-      })
+      cors()
+      //   {
+      //   // origin: "http://localhost:3002", // todo
+      //   origin: (origin, callback) => {
+      //     if (
+      //       ["https://toohakai.fun", "http://localhost:3002"].includes(
+      //         origin ?? ""
+      //       )
+      //     ) {
+      //       callback(null, true);
+      //     } else {
+      //       callback(new Error("Not allowed by CORS"));
+      //     }
+      //   },
+      //   credentials: true
+      // }
     )
     .get("/", (_req, res) => {
       return res.json({ hello: "world" });
