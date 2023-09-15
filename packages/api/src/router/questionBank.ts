@@ -189,7 +189,14 @@ export const questionBankRouter = createTRPCRouter({
         id: z.number(),
         questionId: z.number(),
         title: z.string().min(4).max(100).optional(),
-        answers: z.array(z.string().min(1).max(32)).length(4).optional(),
+        answers: z
+          .array(
+            z.object({
+              id: z.number(),
+              text: z.string().min(1).max(32)
+            })
+          )
+          .length(4),
         correctAnswer: z.number().min(1).max(4).optional()
       })
     )
@@ -211,10 +218,10 @@ export const questionBankRouter = createTRPCRouter({
                     return {
                       where: {
                         questionId: opts.input.questionId,
-                        id: index + 1
+                        id: answer.id
                       },
                       data: {
-                        text: answer,
+                        text: answer.text,
                         isCorrect: index + 1 === opts.input.correctAnswer
                       }
                     };
