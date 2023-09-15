@@ -25,7 +25,7 @@ export const RemoveQuestionBankButton = ({ id }: Props) => {
   });
 
   const handleDelete = async () => {
-    await mutation.mutateAsync({ id });
+    await mutation.mutateAsync(id);
   };
 
   return (
