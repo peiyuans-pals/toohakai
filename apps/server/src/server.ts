@@ -15,7 +15,7 @@ export const createServer = () => {
     .use(urlencoded({ extended: true }))
     .use(json())
     .use(
-      cors(
+      cors()
       //   {
       //   // origin: "http://localhost:3002", // todo
       //   origin: (origin, callback) => {
@@ -31,7 +31,6 @@ export const createServer = () => {
       //   },
       //   credentials: true
       // }
-      )
     )
     .get("/", (_req, res) => {
       return res.json({ hello: "world" });
