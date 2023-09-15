@@ -106,15 +106,21 @@ export const questionBankRouter = createTRPCRouter({
     .meta({
       description: "Delete a questionBank!"
     })
-    .input(
-      z.object({
-        id: z.number()
-      })
-    )
-    .mutation(async (_opts) => {
+    .input(z.number())
+    .mutation(async (opts) => {
       console.log("trying to delete a questionBank");
-      // todo
-      return { success: true, status: "questionBank deleted successfully" };
+
+      const result = await prisma.questionBank.delete({
+        where: {
+          id: opts.input
+        }
+      });
+
+      return {
+        success: true,
+        status: "questionBank deleted successfully",
+        id: result.id
+      };
     }),
   update: protectedProcedure
     .meta({
