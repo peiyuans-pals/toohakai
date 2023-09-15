@@ -44,10 +44,13 @@ export const NewQuestionBankButton = () => {
     }
   });
 
+  const trpcUtils = trpc.useContext();
+
   const mutation = trpc.questionBank.create.useMutation({
     onSuccess: () => {
       form.reset();
       setOpen(false);
+      trpcUtils.questionBank.list.invalidate(); // force a refetch
     }
   });
 
