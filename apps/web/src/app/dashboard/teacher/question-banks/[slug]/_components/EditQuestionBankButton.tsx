@@ -47,7 +47,6 @@ export const EditQuestionBankButton = ({ id, currentName }: Props) => {
 
   const mutation = trpc.questionBank.update.useMutation({
     onSuccess: () => {
-      form.reset();
       setOpen(false);
       trpcUtils.questionBank.get.invalidate(id); // force a refetch
     }

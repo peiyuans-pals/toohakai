@@ -84,7 +84,6 @@ export const EditQuestionButton = ({ questionBankId, previousData }: Props) => {
 
   const mutation = trpc.questionBank.updateQuestion.useMutation({
     onSuccess: () => {
-      form.reset(); // TODO: make defaultValues reflect the new data
       trpcUtils.questionBank.get.invalidate(questionBankId); // force a refetch
       setOpen(false);
     }
