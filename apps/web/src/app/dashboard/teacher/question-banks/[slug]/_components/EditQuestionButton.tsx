@@ -96,7 +96,25 @@ export const EditQuestionButton = ({ questionBankId, previousData }: Props) => {
       id: questionBankId,
       questionId: previousData.id,
       title: values.question_name,
-      answers: [values.option1, values.option2, values.option3, values.option4],
+      // answers: [values.option1, values.option2, values.option3, values.option4],
+      answers: [
+        {
+          id: previousData.answers[0].id,
+          text: values.option1
+        },
+        {
+          id: previousData.answers[1].id,
+          text: values.option2
+        },
+        {
+          id: previousData.answers[2].id,
+          text: values.option3
+        },
+        {
+          id: previousData.answers[3].id,
+          text: values.option4
+        }
+      ],
       correctAnswer: parseInt(values.correct)
     });
   }

@@ -23,23 +23,23 @@ model QuestionBank {
 }
 
 model Question {
-  id             Int           @id @default(autoincrement())
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  title          String        @db.VarChar(255)
+  id             Int          @id @default(autoincrement())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  title          String       @db.VarChar(255)
   answers        Answer[]
-  QuestionBank   QuestionBank? @relation(fields: [questionBankId], references: [id])
-  questionBankId Int?
+  QuestionBank   QuestionBank @relation(fields: [questionBankId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  questionBankId Int
 }
 
 model Answer {
-  id         Int       @id @default(autoincrement())
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
   text       String
   isCorrect  Boolean
-  Question   Question? @relation(fields: [questionId], references: [id])
-  questionId Int?
+  Question   Question @relation(fields: [questionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  questionId Int
 }
 
 // User

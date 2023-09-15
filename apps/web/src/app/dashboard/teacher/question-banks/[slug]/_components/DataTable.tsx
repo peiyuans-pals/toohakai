@@ -27,7 +27,7 @@ interface Props {
 }
 
 export const QuestionsDataTable = ({ id, initialData }: Props) => {
-  const { data: questionBank } = trpc.questionBank.get.useQuery(id, {
+  const { data: questionBank, refetch } = trpc.questionBank.get.useQuery(id, {
     initialData
   });
 
