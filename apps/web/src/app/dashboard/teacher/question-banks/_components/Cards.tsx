@@ -25,10 +25,10 @@ export const QuestionBankCards = ({ initialData }: Props) => {
       initialData
     }
   );
-
+  console.log(questionsBanks);
   return (
     <div className="grid grid-cols-4 gap-4">
-      {questionsBanks?.map((questionBank: any) => (
+      {questionsBanks?.map((questionBank) => (
         <Link
           key={questionBank.id}
           href={`/dashboard/teacher/question-banks/${questionBank.id}`}
@@ -52,9 +52,6 @@ export const QuestionBankCards = ({ initialData }: Props) => {
               {/*</svg>*/}
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {questionBank.topic_name}
-              </div>
               <p className="text-xs text-muted-foreground">
                 {questionBank.questionsCount} Questions
               </p>

@@ -1,40 +1,18 @@
 import { DashboardView, Heading } from "../../../../components/ui";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { trpcServer } from "../../../../utils/trpc/server";
+import { NewQuizButton } from "./_components/NewQuizButton";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger
-} from "@/components/ui/sheet";
-import { Input } from "@/components/ui/input";
-
-export default function Quizzes() {
+export default async function Quizzes() {
+  const questionBanks = await trpcServer(cookies).questionBank.list.query();
   return (
     <DashboardView>
       <div className="flex flex-row justify-between items-center">
         <Heading>Quizzes</Heading>
-
-        <Sheet>
-          <SheetTrigger>
-            <Button>Create New</Button>
-          </SheetTrigger>
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle>Create a new quiz</SheetTitle>
-              <SheetDescription>
-                <p>quiz name</p>
-                <Input className="mb-4" />
-                <Button>Confirm</Button>
-                <Button variant="secondary">Cancel</Button>
-              </SheetDescription>
-            </SheetHeader>
-          </SheetContent>
-        </Sheet>
+        <NewQuizButton initialData={questionBanks} />
       </div>
       <Tabs defaultValue="all" className="w-[400px] my-2">
         <TabsList>
