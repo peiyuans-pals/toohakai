@@ -12,7 +12,7 @@ export default async function Quizzes() {
     <DashboardView>
       <div className="flex flex-row justify-between items-center">
         <Heading>Quizzes</Heading>
-        <NewQuizButton initialData={questionBanks}/>
+        <NewQuizButton initialData={questionBanks} />
       </div>
       <Tabs defaultValue="all" className="w-[400px] my-2">
         <TabsList>
