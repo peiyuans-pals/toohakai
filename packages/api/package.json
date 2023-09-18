@@ -17,6 +17,7 @@
     "test": "jest",
     "prisma:migrate": "dotenv -e ../../apps/server/.env -- prisma migrate dev --name init",
     "prisma:generate": "dotenv -e ../../apps/server/.env -- prisma generate",
+    "prisma:rollback": "dotenv -e ../../apps/server/.env -- prisma migrate resolve --rolled-back",
     "postinstall": "pnpm run prisma:generate"
   },
   "jest": {
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.24",
     "@types/node": "^18.17.15",
+    "@types/ws": "^8.5.5",
     "dotenv-cli": "^7.3.0",
     "eslint": "^7.32.0",
     "eslint-config-custom-server": "workspace:*",
