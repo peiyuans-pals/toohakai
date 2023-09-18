@@ -18,8 +18,6 @@ interface Props {
   initialData: TrpcReactQueryOptions["questionBank"]["list"]["initialData"];
 }
 
-
-
 export const QuestionBankCards = ({ initialData }: Props) => {
   const { data: questionsBanks, isLoading } = trpc.questionBank.list.useQuery(
     undefined,
@@ -27,7 +25,7 @@ export const QuestionBankCards = ({ initialData }: Props) => {
       initialData
     }
   );
-  console.log(questionsBanks)
+  console.log(questionsBanks);
   return (
     <div className="grid grid-cols-4 gap-4">
       {questionsBanks?.map((questionBank) => (
