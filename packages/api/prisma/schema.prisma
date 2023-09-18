@@ -3,7 +3,8 @@
 // Database
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  //url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:postgres@localhost:5432/postgres?schema=public"
 }
 
 // generator
@@ -55,4 +56,23 @@ model User {
   lastLoginAt  DateTime       @default(now())
   role         UserRole       @default(STUDENT)
   QuestionBank QuestionBank[]
+  Quiz         Quiz[]
+}
+
+// User
+enum QuizStatus {
+  NOT_STARTED
+  ONGOING
+  ENDED
+}
+
+model Quiz {
+  id             Int        @id @default(autoincrement())
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  title          String     @db.VarChar(255)
+  status         QuizStatus @default(NOT_STARTED)
+  author         User       @relation(fields: [authorId], references: [id])
+  authorId       String
+  questionBankId Int
 }
