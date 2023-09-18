@@ -2,10 +2,10 @@ import { prisma } from "../utils/prisma";
 import { createTRPCRouter, protectedProcedure } from "../utils/trpc";
 import { z } from "zod";
 
-const mockData = [
-    { title: "Physics quiz 2 Jan", authorId: 12, questionBankId: 13 },
-    { title: "Chemistry quiz 2 Jan", authorId: 14, questionBankId: 15 }
-];
+// const mockData = [
+//     { title: "Physics quiz 2 Jan", authorId: 12, questionBankId: 13 },
+//     { title: "Chemistry quiz 2 Jan", authorId: 14, questionBankId: 15 }
+// ];
 
 export const quizRouter = createTRPCRouter({
     list: protectedProcedure
