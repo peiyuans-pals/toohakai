@@ -173,9 +173,7 @@ export const NewQuizButton = ({ initialData }: Props) => {
                       </h4>
                       {mock_participants.map((participant) => (
                         <div key={participant.id}>
-                          <div className="text-sm">
-                            {participant.name}
-                          </div>
+                          <div className="text-sm">{participant.name}</div>
                           <Separator className="my-2" />
                         </div>
                       ))}
