@@ -1,4 +1,4 @@
-//import { z } from "zod";
+import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../utils/trpc";
 import { prisma } from "../utils/prisma";
 

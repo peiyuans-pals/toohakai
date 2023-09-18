@@ -1,7 +1,7 @@
 import { createTRPCRouter } from "./trpc";
 import { userRouter } from "../router/user";
 import { questionBankRouter } from "../router/questionBank";
-//import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { quizRouter } from "../router/quiz";
 
 export const appRouter = createTRPCRouter({

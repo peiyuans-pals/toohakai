@@ -20,6 +20,7 @@ model QuestionBank {
   author    User       @relation(fields: [authorId], references: [id])
   authorId  String
   questions Question[]
+  Quiz      Quiz[]
 }
 
 model Question {
@@ -66,12 +67,13 @@ enum QuizStatus {
 }
 
 model Quiz {
-  id             Int        @id @default(autoincrement())
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
-  title          String     @db.VarChar(255)
-  status         QuizStatus @default(NOT_STARTED)
-  author         User       @relation(fields: [authorId], references: [id])
-  authorId       String
-  questionBankId Int
+  id             Int          @id @default(autoincrement())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  title          String       @db.VarChar(255)
+  status         QuizStatus   @default(NOT_STARTED)
+  author         User         @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  authorId       String       @map("authorId")
+  QuestionBank   QuestionBank @relation(fields: [questionBankId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  questionBankId Int          @map("questionBankId")
 }
