@@ -120,7 +120,7 @@ export const quizRouter = createTRPCRouter({
           id: opts.input.id
         },
         data: {
-          ...(opts.input.title ? { title: opts.input.title } : {}),
+          ...(opts.input.title ? { title: opts.input.title } : {})
         }
       });
       return {
