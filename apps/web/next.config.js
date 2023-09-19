@@ -1,11 +1,14 @@
 const path = require("path");
-const { PHASE_PRODUCTION_SERVER, PHASE_PRODUCTION_BUILD } = require("next/constants");
+const {
+  PHASE_PRODUCTION_SERVER,
+  PHASE_PRODUCTION_BUILD
+} = require("next/constants");
 
 module.exports = async (phase, { defaultConfig }) => {
   /**
    * @type {import('next').NextConfig}
    */
-  const nextConfig =  {
+  const nextConfig = {
     reactStrictMode: true,
     output: "standalone",
     poweredByHeader: false,
@@ -18,10 +21,15 @@ module.exports = async (phase, { defaultConfig }) => {
         {
           source: "/:path*",
           headers: [
-            ...((phase === PHASE_PRODUCTION_SERVER || phase === PHASE_PRODUCTION_BUILD ) ? [{
-              key: "Strict-Transport-Security",
-              value: "max-age=63072000; includeSubDomains; preload",
-            }] : []),
+            ...(phase === PHASE_PRODUCTION_SERVER ||
+            phase === PHASE_PRODUCTION_BUILD
+              ? [
+                  {
+                    key: "Strict-Transport-Security",
+                    value: "max-age=63072000; includeSubDomains; preload"
+                  }
+                ]
+              : []),
             {
               key: "X-DNS-Prefetch-Control",
               value: "on"
@@ -52,4 +60,4 @@ module.exports = async (phase, { defaultConfig }) => {
     }
   };
   return nextConfig;
-}
+};
