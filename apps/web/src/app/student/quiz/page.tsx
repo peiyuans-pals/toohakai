@@ -1,9 +1,12 @@
-"use client";
-
+"use client"
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { ButtonGroup, ButtonGroupItem } from "src/components/ui/ButtonGroup";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { trpc } from "../../../utils/trpc/client";
+import { TrpcReactQueryOptions } from "../../../utils/trpc/lib";
+
+
 export default function Quiz() {
   return (
     <div>
