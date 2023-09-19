@@ -121,9 +121,6 @@ export const quizRouter = createTRPCRouter({
         },
         data: {
           ...(opts.input.title ? { title: opts.input.title } : {}),
-          ...(opts.input.questionBankId
-            ? { questionBankId: opts.input.questionBankId }
-            : {})
         }
       });
       return {

@@ -73,7 +73,7 @@ model Quiz {
   title          String       @db.VarChar(255)
   status         QuizStatus   @default(NOT_STARTED)
   author         User         @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  authorId       String       @map("authorId")
+  authorId       String
   QuestionBank   QuestionBank @relation(fields: [questionBankId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  questionBankId Int          @map("questionBankId")
+  questionBankId Int
 }
