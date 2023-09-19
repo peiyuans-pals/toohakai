@@ -13,7 +13,10 @@ const ButtonGroup = React.forwardRef<
 >(({ className, ...props }, ref) => {
   return (
     <RadioGroupPrimitive.Root
-      className={cn("flex flex-col border rounded-md p-1 text-muted-foreground", className)}
+      className={cn(
+        "flex flex-col border rounded-md p-1 text-muted-foreground",
+        className
+      )}
       {...props}
       ref={ref}
     />
