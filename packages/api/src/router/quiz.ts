@@ -63,10 +63,15 @@ export const quizRouter = createTRPCRouter({
     )
     .mutation(async (opts) => {
       console.log("trying to create a quiz");
+
       const newQuiz = await prisma.quiz.create({
         data: {
           title: opts.input.title,
-          questionBankId: opts.input.questionBankId,
+          QuestionBank: {
+            connect: {
+                id: opts.input.questionBankId
+            }
+          },
           author: {
             connect: {
               id: opts.ctx.user.data.user!.id
