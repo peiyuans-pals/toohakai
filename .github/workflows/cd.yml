@@ -85,8 +85,8 @@ jobs:
           file: ./apps/web/Dockerfile
           context: .
           push: true
-          cache-from: type=registry,ref=user/web:buildcache
-          cache-to: type=registry,ref=user/web:buildcache,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           build-args: |
             NEXT_PUBLIC_TOOHAKAI_API_URL=${{ env.NEXT_PUBLIC_TOOHAKAI_API_URL }}
             NEXT_PUBLIC_DEPLOYMENT_DOMAIN=${{ env.NEXT_PUBLIC_DEPLOYMENT_DOMAIN }}
