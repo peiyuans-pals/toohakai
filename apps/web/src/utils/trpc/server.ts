@@ -22,7 +22,7 @@ export const trpcServer = (cookies: any) =>
           const {
             data: { session }
           } = await supabaseServer.auth.getSession();
-          console.log("trpc/server -> session", session);
+          // console.log("trpc/server -> session", session);
           if (!session) return {};
           return {
             Authorization: `Bearer ${session.access_token}`
