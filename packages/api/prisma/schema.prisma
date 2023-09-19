@@ -20,6 +20,7 @@ model QuestionBank {
   author    User       @relation(fields: [authorId], references: [id])
   authorId  String
   questions Question[]
+  Quiz      Quiz[]
 }
 
 model Question {
@@ -55,4 +56,24 @@ model User {
   lastLoginAt  DateTime       @default(now())
   role         UserRole       @default(STUDENT)
   QuestionBank QuestionBank[]
+  Quiz         Quiz[]
+}
+
+// User
+enum QuizStatus {
+  NOT_STARTED
+  ONGOING
+  ENDED
+}
+
+model Quiz {
+  id             Int          @id @default(autoincrement())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  title          String       @db.VarChar(255)
+  status         QuizStatus   @default(NOT_STARTED)
+  author         User         @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  authorId       String
+  QuestionBank   QuestionBank @relation(fields: [questionBankId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  questionBankId Int
 }
