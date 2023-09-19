@@ -1,27 +1,15 @@
-"use client"
-import { useState } from "react";
-import { Label } from "@/components/ui/label";
+
+import { cookies } from "next/headers";
 import { ButtonGroup, ButtonGroupItem } from "src/components/ui/ButtonGroup";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { trpc } from "../../../utils/trpc/client";
-import { TrpcReactQueryOptions } from "../../../utils/trpc/lib";
+import { trpcServer } from "../../../utils/trpc/server";
+import { QuizView } from "./_components/QuizView";
 
 
-export default function Quiz() {
+export default async function Quiz() {
+  const id = 1
+  const questionBank = await trpcServer(cookies).questionBank.get.query(id);
   return (
-    <div>
-      <p>test</p>
-      <div className="flex justify-center">
-      <ButtonGroup className=" w-72">
-        <ButtonGroupItem value="Test">Test</ButtonGroupItem>
-        <ButtonGroupItem value="Test2">Test2</ButtonGroupItem>
-        <ButtonGroupItem value="Test3">Test3</ButtonGroupItem>
-        <ButtonGroupItem value="Test4">Test4</ButtonGroupItem>
-        
-        
-      </ButtonGroup>
-      </div>
+      <QuizView id={1} initialData={questionBank}></QuizView>
 
-    </div>
   );
 }
