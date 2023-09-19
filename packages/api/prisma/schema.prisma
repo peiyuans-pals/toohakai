@@ -11,6 +11,22 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// User
+enum UserRole {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+model User {
+  id           String         @id
+  firstLoginAt DateTime       @default(now())
+  lastLoginAt  DateTime       @default(now())
+  role         UserRole       @default(STUDENT)
+  QuestionBank QuestionBank[]
+  Quiz         Quiz[]
+}
+
 // Questions
 model QuestionBank {
   id        Int        @id @default(autoincrement())
@@ -43,23 +59,7 @@ model Answer {
   questionId Int
 }
 
-// User
-enum UserRole {
-  ADMIN
-  TEACHER
-  STUDENT
-}
-
-model User {
-  id           String         @id
-  firstLoginAt DateTime       @default(now())
-  lastLoginAt  DateTime       @default(now())
-  role         UserRole       @default(STUDENT)
-  QuestionBank QuestionBank[]
-  Quiz         Quiz[]
-}
-
-// User
+// Quiz
 enum QuizStatus {
   NOT_STARTED
   ONGOING
@@ -72,7 +72,7 @@ model Quiz {
   updatedAt      DateTime     @updatedAt
   title          String       @db.VarChar(255)
   status         QuizStatus   @default(NOT_STARTED)
-  author         User         @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  author         User         @relation(fields: [authorId], references: [id])
   authorId       String
   QuestionBank   QuestionBank @relation(fields: [questionBankId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   questionBankId Int
