@@ -69,7 +69,7 @@ export const quizRouter = createTRPCRouter({
           title: opts.input.title,
           QuestionBank: {
             connect: {
-                id: opts.input.questionBankId
+              id: opts.input.questionBankId
             }
           },
           author: {
