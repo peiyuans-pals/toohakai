@@ -94,6 +94,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/toohakai/web:latest
 
   deploy:
+    if: false
     needs: [build-server, build-web]
     runs-on: ubuntu-latest
     concurrency: cd-deploy # ensure only 1 runs at a time
