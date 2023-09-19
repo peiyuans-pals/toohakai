@@ -28,7 +28,7 @@ export const QuizView = ({ id, initialData }: Props) => {
     initialData
   });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-  const question_id = 0;
+  const question_id = 0; //mock question ID
   const formSchema = z.object({
     answer_id: z.coerce.number({
       required_error: "Please select an answer",
