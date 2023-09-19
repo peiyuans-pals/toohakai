@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import { cookies } from "next/headers";
 import { ButtonGroup, ButtonGroupItem } from "src/components/ui/ButtonGroup";
 import { trpcServer } from "../../../utils/trpc/server";
