@@ -76,7 +76,7 @@ export const QuizView = ({ id, initialData }: Props) => {
                 <FormControl>
                   <ButtonGroup
                     id="form"
-                    {...(isSubmitted && { disabled: true })}
+                    disabled={isSubmitted}
                     onValueChange={field.onChange}
                   >
                     {questionBank.questions[question_id].answers.map(
@@ -90,10 +90,10 @@ export const QuizView = ({ id, initialData }: Props) => {
                             className="flex items-center w-full justify-center"
                           >
                             {answer.text}
-                            {answer.isCorrect && isSubmitted ? (
+                            {(answer.isCorrect && isSubmitted) ? (
                               <CheckCircledIcon className="ml-2" />
                             ) : (
-                              false
+                              null
                             )}
                           </ButtonGroupItem>
                         </div>
@@ -106,7 +106,7 @@ export const QuizView = ({ id, initialData }: Props) => {
             )}
           />
           <Button
-            {...(isSubmitted && { disabled: true })}
+            disabled={isSubmitted}
             type="submit"
             className=" text-xl mt-2"
           >
