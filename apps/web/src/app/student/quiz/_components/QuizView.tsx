@@ -35,7 +35,7 @@ export const QuizView = ({ id, initialData }: Props) => {
     if (countdown >= 0) {
       setTimeout(() => setCountdown(countdown - 1), 1000);
     } else {
-      setCountdown(10)
+      setCountdown(10);
     }
   }, [countdown]);
   const question_id = 0; //mock question ID
@@ -55,9 +55,12 @@ export const QuizView = ({ id, initialData }: Props) => {
   }
 
   if (!questionBank) {
-    return <div className="flex items-center justify-center h-screen">Quiz not found.</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Quiz not found.
+      </div>
+    );
   }
-
 
   return (
     <div className="p-5 flex flex-col h-screen">
@@ -91,11 +94,9 @@ export const QuizView = ({ id, initialData }: Props) => {
                             className="flex items-center w-full justify-center"
                           >
                             {answer.text}
-                            {(answer.isCorrect && isSubmitted) ? (
+                            {answer.isCorrect && isSubmitted ? (
                               <CheckCircledIcon className="ml-2" />
-                            ) : (
-                              null
-                            )}
+                            ) : null}
                           </ButtonGroupItem>
                         </div>
                       )
