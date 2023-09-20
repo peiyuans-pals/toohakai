@@ -15,7 +15,9 @@
     "dev": "tsc -w",
     "lint": "eslint \"src/**/*.ts*\"",
     "test": "jest",
-    "prisma:migrate": "dotenv -e ../../apps/server/.env -- prisma migrate dev --name init",
+    "prisma:migrate": "dotenv -e ../../apps/server/.env -- prisma migrate deploy",
+    "prisma:migrate:reset": "dotenv -e ../../apps/server/.env -- prisma migrate reset",
+    "prisma:migrate:dev": "dotenv -e ../../apps/server/.env -- prisma migrate dev --name \"$(git rev-parse --abbrev-ref HEAD)\"",
     "prisma:generate": "dotenv -e ../../apps/server/.env -- prisma generate",
     "postinstall": "pnpm run prisma:generate"
   },
