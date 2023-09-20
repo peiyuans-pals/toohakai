@@ -17,6 +17,7 @@
     "test": "jest",
     "prisma:migrate": "dotenv -e ../../apps/server/.env -- prisma migrate dev --name init",
     "prisma:generate": "dotenv -e ../../apps/server/.env -- prisma generate",
+    "prisma:rollback": "dotenv -e ../../apps/server/.env -- prisma migrate resolve --rolled-back",
     "postinstall": "pnpm run prisma:generate"
   },
   "jest": {
