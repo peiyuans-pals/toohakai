@@ -28,25 +28,6 @@ export const QuizView = ({ id, initialData }: Props) => {
     initialData
   });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-  const question_id = 0; //mock question ID
-  const formSchema = z.object({
-    answer_id: z.coerce.number({
-      required_error: "Please select an answer",
-      invalid_type_error: "Please select an answer"
-    })
-  });
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema)
-  });
-  if (!questionBank) {
-    return <p>Question bank doesnt exist</p>;
-  }
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    setIsSubmitted(true);
-  }
-
   const [countdown, setCountdown] = useState<number>(10);
 
   // every second, decrement countdown
@@ -57,6 +38,26 @@ export const QuizView = ({ id, initialData }: Props) => {
       setCountdown(10)
     }
   }, [countdown]);
+  const question_id = 0; //mock question ID
+  const formSchema = z.object({
+    answer_id: z.coerce.number({
+      required_error: "Please select an answer",
+      invalid_type_error: "Please select an answer"
+    })
+  });
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema)
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+    setIsSubmitted(true);
+  }
+
+  if (!questionBank) {
+    return <div className="flex items-center justify-center h-screen">Quiz not found.</div>;
+  }
+
 
   return (
     <div className="p-5 flex flex-col h-screen">
