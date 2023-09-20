@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Heading } from "src/components/ui";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 
 interface Props {
@@ -46,11 +46,23 @@ export const QuizView = ({ id, initialData }: Props) => {
     console.log(values);
     setIsSubmitted(true);
   }
+
+  const [countdown, setCountdown] = useState<number>(10);
+
+  // every second, decrement countdown
+  useEffect(() => {
+    if (countdown >= 0) {
+      setTimeout(() => setCountdown(countdown - 1), 1000);
+    } else {
+      setCountdown(10)
+    }
+  }, [countdown]);
+
   return (
     <div className="p-5 flex flex-col h-screen">
       <Heading>{questionBank.title}</Heading>
       <p className="text-xl">{questionBank.questions[question_id].title}</p>
-      <Progress className="mt-5" value={33}></Progress>
+      <Progress className="mt-5" value={countdown * 10}></Progress>
       <Form {...form}>
         <form
           className="flex flex-col mt-auto mb-10"
