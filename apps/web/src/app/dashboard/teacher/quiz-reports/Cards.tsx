@@ -11,7 +11,7 @@ export const QuizReportCards = ({ initialData }: Props) => {
   return (
     <div className="grid grid-cols-4 gap-4">
       {initialData.map((item) => (
-          <Card>
+          <Card onClick={() => {window.open(`/dashboard/teacher/quiz-reports/${item.id}`,);}} >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">{item.topic}</CardTitle>
               <svg
@@ -36,7 +36,9 @@ export const QuizReportCards = ({ initialData }: Props) => {
                 {item.date}
               </p>
               <Button variant="outline" size="icon" 
-              onClick={() => window.open(`/dashboard/teacher/quiz-reports/${item.id}`)}>
+              onClick={() => {
+                window.open(`/dashboard/teacher/quiz-reports/${item.id}`,);
+                }}>
                 <SizeIcon/>
               </Button>
             </CardContent>
@@ -45,6 +47,8 @@ export const QuizReportCards = ({ initialData }: Props) => {
     </div>
   );
 };
+
+
 
 /*
     <Link

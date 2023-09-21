@@ -10,14 +10,14 @@ import { QuizReportCards } from "./Cards";
 import quizreport_topics from "../../../../mockdata/teacher_quizreports_topics.json";
 import quizreport_summary from "../../../../mockdata/teacher_quizreports_summary.json";
 
+
 export default function QuizReports() {
     const [topic, setTopic] = useState("");
     const [searchText, setSearchText] = useState("");
     const [date, setDate] = useState("");
 
-    let sortedData = [quizreport_summary]
     //TODO: Do a proper fix for default
-    sortedData = quizreport_summary.summary.filter((item) => item.topic.includes(""))
+    let sortedData = quizreport_summary.summary.filter((item) => item.topic.includes(""))
 
     if (topic || date || searchText) {
         sortedData = quizreport_summary.summary.filter((item) => 
@@ -33,9 +33,9 @@ export default function QuizReports() {
                 <Heading>Quiz Reports</Heading>
             </div>
             <div className="flex flex-row justify-between items-center gap-4 pt-2" >
-                <TopicBar topic={(topic === "") ? "Topic" : topic} setTopic={setTopic} quizreport_topics= {quizreport_topics} />
-                <Input name="MonthPicker" type="month" onChange={e => setDate(getDate(e.target.value))}/>
                 <Input name="SearchBar" placeholder="Quiz Name" onChange={e => setSearchText(e.target.value)}/>
+                <TopicBar topic={(topic === "") ? "Topic" : topic} setTopic={setTopic} quizreport_topics= {quizreport_topics} />
+                <div><Input name="MonthPicker" type="month" onChange={e => setDate(getDate(e.target.value))}/></div>
             </div>
             <div className="pt-2">
                 <QuizReportCards initialData={sortedData}/>
@@ -45,7 +45,7 @@ export default function QuizReports() {
 }
 
 
-function getDate(input_date) {
+function getDate(input_date:string) {
     if (input_date === "") {
         return ""
     }

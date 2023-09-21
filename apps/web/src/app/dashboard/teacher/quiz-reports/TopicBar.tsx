@@ -1,12 +1,12 @@
 "use client";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 interface Props {
     topic: string;
-    quizreport_topics: Record<string, string>[];
-    setTopic: () => {};
+    quizreport_topics: { teacher_quizreports_topics: { topic: string; }[]; };
+    setTopic: Dispatch<SetStateAction<string>>;
   }
 
   /*
