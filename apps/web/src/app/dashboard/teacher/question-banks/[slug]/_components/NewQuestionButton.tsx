@@ -51,9 +51,10 @@ const formSchema = z.object({
 
 interface Props {
   questionBankId: number;
+  questionBankName: string;
 }
 
-export const NewQuestionButton = ({ questionBankId }: Props) => {
+export const NewQuestionButton = ({ questionBankId, questionBankName }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -95,7 +96,7 @@ export const NewQuestionButton = ({ questionBankId }: Props) => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    generateQuestion.mutate("biology");
+    generateQuestion.mutate(questionBankName);
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
