@@ -117,7 +117,7 @@ export const NewQuestionButton = ({ questionBankId }: Props) => {
         <DialogHeader>
           <DialogTitle>New Question</DialogTitle>
           <DialogDescription>
-            Create a new question. Click &quot;Create New Question&quot; when
+            Click &quot;Add Question&quot; when
             you&apos;re done.
           </DialogDescription>
         </DialogHeader>
