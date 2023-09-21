@@ -9,10 +9,6 @@ interface Props {
     setStudent: Dispatch<SetStateAction<string>>;
   }
 
-  /*
-    TODO: Figure a way to pass both Props and setTopic. 
-    {topic, quizreport_topics}: Props work, but {topic, quizreport_topics,setTopic}: Props} cannot
-  */
 export const StudentDropDownBar = ({student, studentlist, setStudent}: Props) => {
     return(
         <DropdownMenu>

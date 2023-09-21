@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { SizeIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
@@ -11,7 +11,8 @@ export const QuizReportCards = ({ initialData }: Props) => {
   return (
     <div className="grid grid-cols-4 gap-4">
       {initialData.map((item) => (
-          <Card onClick={() => {window.open(`/dashboard/teacher/quiz-reports/${item.id}`,);}} >
+          <Link target={"_blank"} key={item.id} href={`/dashboard/teacher/quiz-reports/${item.id}`}>
+            <Card className=" h-[200px]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">{item.topic}</CardTitle>
               <svg
@@ -29,20 +30,17 @@ export const QuizReportCards = ({ initialData }: Props) => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{item.name}</div>
+            </CardContent>
+            <CardFooter className="flex-col justify-start items-start">
               <p className="text-xs text-muted-foreground">
                 {item.length} Questions
               </p>
               <p className="text-xs text-muted-foreground">
                 {item.date}
               </p>
-              <Button variant="outline" size="icon" 
-              onClick={() => {
-                window.open(`/dashboard/teacher/quiz-reports/${item.id}`,);
-                }}>
-                <SizeIcon/>
-              </Button>
-            </CardContent>
+            </CardFooter>
           </Card>
+          </Link>
       ))}
     </div>
   );
@@ -51,8 +49,10 @@ export const QuizReportCards = ({ initialData }: Props) => {
 
 
 /*
-    <Link
-          key={item.id}
-          href={`/dashboard/teacher/question-banks/${item.id}`}
-    >
+    <Button variant="outline" size="icon" 
+              onClick={() => {
+                window.open(`/dashboard/teacher/quiz-reports/${item.id}`,);
+                }}>
+                <SizeIcon/>
+              </Button>
 */
