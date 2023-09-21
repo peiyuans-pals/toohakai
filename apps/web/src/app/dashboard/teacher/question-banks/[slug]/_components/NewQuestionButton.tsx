@@ -237,7 +237,7 @@ export const NewQuestionButton = ({ questionBankId, questionBankName }: Props) =
                     <RadioGroup
                       className="col-span-3 grid grid-cols-1 items-center gap-4 self-start"
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      value={field.value}
                     >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="1" id="r1" />
