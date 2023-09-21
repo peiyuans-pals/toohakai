@@ -11,23 +11,25 @@ import quizreport_topics from "../../../../mockdata/teacher_quizreports_topics.j
 import quizreport_summary from "../../../../mockdata/teacher_quizreports_summary.json";
 
 export default function QuizReports() {
-    const [topic, setTopic] = useState("Topics");
+    const [topic, setTopic] = useState("");
     const [searchText, setSearchText] = useState("");
     const [date, setDate] = useState("");
 
     let sortedData = [quizreport_summary]
+    //TODO: Do a proper fix for default
+    sortedData = quizreport_summary.summary.filter((item) => item.topic.includes(""))
 
+    console.log("OG");
+    console.log(sortedData);
 
-    if (topic) {
-        sortedData = quizreport_summary.summary.filter((item) => item.topic === topic)
-    }
-
-    if (date) {
-        sortedData = quizreport_summary.summary.filter((item) => item.date.includes(getDate(date)))
-    }
-
-    if (searchText) {
-        sortedData = quizreport_summary.summary.filter((item) => item.name.includes(searchText))
+    if (topic || date || searchText) {
+        sortedData = quizreport_summary.summary.filter((item) => 
+            item.topic === topic && 
+            item.date.includes(date) &&
+            item.name.includes(searchText)
+        )
+        console.log("filtering");
+        console.log(sortedData);
     }
 
     return(
@@ -35,19 +37,26 @@ export default function QuizReports() {
             <div className="flex flex-row justify-between items-center">
                 <Heading>Quiz Reports</Heading>
             </div>
-            <div className="flex flex-row justify-between items-center" >
-                <TopicBar topic={topic} setTopic={setTopic} quizreport_topics= {quizreport_topics} />
-                <Input type="month" onChange={e => console.log(getDate(e.target.value))}/>
-                <Input placeholder="Quiz Name" />
+            <div className="flex flex-row justify-between items-center gap-4 pt-2" >
+                <TopicBar topic={(topic === "") ? "Topic" : topic} setTopic={setTopic} quizreport_topics= {quizreport_topics} />
+                <Input name="MonthPicker" type="month" onChange={e => setDate(getDate(e.target.value))}/>
+                <Input name="SearchBar" placeholder="Quiz Name" onChange={e => setSearchText(e.target.value)}/>
             </div>
-            <QuizReportCards initialData={sortedData}/>
+            <div className="pt-2">
+                <QuizReportCards initialData={sortedData}/>
+            </div>
         </DashboardView>
     );
 }
 
 
 function getDate(input_date) {
-    var month = input_date.split(" ")[1];
+    if (input_date === "") {
+        return ""
+    }
+
+    var month = input_date.split("-")[1];
+    
     switch(month){
         case "01":
             month = "January";
@@ -86,6 +95,5 @@ function getDate(input_date) {
             month = "December";
             break;
     }
-    
-    return month + " " +  input_date.split(" ")[0]
+    return month + " " + input_date.split("-")[0]
 }
