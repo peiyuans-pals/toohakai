@@ -6,7 +6,8 @@
             "name": "Physics Mid-Term 2021 Prep",
             "date": "21 February 2023",
             "length": 15,
-            "average": 7.3
+            "average": 7.3,
+            "fullscore": 10
         },
         {
             "id": 2,
@@ -14,7 +15,8 @@
             "name": "Mock Test",
             "date": "21 February 2023",
             "length": 10,
-            "average": 4.12
+            "average": 4.12,
+            "fullscore": 10
         },
         {
             "id": 3,
@@ -22,7 +24,8 @@
             "name": "Physics Final-Term 2021 Prep",
             "date": "22 March 2023",
             "length": 15,
-            "average": 6.8
+            "average": 6.8,
+            "fullscore": 10
         }
     ]
 }
