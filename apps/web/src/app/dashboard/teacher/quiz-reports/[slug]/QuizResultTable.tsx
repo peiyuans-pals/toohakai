@@ -1,3 +1,4 @@
+import { Separator } from "@/components/ui/separator";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { DashboardView, Heading } from "src/components/ui"
 
@@ -9,7 +10,6 @@ interface Props {
 }
 
 export const QuizResultTable = ({studentquizResult, studentname, studentscore, fullscore}: Props) => {
-    console.log(studentquizResult);
 
     return (
         <div>
@@ -18,26 +18,26 @@ export const QuizResultTable = ({studentquizResult, studentname, studentscore, f
                 <Heading>Total Score: {studentscore}/{fullscore}</Heading>
             </div>
             {studentquizResult.map((item) => (
-                <div className="pb-4">
+                <div className="pb-2 flex-col">
                     <h1>{item.question}</h1>
-                    <div>
-                        <p style={{color: (item.correctans===item.option1 && item.option1===item.selectedans) ? "green" : "black" }}>Option 1: {item.option1}</p>
-                        {item.correctans===item.option1 ? <CheckIcon/> : <></>}
+                    <div className="flex gap-0.5">
+                        <p style={{color: (item.correctans==="option1" && "option1"===item.selectedans) ? "green" : "black" }}>Option 1: {item.option1}</p>
+                        {item.correctans==="option1" ? <CheckIcon color="green"/> : <></>}
                     </div>
-                    <div className="flex-row">
-                        <p style={{color: (item.correctans===item.option2 && item.option2===item.selectedans) ? "green" : "black" }}>Option 2: {item.option2}</p>
-                        {item.correctans===item.option2 ? <CheckIcon/> : <></>}
-                        <CheckIcon color="green"/>
+                    <div className="flex gap-0.5">
+                        <p style={{color: (item.correctans==="option2" && "option2"===item.selectedans) ? "green" : "black" }}>Option 2: {item.option2}</p>
+                        {item.correctans==="option2" ? <CheckIcon color="green"/> : <></>}
                     </div>
-                    <div>
-                        <p style={{color: (item.correctans===item.option3 && item.option3===item.selectedans) ? "green" : "black" }}>Option 3: {item.option3}</p>
-                        {item.correctans===item.option3 ? <CheckIcon/> : <></>}
+                    <div className="flex gap-0.5">
+                        <p style={{color: (item.correctans==="option3" && "option3"===item.selectedans) ? "green" : "black" }}>Option 3: {item.option3}</p>
+                        {item.correctans==="option3" ? <CheckIcon color="green"/> : <></>}
                     </div>
-                    <div>
-                        <p style={{color: (item.correctans===item.option4 && item.option4===item.selectedans) ? "green" : "black" }}>Option 4: {item.option4}</p>
-                        {item.correctans===item.option4 ? <CheckIcon/> : <></>}
+                    <div className="flex gap-0.5">
+                        <p style={{color: (item.correctans==="option4" && "option4"===item.selectedans) ? "green" : "black" }}>Option 4: {item.option4}</p>
+                        {item.correctans==="option4" ? <CheckIcon color="green"/> : <></>}
                     </div>
-                    
+                    <p style={{color: item.correctans===item.selectedans ? "green" : "red"}}>{selectedAnsStatement(item.option1,item.option2,item.option3,item.option4,item.selectedans)}</p>
+                    <div className="pt-2"><Separator/></div>       
                 </div>
             ))}
         </div>
@@ -46,13 +46,13 @@ export const QuizResultTable = ({studentquizResult, studentname, studentscore, f
 
 function selectedAnsStatement(option1:string, option2:string, option3:string, option4:string, selected_ans:string){
     switch(selected_ans){
-        case option1:
-            return "Selected Option: Option 1"
-        case option2:
-            return "Selected Option: Option 2"
-        case option3:
-            return "Selected Option: Option 3"
-        case option4:
-            return "Selected Option: Option 4"
+        case "option1":
+            return "Selected: Option 1 — " + option1
+        case "option2":
+            return "Selected: Option 2 — " + option2
+        case "option3":
+            return "Selected Option 3 — " + option3
+        case "option4":
+            return "Selected: Option 4 — " + option4
     }
 }
