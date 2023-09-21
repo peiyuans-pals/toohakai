@@ -77,6 +77,27 @@ export const NewQuestionButton = ({ questionBankId }: Props) => {
     }
   });
 
+  const generateQuestion = trpc.questionBank.generateQuestion.useMutation({
+    onSuccess: (data) => {
+      // change form values
+      const { generated } = data;
+      form.setValue("question_name", generated.questionTitle);
+      form.setValue("option1", generated.answers[0].text);
+      form.setValue("option2", generated.answers[1].text);
+      form.setValue("option3", generated.answers[2].text);
+      form.setValue("option4", generated.answers[3].text);
+      // set correct radio button
+      form.setValue("correct", "2")
+    }
+  });
+
+  const handleAutoGenerate = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    generateQuestion.mutate("biology");
+  };
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     mutation.mutate({
@@ -236,8 +257,19 @@ export const NewQuestionButton = ({ questionBankId }: Props) => {
                 </FormItem>
               )}
             />
-            <DialogFooter className="mt-5">
-              <Button type="submit">Create New Question</Button>
+            {generateQuestion?.data?.generated.reason && (
+              <div className="mt-4 space-y-2 items-center col-span-4">
+                <p className="text-xs">Reason: {generateQuestion.data.generated.reason}</p>
+              </div>
+            )}
+            <DialogFooter className="flex flex-row justify-between items-center mt-5">
+              <Button
+                onClick={handleAutoGenerate}
+                disabled={generateQuestion.isLoading}
+              >
+                Auto-generate
+              </Button>
+              <Button type="submit">Add Question</Button>
             </DialogFooter>
           </form>
         </Form>

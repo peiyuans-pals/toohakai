@@ -54,7 +54,10 @@ export const createServer = () => {
 
   app.use("/trpc-panel", (_, res) => {
     return res.send(
-      renderTrpcPanel(appRouter, { url: "http://localhost:5001/trpc" }) // todo
+      renderTrpcPanel(appRouter, {
+        url: "http://localhost:5001/trpc",
+        transformer: "superjson"
+      }) // todo
     );
   });
 

@@ -1,6 +1,11 @@
-import { createTRPCRouter, protectedProcedure } from "../utils/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure
+} from "../utils/trpc";
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
+import { generateQuestion, generateQuestionTyped } from "../utils/gpt";
 
 const mockData = [
   { id: "101", name: "Physics", questions: [] },
@@ -272,5 +277,38 @@ export const questionBankRouter = createTRPCRouter({
         status: "question deleted successfully",
         questionBank
       };
+    }),
+  generateQuestion: publicProcedure
+    .meta({
+      description: "Generate a question from GPT"
+    })
+    .input(z.string().min(3).max(30))
+    .mutation(async (opts) => {
+      const topic = opts.input;
+
+      // return await generateQuestion(topic)
+
+      const generated = await generateQuestionTyped(topic);
+      console.log("generated", generated);
+
+      return { generated };
+
+      // return {
+      //   generated: {
+      //     questionTitle:
+      //       "Which of the following is the main function of chlorophyll in plants?",
+      //     answers: [
+      //       { text: "A. Absorbs sunlight for photosynthesis", isCorrect: true },
+      //       { text: "B. Stores excess water in the cells", isCorrect: false },
+      //       { text: "C. Helps in respiration process", isCorrect: false },
+      //       {
+      //         text: "D. Transports nutrients throughout the plant",
+      //         isCorrect: false
+      //       }
+      //     ],
+      //     reason:
+      //       "Chlorophyll is responsible for absorbing sunlight and converting it into energy through the process of photosynthesis. It captures light energy from the sun and uses it to synthesize carbohydrates, which are essential for the plant's growth and survival."
+      //   }
+      // };
     })
 });
