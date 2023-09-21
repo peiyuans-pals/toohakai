@@ -5,14 +5,15 @@ import { useState } from "react";
 
 interface Props {
     topic: string;
-    quizreport_topics: Record<string, string>[]
+    quizreport_topics: Record<string, string>[];
+    setTopic: () => {};
   }
 
   /*
     TODO: Figure a way to pass both Props and setTopic. 
     {topic, quizreport_topics}: Props work, but {topic, quizreport_topics,setTopic}: Props} cannot
   */
-  export const TopicBar = ({topic, quizreport_topics, setTopic}) => {
+  export const TopicBar = ({topic, quizreport_topics, setTopic}: Props) => {
     return(
         <DropdownMenu>
                     <DropdownMenuTrigger><Button>{topic}</Button></DropdownMenuTrigger>

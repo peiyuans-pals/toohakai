@@ -36,7 +36,7 @@ export const QuizReportCards = ({ initialData }: Props) => {
                 {item.date}
               </p>
               <Button variant="outline" size="icon" 
-              onClick={() => window.open(`/dashboard/teacher`)}>
+              onClick={() => window.open(`/dashboard/teacher/question-reports/${item.id}`)}>
                 <SizeIcon/>
               </Button>
             </CardContent>

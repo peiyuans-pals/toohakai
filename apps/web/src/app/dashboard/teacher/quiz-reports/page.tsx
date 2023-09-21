@@ -2,7 +2,7 @@
 import { DashboardView, Heading } from "../../../../components/ui";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TopicBar } from "src/app/dashboard/teacher/quiz-reports/TopicBar";
 import { Input } from "@/components/ui/input";
 import { QuizReportCards } from "./Cards";
@@ -19,17 +19,12 @@ export default function QuizReports() {
     //TODO: Do a proper fix for default
     sortedData = quizreport_summary.summary.filter((item) => item.topic.includes(""))
 
-    console.log("OG");
-    console.log(sortedData);
-
     if (topic || date || searchText) {
         sortedData = quizreport_summary.summary.filter((item) => 
             item.topic === topic && 
             item.date.includes(date) &&
             item.name.includes(searchText)
         )
-        console.log("filtering");
-        console.log(sortedData);
     }
 
     return(
