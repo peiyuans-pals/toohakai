@@ -21,7 +21,7 @@ export const StudentDropDownBar = ({
 }: Props) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <Button>{student}</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
