@@ -87,7 +87,7 @@ export const NewQuestionButton = ({ questionBankId }: Props) => {
       form.setValue("option3", generated.answers[2].text);
       form.setValue("option4", generated.answers[3].text);
       // set correct radio button
-      form.setValue("correct", "2")
+      form.setValue("correct", "2") // TODO: fix this - it doesnt work :(
     }
   });
 
@@ -106,6 +106,9 @@ export const NewQuestionButton = ({ questionBankId }: Props) => {
       answers: [values.option1, values.option2, values.option3, values.option4],
       correctAnswer: parseInt(values.correct)
     });
+    // disable all form fields
+
+
   }
 
   return (

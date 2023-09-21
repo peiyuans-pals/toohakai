@@ -53,7 +53,7 @@ export const generateQuestionTyped = async (topic: string) => {
         answers: z
           .array(
             z.object({
-              text: z.string().describe("answer text"),
+              text: z.string().min(1).max(32).describe("answer text"),
               isCorrect: z.boolean().describe("is this answer correct?")
             })
           )
