@@ -21,7 +21,7 @@ export default function QuizReports() {
 
     if (topic || date || searchText) {
         sortedData = quizreport_summary.summary.filter((item) => 
-            item.topic === topic && 
+            item.topic.includes(topic) && 
             item.date.includes(date) &&
             item.name.includes(searchText)
         )
