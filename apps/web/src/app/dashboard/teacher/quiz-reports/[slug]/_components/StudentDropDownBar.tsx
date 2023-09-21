@@ -26,7 +26,10 @@ export const StudentDropDownBar = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {studentlist.map((item) => (
-          <DropdownMenuItem onSelect={() => setStudent(item)}>
+          <DropdownMenuItem
+            key={studentlist.indexOf(item)}
+            onSelect={() => setStudent(item)}
+          >
             {item}
           </DropdownMenuItem>
         ))}

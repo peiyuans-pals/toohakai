@@ -32,7 +32,7 @@ export const QuizResultTable = ({
         </Heading>
       </div>
       {studentquizResult.map((item) => (
-        <div className="pb-2 flex-col">
+        <div key={studentquizResult.indexOf(item)} className="pb-2 flex-col">
           <h1>
             <b>{item.question}</b>
           </h1>

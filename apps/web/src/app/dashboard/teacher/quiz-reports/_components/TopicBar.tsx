@@ -26,7 +26,10 @@ export const TopicBar = ({ topic, quizreport_topics, setTopic }: Props) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {quizreport_topics.teacher_quizreports_topics.map((item) => (
-          <DropdownMenuItem onSelect={() => setTopic(item.topic)}>
+          <DropdownMenuItem
+            key={item.topic}
+            onSelect={() => setTopic(item.topic)}
+          >
             {item.topic}
           </DropdownMenuItem>
         ))}
