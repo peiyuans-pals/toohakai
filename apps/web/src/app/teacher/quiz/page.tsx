@@ -14,7 +14,6 @@ export default async function Quiz() {
   return (
     <div>
   <QuizView id={1} initialData={questionBank}></QuizView>
-  <Button onSubmit={onSubmit}>Test</Button>
   </div>
   
   );
