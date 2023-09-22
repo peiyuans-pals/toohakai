@@ -21,7 +21,7 @@ interface Props {
 export const TopicBar = ({ topic, quizreport_topics, setTopic }: Props) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <Button>{topic}</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
