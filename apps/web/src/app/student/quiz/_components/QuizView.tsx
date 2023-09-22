@@ -1,6 +1,6 @@
 "use client";
 
-import { ButtonGroup, ButtonGroupItem } from "src/components/ui/ButtonGroup";
+import { ButtonGroup, ButtonGroupItem } from "src/app/student/quiz/_components/ButtonGroup";
 import { trpc } from "../../../../utils/trpc/client";
 import { TrpcReactQueryOptions } from "../../../../utils/trpc/lib";
 import { Button } from "@/components/ui/button";
