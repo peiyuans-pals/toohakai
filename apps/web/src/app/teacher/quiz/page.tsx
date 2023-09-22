@@ -13,7 +13,8 @@ export default async function Quiz() {
   const questionBank = await trpcServer(cookies).questionBank.get.query(id);
   return (
     <div>
-  <QuizView id={1} key={1} initialData={questionBank}></QuizView>
+  <QuizView id={1} initialData={questionBank}></QuizView>
+  <Button onSubmit={onSubmit}>Test</Button>
   </div>
   
   );
