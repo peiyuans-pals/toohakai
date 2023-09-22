@@ -4,44 +4,55 @@
 
 import * as React from "react";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
-
 import { cn } from "src/utils/shadcn";
 
-const ButtonGrid = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
->(({ className, ...props }, ref) => {
+interface ButtonGridProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+interface ButtonGridItemProps {
+  children: React.ReactNode;
+  percentage: number;
+  isCorrect: boolean;
+  className?: string;
+  timerEnded: boolean;
+
+}
+export const ButtonGrid = ({ children, className}: ButtonGridProps) => {
   return (
-    <RadioGroupPrimitive.Root
+    <div
       className={cn(
-        "flex flex-col border rounded-md p-1 text-muted-foreground",
+        "grid grid-cols-2 gap-5 rounded-md p-1 text-muted-foreground",
         className
       )}
-      {...props}
-      ref={ref}
-    />
+    >
+      {children}
+    </div>
   );
-});
+};
 ButtonGrid.displayName = RadioGroupPrimitive.Root.displayName;
 
-const ButtonGridItem = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
->(({ className, children, ...props }, ref) => {
+export const ButtonGridItem = ({ children, className, percentage, isCorrect, timerEnded }: ButtonGridItemProps) => {
+  const c = (timerEnded && isCorrect) ? "shadow-lg bg-primary text-primary-foreground " : null
+  const c2 = (timerEnded && isCorrect) ? "bg-green-700 " : null
+  console.log(c)
   return (
-    <RadioGroupPrimitive.Item
-      ref={ref}
+    <div
       className={cn(
-        "whitespace-nowrap rounded-sm px-3 py-3 text-xl font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-85 data-[state=checked]:bg-accent data-[state=checked]:text-foreground data-[state=checked]:shadow-sm",
-        className
+        "whitespace-nowrap relative rounded-sm border h-[200px] text-4xl font-medium ring-offset-background -z-20 ",
+        className, c
       )}
-      {...props}
-      asChild
     >
-      <button type="button">{children}</button>
-    </RadioGroupPrimitive.Item>
-  );
-});
-ButtonGridItem.displayName = RadioGroupPrimitive.Item.displayName;
+      
 
-export { ButtonGrid, ButtonGridItem };
+      <div className="z-10 relative">{children}</div>
+      {
+        timerEnded ? 
+        <div className={cn("bg-slate-300 h-full absolute top-0 left-0 -z-10", c2)} 
+        style={{width:`${percentage}%`}}></div> : null
+      }
+    </div>
+  );
+      };
+
