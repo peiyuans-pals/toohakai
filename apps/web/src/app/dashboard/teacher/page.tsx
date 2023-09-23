@@ -27,7 +27,7 @@ export default async function DashboardRoot() {
   ).questionBank.count.query();
 
   const me = await trpcServer(cookies).user.me.query();
-  const name = getCleanedNameFromIdentities(me.identities);
+  const name = getCleanedNameFromIdentities(me);
 
   const summaryData: (SummaryCardProps & { href?: string })[] = [
     {

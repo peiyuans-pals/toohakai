@@ -13,7 +13,7 @@ export const LoginButton = () => {
       }
     });
     console.log(data, error);
-    // todo: report error to glitchtip
+    // todo: report error to hyperdx
   };
 
   return (
