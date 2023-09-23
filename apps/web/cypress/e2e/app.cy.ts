@@ -12,6 +12,8 @@ describe("Navigation", () => {
     // wait 10 seconds for the login to complete
     cy.wait(5000); // TODO: make this dynamic
 
+    cy.get('[href="/dashboard/teacher"]').click();
+
     // The new url should include "/dashboard/teacher"
     cy.location().url().should("include", "/dashboard/teacher");
   });
