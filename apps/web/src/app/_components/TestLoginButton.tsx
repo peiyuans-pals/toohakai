@@ -6,19 +6,20 @@ import { supabase } from "../../utils/supabase/client";
 import { useRouter } from "next/navigation";
 
 export const TestLoginButton = () => {
-  const router = useRouter()
+  const router = useRouter();
   const handleTestLoginClick = async () => {
+    console.log("test login clicked");
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: 'test@example.com',
-      password: 'password',
-    })
-    console.log(data, error)
-    router.refresh()
-  }
+      email: "test@example.com",
+      password: "password"
+    });
+    console.log(data, error);
+    router.refresh();
+  };
 
   return (
-    <Button data-cy="test-login" onClick={handleTestLoginClick}>
+    <Button data-cy="test-login-button" onClick={handleTestLoginClick}>
       Test Login
     </Button>
-  )
-}
+  );
+};

@@ -14,8 +14,8 @@ export const userRouter = createTRPCRouter({
       }
 
       const other = {
-          name: user.user_metadata.full_name,
-      }
+        name: user.user_metadata.full_name
+      };
 
       const { id, email, identities } = user;
       return { id, email, identities, ...other };

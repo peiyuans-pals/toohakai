@@ -28,8 +28,6 @@ export const ProfileButton = ({ initialData }: Props) => {
     initialData
   });
 
-  console.log(me)
-
   const usersName = getCleanedNameFromIdentities(me);
   const initials = getInitialsFromCleanedName(usersName);
 

@@ -7,7 +7,7 @@ export const getCleanedNameFromIdentities = (
   // console.log("identities", identities);
   const identities: UserIdentity[] | undefined = me?.identities;
   const userIdentity = Array.isArray(identities) ? identities[0] : null;
-  const userName: string = userIdentity?.identity_data?.name  ?? me?.name ?? ""; // just in case there's no name default to ZZ
+  const userName: string = userIdentity?.identity_data?.name ?? me?.name ?? ""; // just in case there's no name default to ZZ
   return userName.replace(/[^a-zA-Z ]/g, "");
 };
 

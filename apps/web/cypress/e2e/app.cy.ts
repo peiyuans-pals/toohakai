@@ -1,15 +1,18 @@
 describe("Navigation", () => {
   it("should navigate to the about page", () => {
     // Start from the index page
-    cy.visit("http://localhost:3002/");
+    cy.visit("http://localhost:3000/"); // todo: set this dynamically
 
     // The page should contain an h1 with "Toohakai" and some other text
-    cy.get("h1").contains("Toohakai");
-    cy.get("p").contains("A really cool quiz app");
+    cy.get("h3").contains("Toohakai");
+    cy.get("p").contains("A fun quiz app");
 
-    // cy.get('[data-cy="login-button"]').click()
+    cy.get('[data-cy="test-login-button"]').click()
 
-    // The new url should include "/about"
-    // cy.url().should('include', '/about')
+    // wait 10 seconds for the login to complete
+    cy.wait(5000) // TODO: make this dynamic
+
+    // The new url should include "/dashboard/teacher"
+    cy.location().url().should('include', '/dashboard/teacher')
   });
 });
