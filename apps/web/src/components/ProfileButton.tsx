@@ -28,7 +28,9 @@ export const ProfileButton = ({ initialData }: Props) => {
     initialData
   });
 
-  const usersName = getCleanedNameFromIdentities(me.identities);
+  console.log(me)
+
+  const usersName = getCleanedNameFromIdentities(me);
   const initials = getInitialsFromCleanedName(usersName);
 
   const handleLogoutClick = async () => {

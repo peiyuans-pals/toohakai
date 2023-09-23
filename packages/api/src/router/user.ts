@@ -12,8 +12,13 @@ export const userRouter = createTRPCRouter({
       if (!user) {
         throw new Error("You are not logged in");
       }
+
+      const other = {
+          name: user.user_metadata.full_name,
+      }
+
       const { id, email, identities } = user;
-      return { id, email, identities };
+      return { id, email, identities, ...other };
     }),
   login: protectedProcedure
     .meta({
