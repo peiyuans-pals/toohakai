@@ -36,7 +36,6 @@ ButtonGrid.displayName = RadioGroupPrimitive.Root.displayName;
 export const ButtonGridItem = ({ children, className, percentage, isCorrect, timerEnded }: ButtonGridItemProps) => {
   const c = (timerEnded && isCorrect) ? "shadow-lg bg-primary text-primary-foreground " : null
   const c2 = (timerEnded && isCorrect) ? "bg-green-700 " : null
-  console.log(c)
   return (
     <div
       className={cn(
