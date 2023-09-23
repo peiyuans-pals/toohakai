@@ -1,6 +1,9 @@
 "use client";
 
-import { ButtonGroup, ButtonGroupItem } from "src/app/student/quiz/_components/ButtonGroup";
+import {
+  ButtonGroup,
+  ButtonGroupItem
+} from "src/app/student/quiz/_components/ButtonGroup";
 import { trpc } from "../../../../utils/trpc/client";
 import { TrpcReactQueryOptions } from "../../../../utils/trpc/lib";
 import { Button } from "@/components/ui/button";
@@ -18,6 +21,13 @@ import { Heading } from "src/components/ui";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader
+} from "@/components/ui/card";
+import Link from "next/link";
 
 interface Props {
   id: number;
@@ -28,6 +38,7 @@ export const QuizView = ({ id, initialData }: Props) => {
     initialData
   });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(10);
 
   // every second, decrement countdown
@@ -61,61 +72,90 @@ export const QuizView = ({ id, initialData }: Props) => {
       </div>
     );
   }
+  if (quizComplete) {
+    return (
+      <div className="p-5 flex flex-col w-screen justify-center items-center h-screen">
+        <div>
+          <Card>
+            <CardHeader>
+              <h1 className="text-4xl font-bold text-gray-900">
+                {questionBank.title}
+              </h1>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xl">Quiz has now been completed</p>
+              <p className="text-xl">Results have been saved successfully</p>
 
-  return (
-    <div className="p-5 flex flex-col h-screen">
-      <Heading>{questionBank.title}</Heading>
-      <p className="text-xl">{questionBank.questions[question_id].title}</p>
-      <Progress className="mt-5" value={countdown * 10}></Progress>
-      <Form {...form}>
-        <form
-          className="flex flex-col mt-auto mb-10"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
-          <FormField
-            control={form.control}
-            name="answer_id"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <ButtonGroup
-                    id="form"
-                    disabled={isSubmitted}
-                    onValueChange={field.onChange}
-                  >
-                    {questionBank.questions[question_id].answers.map(
-                      (answer) => (
-                        <div
-                          key={answer.id}
-                          className="flex items-center justify-center"
-                        >
-                          <ButtonGroupItem
-                            value={String(answer.id)}
-                            className="flex items-center w-full justify-center"
-                          >
-                            {answer.text}
-                            {answer.isCorrect && isSubmitted ? (
-                              <CheckCircledIcon className="ml-2" />
-                            ) : null}
-                          </ButtonGroupItem>
-                        </div>
-                      )
-                    )}
-                  </ButtonGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button
-            disabled={isSubmitted}
-            type="submit"
-            className=" text-xl mt-2"
+              <p className="text-xl mt-5">Your Score for this quiz: 8/10</p>
+            </CardContent>
+            <CardFooter>
+              <Button asChild>
+                {/* Temporary link, supposed to redirect back to student's dashboard */}
+                <Link href="join-quiz-room">Return to home</Link>
+
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+  if (!quizComplete) {
+    return (
+      <div className="p-5 flex flex-col h-screen">
+        <Heading>{questionBank.title}</Heading>
+        <p className="text-xl">{questionBank.questions[question_id].title}</p>
+        <Progress className="mt-5" value={countdown * 10}></Progress>
+        <Form {...form}>
+          <form
+            className="flex flex-col mt-auto mb-10"
+            onSubmit={form.handleSubmit(onSubmit)}
           >
-            Submit
-          </Button>
-        </form>
-      </Form>
-    </div>
-  );
+            <FormField
+              control={form.control}
+              name="answer_id"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <ButtonGroup
+                      id="form"
+                      disabled={isSubmitted}
+                      onValueChange={field.onChange}
+                    >
+                      {questionBank.questions[question_id].answers.map(
+                        (answer) => (
+                          <div
+                            key={answer.id}
+                            className="flex items-center justify-center"
+                          >
+                            <ButtonGroupItem
+                              value={String(answer.id)}
+                              className="flex items-center w-full justify-center"
+                            >
+                              {answer.text}
+                              {answer.isCorrect && isSubmitted ? (
+                                <CheckCircledIcon className="ml-2" />
+                              ) : null}
+                            </ButtonGroupItem>
+                          </div>
+                        )
+                      )}
+                    </ButtonGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              disabled={isSubmitted}
+              type="submit"
+              className=" text-xl mt-2"
+            >
+              Submit
+            </Button>
+          </form>
+        </Form>
+      </div>
+    );
+  }
 };
