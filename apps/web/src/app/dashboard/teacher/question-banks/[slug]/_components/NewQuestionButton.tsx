@@ -54,7 +54,10 @@ interface Props {
   questionBankName: string;
 }
 
-export const NewQuestionButton = ({ questionBankId, questionBankName }: Props) => {
+export const NewQuestionButton = ({
+  questionBankId,
+  questionBankName
+}: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -88,7 +91,7 @@ export const NewQuestionButton = ({ questionBankId, questionBankName }: Props) =
       form.setValue("option3", generated.answers[2].text);
       form.setValue("option4", generated.answers[3].text);
       // set correct radio button
-      form.setValue("correct", "2") // TODO: fix this - it doesnt work :(
+      form.setValue("correct", "2"); // TODO: fix this - it doesnt work :(
     }
   });
 
@@ -108,8 +111,6 @@ export const NewQuestionButton = ({ questionBankId, questionBankName }: Props) =
       correctAnswer: parseInt(values.correct)
     });
     // disable all form fields
-
-
   }
 
   return (
@@ -121,8 +122,7 @@ export const NewQuestionButton = ({ questionBankId, questionBankName }: Props) =
         <DialogHeader>
           <DialogTitle>New Question</DialogTitle>
           <DialogDescription>
-            Click &quot;Add Question&quot; when
-            you&apos;re done.
+            Click &quot;Add Question&quot; when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -263,7 +263,9 @@ export const NewQuestionButton = ({ questionBankId, questionBankName }: Props) =
             />
             {generateQuestion?.data?.generated.reason && (
               <div className="mt-4 space-y-2 items-center col-span-4">
-                <p className="text-xs">Reason: {generateQuestion.data.generated.reason}</p>
+                <p className="text-xs">
+                  Reason: {generateQuestion.data.generated.reason}
+                </p>
               </div>
             )}
             <DialogFooter className="flex flex-row justify-between items-center mt-5">
