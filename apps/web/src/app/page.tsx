@@ -9,9 +9,11 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import { TestLoginButton } from "./_components/TestLoginButton";
+import { NextPage } from "../types/next";
 
-export default function LoginPage() {
-  console.log("env", process.env.NODE_ENV);
+export default function LoginPage({ params, searchParams }: NextPage) {
+  const enableTestLogin = searchParams?.test === "true";
+
   return (
     <div className="flex flex-row min-h-screen justify-center items-center bg-gradient-to-br from-green-800 to-green-700">
       <Card className="h-96 w-96 rounded-md">
@@ -24,7 +26,7 @@ export default function LoginPage() {
         {/*</CardContent>*/}
         <CardFooter className="gap-2">
           <LoginButton />
-          {process.env.NODE_ENV !== "production" && <TestLoginButton />}
+          {enableTestLogin && <TestLoginButton />}
         </CardFooter>
       </Card>
     </div>
