@@ -37,8 +37,3 @@ export const StudentDropDownBar = ({
     </DropdownMenu>
   );
 };
-/**
- * {quizreport_topics.teacher_quizreports_topics.map((item) => (
-                            <DropdownMenuItem onSelect={() => setTopic(item.topic)}>{item.topic}</DropdownMenuItem>
-                        ))}
- */

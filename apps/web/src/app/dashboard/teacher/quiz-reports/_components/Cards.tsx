@@ -58,12 +58,3 @@ export const QuizReportCards = ({ initialData }: Props) => {
     </div>
   );
 };
-
-/*
-    <Button variant="outline" size="icon" 
-              onClick={() => {
-                window.open(`/dashboard/teacher/quiz-reports/${item.id}`,);
-                }}>
-                <SizeIcon/>
-              </Button>
-*/
