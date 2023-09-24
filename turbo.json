@@ -16,7 +16,9 @@
         // apps/server/.env
         "SUPABASE_URL",
         "SUPABASE_KEY",
-        "OPENAI_KEY"
+        "OPENAI_KEY",
+        // packages/llm-api
+        "DEBUG"
       ]
     },
     "start": {
@@ -32,7 +34,9 @@
         // apps/server/.env
         "SUPABASE_URL",
         "SUPABASE_KEY",
-        "OPENAI_KEY"
+        "OPENAI_KEY",
+        // packages/llm-api
+        "DEBUG"
       ]
     },
     "test": {
@@ -49,7 +53,9 @@
         // apps/server/.env
         "SUPABASE_URL",
         "SUPABASE_KEY",
-        "OPENAI_KEY"
+        "OPENAI_KEY",
+        // packages/llm-api
+        "DEBUG"
       ]
     },
     "cypress:headless": {
@@ -65,7 +71,9 @@
         // apps/server/.env
         "SUPABASE_URL",
         "SUPABASE_KEY",
-        "OPENAI_KEY"
+        "OPENAI_KEY",
+        // packages/llm-api
+        "DEBUG"
       ]
     },
     "cypress:ci": {
@@ -81,7 +89,9 @@
         // apps/server/.env
         "SUPABASE_URL",
         "SUPABASE_KEY",
-        "OPENAI_KEY"
+        "OPENAI_KEY",
+        // packages/llm-api
+        "DEBUG"
       ]
     },
     "lint": {

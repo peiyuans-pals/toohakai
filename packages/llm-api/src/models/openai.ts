@@ -224,6 +224,7 @@ export class OpenAIChatApi implements CompletionApi {
         >[] = [];
         const decoder = new TextDecoder('utf-8');
         let lineBuffer = '';
+        // eslint-disable-next-line no-constant-condition
         while (true) {
           const { done, value } = await reader.read();
 

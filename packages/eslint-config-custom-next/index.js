@@ -9,5 +9,5 @@ module.exports = {
     babelOptions: {
       presets: [require.resolve("next/babel")]
     }
-  }
+  },
 };
