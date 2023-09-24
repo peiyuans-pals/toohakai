@@ -284,10 +284,10 @@ export const questionBankRouter = createTRPCRouter({
     })
     .input(
       z.object({
-      topic: z.string().min(3).max(30),
-      // model (either gpt3.5 or llama2)
-      model: z.union([z.literal("gpt3.5"), z.literal("llama2")])
-    })
+        topic: z.string().min(3).max(30),
+        // model (either gpt3.5 or llama2)
+        model: z.union([z.literal("gpt3.5"), z.literal("llama2")])
+      })
     )
     .mutation(async (opts) => {
       const { topic } = opts.input;

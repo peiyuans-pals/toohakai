@@ -34,7 +34,10 @@ export enum ChatCompletionProvider {
   ollama = "ollama"
 }
 
-export const generateQuestionTyped = async (topic: string, providerName: ChatCompletionProvider) => {
+export const generateQuestionTyped = async (
+  topic: string,
+  providerName: ChatCompletionProvider
+) => {
   const openai = new OpenAIChatApi(
     { apiKey: process.env.OPENAI_KEY },
     {
@@ -42,7 +45,8 @@ export const generateQuestionTyped = async (topic: string, providerName: ChatCom
     }
   );
 
-  const provider: CompletionApi = providerName === ChatCompletionProvider.openai ? openai : openai // todo: add llama
+  const provider: CompletionApi =
+    providerName === ChatCompletionProvider.openai ? openai : openai; // todo: add llama
 
   const response = await completion(
     provider,
