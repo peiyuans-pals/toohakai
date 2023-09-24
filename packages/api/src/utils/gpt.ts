@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import { z } from "zod";
 
-import { OpenAIChatApi } from "llm-api";
+import { CompletionApi, OpenAIChatApi } from "llm-api";
 import { completion } from "zod-gpt";
 
 const openai = new OpenAI({
@@ -37,8 +37,10 @@ export const generateQuestionTyped = async (topic: string) => {
     }
   );
 
+  const provider: CompletionApi = openai // todo: add llama
+
   const response = await completion(
-    openai,
+    provider,
     `
       You are a teacher in a secondary school in singapore.
       You are creating a mock O Level quiz for your students.

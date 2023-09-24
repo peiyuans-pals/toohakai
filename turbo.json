@@ -15,7 +15,8 @@
         "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
-        "SUPABASE_KEY"
+        "SUPABASE_KEY",
+        "OPENAI_KEY"
       ]
     },
     "start": {
@@ -30,7 +31,8 @@
         "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
-        "SUPABASE_KEY"
+        "SUPABASE_KEY",
+        "OPENAI_KEY"
       ]
     },
     "test": {
@@ -46,7 +48,8 @@
         "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
-        "SUPABASE_KEY"
+        "SUPABASE_KEY",
+        "OPENAI_KEY"
       ]
     },
     "cypress:headless": {
@@ -61,7 +64,8 @@
         "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
-        "SUPABASE_KEY"
+        "SUPABASE_KEY",
+        "OPENAI_KEY"
       ]
     },
     "cypress:ci": {
@@ -76,7 +80,8 @@
         "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
-        "SUPABASE_KEY"
+        "SUPABASE_KEY",
+        "OPENAI_KEY"
       ]
     },
     "lint": {

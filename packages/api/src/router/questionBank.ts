@@ -282,9 +282,15 @@ export const questionBankRouter = createTRPCRouter({
     .meta({
       description: "Generate a question from GPT"
     })
-    .input(z.string().min(3).max(30))
+    .input(
+      z.object({
+      topic: z.string().min(3).max(30),
+      // model (either gpt3.5 or llama2)
+      model: z.union([z.literal("gpt3.5"), z.literal("llama2")])
+    })
+    )
     .mutation(async (opts) => {
-      const topic = opts.input;
+      const { topic } = opts.input;
 
       // return await generateQuestion(topic)
 
