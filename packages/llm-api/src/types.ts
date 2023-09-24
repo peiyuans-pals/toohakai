@@ -6,7 +6,7 @@ import { JsonValue } from 'type-fest';
 export type OllamaConfig = {
   url?: string;
   authorizationHeader?: string; // Basic Auth
-}
+};
 
 export type AnthropicConfig = NonNullable<
   ConstructorParameters<typeof Anthropic>[0]

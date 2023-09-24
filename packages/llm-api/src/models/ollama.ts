@@ -6,8 +6,8 @@ import {
   // DefaultOllamaModel,
   MaximumResponseTokens,
   MinimumResponseTokens,
-  RateLimitRetryIntervalMs
-} from "../config";
+  RateLimitRetryIntervalMs,
+} from '../config';
 
 import {
   OllamaConfig,
@@ -21,8 +21,8 @@ import { debug } from '../utils';
 import { TokenError } from './errors';
 import { CompletionApi } from './interface';
 import { getTikTokenTokensFromPrompt } from './tokenizer';
-import { AI_PROMPT, HUMAN_PROMPT } from "@anthropic-ai/sdk";
-import { Ollama } from "../sdk/ollamaSdk";
+import { AI_PROMPT, HUMAN_PROMPT } from '@anthropic-ai/sdk';
+import { Ollama } from '../sdk/ollamaSdk';
 
 const ForbiddenTokens: string[] = []; // todo
 
@@ -55,15 +55,15 @@ export class OllamaChatApi implements CompletionApi {
     const messages: ChatRequestMessage[] = (
       finalRequestOptions.systemMessage
         ? [
-          {
-            role: 'system',
-            content:
-              typeof finalRequestOptions.systemMessage === 'string'
-                ? finalRequestOptions.systemMessage
-                : finalRequestOptions.systemMessage(),
-          },
-          ...initialMessages,
-        ]
+            {
+              role: 'system',
+              content:
+                typeof finalRequestOptions.systemMessage === 'string'
+                  ? finalRequestOptions.systemMessage
+                  : finalRequestOptions.systemMessage(),
+            },
+            ...initialMessages,
+          ]
         : initialMessages
     ).map(
       (message) =>
@@ -174,7 +174,7 @@ export class OllamaChatApi implements CompletionApi {
     const content = finalRequestOptions.responsePrefix
       ? finalRequestOptions.responsePrefix + completion
       : // if no prefix, process the completion a bit by trimming since claude tends to output an extra white space at the beginning
-      completion.trim();
+        completion.trim();
     if (!content) {
       throw new Error('Completion response malformed');
     }
