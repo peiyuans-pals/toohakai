@@ -99,7 +99,7 @@ export const NewQuestionButton = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    generateQuestion.mutate(questionBankName);
+    generateQuestion.mutate({ topic: questionBankName, model: "gpt3.5" });
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {

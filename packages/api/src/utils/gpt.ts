@@ -29,7 +29,12 @@ export const generateQuestion = async (topic: string) => {
   return completion?.choices[0]?.message?.content ?? null;
 };
 
-export const generateQuestionTyped = async (topic: string) => {
+export enum ChatCompletionProvider {
+  openai = "openai",
+  ollama = "ollama"
+}
+
+export const generateQuestionTyped = async (topic: string, providerName: ChatCompletionProvider) => {
   const openai = new OpenAIChatApi(
     { apiKey: process.env.OPENAI_KEY },
     {
@@ -37,7 +42,7 @@ export const generateQuestionTyped = async (topic: string) => {
     }
   );
 
-  const provider: CompletionApi = openai // todo: add llama
+  const provider: CompletionApi = providerName === ChatCompletionProvider.openai ? openai : openai // todo: add llama
 
   const response = await completion(
     provider,

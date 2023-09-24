@@ -292,29 +292,9 @@ export const questionBankRouter = createTRPCRouter({
     .mutation(async (opts) => {
       const { topic } = opts.input;
 
-      // return await generateQuestion(topic)
-
       const generated = await generateQuestionTyped(topic);
       console.log("generated", generated);
 
       return { generated };
-
-      // return {
-      //   generated: {
-      //     questionTitle:
-      //       "Which of the following is the main function of chlorophyll in plants?",
-      //     answers: [
-      //       { text: "A. Absorbs sunlight for photosynthesis", isCorrect: true },
-      //       { text: "B. Stores excess water in the cells", isCorrect: false },
-      //       { text: "C. Helps in respiration process", isCorrect: false },
-      //       {
-      //         text: "D. Transports nutrients throughout the plant",
-      //         isCorrect: false
-      //       }
-      //     ],
-      //     reason:
-      //       "Chlorophyll is responsible for absorbing sunlight and converting it into energy through the process of photosynthesis. It captures light energy from the sun and uses it to synthesize carbohydrates, which are essential for the plant's growth and survival."
-      //   }
-      // };
     })
 });
