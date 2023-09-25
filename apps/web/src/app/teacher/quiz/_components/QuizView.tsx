@@ -67,7 +67,7 @@ export const QuizView = ({ id, initialData }: Props) => {
       setTimeout(() => setCountdown(countdown - 1), 1000);
       return;
     }
-    //setQuizComplete(true);
+    setQuizComplete(true);
     return;
   }
   function pauseTimer() {
@@ -117,12 +117,12 @@ export const QuizView = ({ id, initialData }: Props) => {
           {questionBank.questions[question_id[questionIndex]].title}
         </p>
         <Progress className="mt-5" value={countdown * 10}></Progress>
-        {(questionEndedState && !manualControl) && (
+        {questionEndedState && !manualControl && (
           <p className="text-xl self-end">
             Next question in {countdown} seconds.
           </p>
         )}
-        {(!questionEndedState && !manualControl) && (
+        {!questionEndedState && !manualControl && (
           <p className="text-xl self-end">
             Question ends in {countdown} seconds.
           </p>
