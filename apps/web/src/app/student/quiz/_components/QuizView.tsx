@@ -99,7 +99,6 @@ export const QuizView = ({ id, initialData }: Props) => {
       </div>
     );
   }
-  if (!quizComplete) {
     return (
       <div className="p-5 flex flex-col h-screen">
         <Heading>{questionBank.title}</Heading>
@@ -156,5 +155,5 @@ export const QuizView = ({ id, initialData }: Props) => {
         </Form>
       </div>
     );
-  }
+  
 };

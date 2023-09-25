@@ -16,10 +16,6 @@ import {
   CardHeader
 } from "@/components/ui/card";
 import Link from "next/link";
-import { Toggle } from "@/components/ui/toggle";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { count } from "console";
 
 interface Props {
   id: number;
@@ -107,7 +103,6 @@ export const QuizView = ({ id, initialData }: Props) => {
     );
   }
 
-  if (!quizComplete) {
     return (
       <div className="p-5 flex flex-col h-screen">
         <h1 className="text-4xl font-bold text-gray-900">
@@ -168,5 +163,5 @@ export const QuizView = ({ id, initialData }: Props) => {
         </div>
       </div>
     );
-  }
+  
 };
