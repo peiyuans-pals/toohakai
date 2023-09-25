@@ -103,65 +103,62 @@ export const QuizView = ({ id, initialData }: Props) => {
     );
   }
 
-    return (
-      <div className="p-5 flex flex-col h-screen">
-        <h1 className="text-4xl font-bold text-gray-900">
-          {questionBank.title}
-        </h1>
-        <p className="text-xl">
-          {questionBank.questions[question_id[questionIndex]].title}
+  return (
+    <div className="p-5 flex flex-col h-screen">
+      <h1 className="text-4xl font-bold text-gray-900">{questionBank.title}</h1>
+      <p className="text-xl">
+        {questionBank.questions[question_id[questionIndex]].title}
+      </p>
+      <Progress className="mt-5" value={countdown * 10}></Progress>
+      {questionEndedState && !manualControl && (
+        <p className="text-xl self-end">
+          Next question in {countdown} seconds.
         </p>
-        <Progress className="mt-5" value={countdown * 10}></Progress>
-        {questionEndedState && !manualControl && (
-          <p className="text-xl self-end">
-            Next question in {countdown} seconds.
-          </p>
-        )}
-        {!questionEndedState && !manualControl && (
-          <p className="text-xl self-end">
-            Question ends in {countdown} seconds.
-          </p>
-        )}
+      )}
+      {!questionEndedState && !manualControl && (
+        <p className="text-xl self-end">
+          Question ends in {countdown} seconds.
+        </p>
+      )}
 
-        <div className="flex flex-col mt-auto mb-10">
-          <ButtonGrid>
-            {questionBank.questions[question_id[questionIndex]].answers.map(
-              (answer, key) => (
-                <div key={key} className="flex items-center justify-center">
-                  <ButtonGridItem
-                    percentage={percentage[key]}
-                    className="flex items-center w-full justify-center"
-                    isCorrect={answer.isCorrect}
-                    questionEndedState={questionEndedState}
-                  >
-                    {answer.text}
-                  </ButtonGridItem>
-                </div>
-              )
-            )}
-          </ButtonGrid>
-          <div className="h-16 flex justify-end">
-            {manualControl && questionEndedState && (
-              <Button
-                className="text-xl h-16 w-48"
-                onClick={nextQn}
-                disabled={!questionEndedState}
-              >
-                Next Question
-              </Button>
-            )}
-            {!manualControl && questionEndedState && (
-              <Button
-                className="text-xl h-16 w-48"
-                onClick={pauseTimer}
-                disabled={!questionEndedState}
-              >
-                Stop Countdown
-              </Button>
-            )}
-          </div>
+      <div className="flex flex-col mt-auto mb-10">
+        <ButtonGrid>
+          {questionBank.questions[question_id[questionIndex]].answers.map(
+            (answer, key) => (
+              <div key={key} className="flex items-center justify-center">
+                <ButtonGridItem
+                  percentage={percentage[key]}
+                  className="flex items-center w-full justify-center"
+                  isCorrect={answer.isCorrect}
+                  questionEndedState={questionEndedState}
+                >
+                  {answer.text}
+                </ButtonGridItem>
+              </div>
+            )
+          )}
+        </ButtonGrid>
+        <div className="h-16 flex justify-end">
+          {manualControl && questionEndedState && (
+            <Button
+              className="text-xl h-16 w-48"
+              onClick={nextQn}
+              disabled={!questionEndedState}
+            >
+              Next Question
+            </Button>
+          )}
+          {!manualControl && questionEndedState && (
+            <Button
+              className="text-xl h-16 w-48"
+              onClick={pauseTimer}
+              disabled={!questionEndedState}
+            >
+              Stop Countdown
+            </Button>
+          )}
         </div>
       </div>
-    );
-  
+    </div>
+  );
 };

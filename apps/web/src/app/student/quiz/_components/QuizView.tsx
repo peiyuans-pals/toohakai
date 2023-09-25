@@ -99,61 +99,60 @@ export const QuizView = ({ id, initialData }: Props) => {
       </div>
     );
   }
-    return (
-      <div className="p-5 flex flex-col h-screen">
-        <Heading>{questionBank.title}</Heading>
-        <p className="text-xl">{questionBank.questions[question_id].title}</p>
-        <Progress className="mt-5" value={countdown * 10}></Progress>
-        <Form {...form}>
-          <form
-            className="flex flex-col mt-auto mb-10"
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
-            <FormField
-              control={form.control}
-              name="answer_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <ButtonGroup
-                      id="form"
-                      disabled={isSubmitted}
-                      onValueChange={field.onChange}
-                    >
-                      {questionBank.questions[question_id].answers.map(
-                        (answer) => (
-                          <div
-                            key={answer.id}
-                            className="flex items-center justify-center"
+  return (
+    <div className="p-5 flex flex-col h-screen">
+      <Heading>{questionBank.title}</Heading>
+      <p className="text-xl">{questionBank.questions[question_id].title}</p>
+      <Progress className="mt-5" value={countdown * 10}></Progress>
+      <Form {...form}>
+        <form
+          className="flex flex-col mt-auto mb-10"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FormField
+            control={form.control}
+            name="answer_id"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <ButtonGroup
+                    id="form"
+                    disabled={isSubmitted}
+                    onValueChange={field.onChange}
+                  >
+                    {questionBank.questions[question_id].answers.map(
+                      (answer) => (
+                        <div
+                          key={answer.id}
+                          className="flex items-center justify-center"
+                        >
+                          <ButtonGroupItem
+                            value={String(answer.id)}
+                            className="flex items-center w-full justify-center"
                           >
-                            <ButtonGroupItem
-                              value={String(answer.id)}
-                              className="flex items-center w-full justify-center"
-                            >
-                              {answer.text}
-                              {answer.isCorrect && isSubmitted ? (
-                                <CheckCircledIcon className="ml-2" />
-                              ) : null}
-                            </ButtonGroupItem>
-                          </div>
-                        )
-                      )}
-                    </ButtonGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              disabled={isSubmitted}
-              type="submit"
-              className=" text-xl mt-2"
-            >
-              Submit
-            </Button>
-          </form>
-        </Form>
-      </div>
-    );
-  
+                            {answer.text}
+                            {answer.isCorrect && isSubmitted ? (
+                              <CheckCircledIcon className="ml-2" />
+                            ) : null}
+                          </ButtonGroupItem>
+                        </div>
+                      )
+                    )}
+                  </ButtonGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            disabled={isSubmitted}
+            type="submit"
+            className=" text-xl mt-2"
+          >
+            Submit
+          </Button>
+        </form>
+      </Form>
+    </div>
+  );
 };
