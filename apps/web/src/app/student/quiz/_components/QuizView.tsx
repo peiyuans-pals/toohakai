@@ -92,7 +92,6 @@ export const QuizView = ({ id, initialData }: Props) => {
               <Button asChild>
                 {/* Temporary link, supposed to redirect back to student's dashboard */}
                 <Link href="join-quiz-room">Return to home</Link>
-
               </Button>
             </CardFooter>
           </Card>
