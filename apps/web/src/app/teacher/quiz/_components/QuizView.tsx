@@ -16,6 +16,10 @@ import {
   CardHeader
 } from "@/components/ui/card";
 import Link from "next/link";
+import { Toggle } from "@/components/ui/toggle";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { count } from "console";
 
 interface Props {
   id: number;
@@ -26,20 +30,30 @@ export const QuizView = ({ id, initialData }: Props) => {
     initialData
   });
   const [countdown, setCountdown] = useState<number>(10);
-  const [timerEnded, setTimerState] = useState<boolean>(false);
+  const [questionEndedState, setQuestionEndedState] = useState<boolean>(false);
   const [questionIndex, setQuestionIndex] = useState<number>(0);
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
+  const [manualControl, setManualControl] = useState<boolean>(false);
 
   const percentage = [25, 10, 15, 50]; //Percentage of students choosing option 1,2,3,4 respectively
 
-  // every second, decrement countdown
   useEffect(() => {
-    if (countdown >= 0) {
+    console.log(countdown);
+    if (countdown > 0 && !questionEndedState) {
       setTimeout(() => setCountdown(countdown - 1), 1000);
-    } else {
-      //setCountdown(10);
-      setTimerState(true);
+      return;
     }
+    if (countdown == 0 && questionEndedState && !manualControl) {
+      nextQn();
+      return;
+    }
+    if (countdown > 0 && questionEndedState && !manualControl) {
+      setTimeout(() => setCountdown(countdown - 1), 1000);
+      return;
+    }
+    setQuestionEndedState(true);
+    setCountdown(10);
+    return;
   }, [countdown]);
   const question_id = [0, 1]; //mock question IDs
   let i = 0;
@@ -47,11 +61,18 @@ export const QuizView = ({ id, initialData }: Props) => {
   function nextQn() {
     if (questionIndex < question_id.length - 1) {
       setCountdown(10);
-      setTimerState(false);
+      setQuestionEndedState(false);
+      setManualControl(false);
       setQuestionIndex(questionIndex + 1);
+      setTimeout(() => setCountdown(countdown - 1), 1000);
       return;
     }
-    setQuizComplete(true);
+    //setQuizComplete(true);
+    return;
+  }
+  function pauseTimer() {
+    setManualControl(true);
+    return;
   }
 
   if (!questionBank) {
@@ -96,6 +117,17 @@ export const QuizView = ({ id, initialData }: Props) => {
           {questionBank.questions[question_id[questionIndex]].title}
         </p>
         <Progress className="mt-5" value={countdown * 10}></Progress>
+        {(questionEndedState && !manualControl) && (
+          <p className="text-xl self-end">
+            Next question in {countdown} seconds.
+          </p>
+        )}
+        {(!questionEndedState && !manualControl) && (
+          <p className="text-xl self-end">
+            Question ends in {countdown} seconds.
+          </p>
+        )}
+
         <div className="flex flex-col mt-auto mb-10">
           <ButtonGrid>
             {questionBank.questions[question_id[questionIndex]].answers.map(
@@ -105,7 +137,7 @@ export const QuizView = ({ id, initialData }: Props) => {
                     percentage={percentage[key]}
                     className="flex items-center w-full justify-center"
                     isCorrect={answer.isCorrect}
-                    timerEnded={timerEnded}
+                    questionEndedState={questionEndedState}
                   >
                     {answer.text}
                   </ButtonGridItem>
@@ -113,13 +145,26 @@ export const QuizView = ({ id, initialData }: Props) => {
               )
             )}
           </ButtonGrid>
-          <Button
-            className="text-4xl h-20"
-            onClick={nextQn}
-            disabled={!timerEnded}
-          >
-            Next
-          </Button>
+          <div className="h-16 flex justify-end">
+            {manualControl && questionEndedState && (
+              <Button
+                className="text-xl h-16 w-48"
+                onClick={nextQn}
+                disabled={!questionEndedState}
+              >
+                Next Question
+              </Button>
+            )}
+            {!manualControl && questionEndedState && (
+              <Button
+                className="text-xl h-16 w-48"
+                onClick={pauseTimer}
+                disabled={!questionEndedState}
+              >
+                Stop Countdown
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     );

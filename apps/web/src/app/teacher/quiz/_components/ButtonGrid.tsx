@@ -16,7 +16,7 @@ interface ButtonGridItemProps {
   percentage: number;
   isCorrect: boolean;
   className?: string;
-  timerEnded: boolean;
+  questionEndedState: boolean;
 
 }
 export const ButtonGrid = ({ children, className}: ButtonGridProps) => {
@@ -33,9 +33,9 @@ export const ButtonGrid = ({ children, className}: ButtonGridProps) => {
 };
 ButtonGrid.displayName = RadioGroupPrimitive.Root.displayName;
 
-export const ButtonGridItem = ({ children, className, percentage, isCorrect, timerEnded }: ButtonGridItemProps) => {
-  const c = (timerEnded && isCorrect) ? "shadow-lg bg-primary text-primary-foreground " : null
-  const c2 = (timerEnded && isCorrect) ? "bg-green-700 " : null
+export const ButtonGridItem = ({ children, className, percentage, isCorrect, questionEndedState }: ButtonGridItemProps) => {
+  const c = (questionEndedState && isCorrect) ? "shadow-lg bg-primary text-primary-foreground " : null
+  const c2 = (questionEndedState && isCorrect) ? "bg-green-700 " : null
   return (
     <div
       className={cn(
@@ -47,7 +47,7 @@ export const ButtonGridItem = ({ children, className, percentage, isCorrect, tim
 
       <div className="z-10 relative">{children}</div>
       {
-        timerEnded ? 
+        questionEndedState ? 
         <div className={cn("bg-slate-300 h-full absolute top-0 left-0 -z-10", c2)} 
         style={{width:`${percentage}%`}}></div> : null
       }
