@@ -34,7 +34,6 @@ export const QuizView = ({ id, initialData }: Props) => {
   const percentage = [25, 10, 15, 50]; //Percentage of students choosing option 1,2,3,4 respectively
 
   useEffect(() => {
-    console.log(countdown);
     if (countdown > 0 && !questionEndedState) {
       setTimeout(() => setCountdown(countdown - 1), 1000);
       return;
