@@ -17,6 +17,10 @@ const sidebarItems = [
   {
     name: "Quizzes",
     href: "/dashboard/teacher/quizzes"
+  },
+  {
+    name: "Quiz Reports",
+    href: "/dashboard/teacher/quiz-reports"
   }
 ];
 
