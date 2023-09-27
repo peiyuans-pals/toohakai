@@ -1,6 +1,9 @@
 "use client";
 
-import { ButtonGroup, ButtonGroupItem } from "src/components/ui/ButtonGroup";
+import {
+  ButtonGroup,
+  ButtonGroupItem
+} from "src/app/student/quiz/_components/ButtonGroup";
 import { trpc } from "../../../../utils/trpc/client";
 import { TrpcReactQueryOptions } from "../../../../utils/trpc/lib";
 import { Button } from "@/components/ui/button";
@@ -18,6 +21,13 @@ import { Heading } from "src/components/ui";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader
+} from "@/components/ui/card";
+import Link from "next/link";
 
 interface Props {
   id: number;
@@ -28,6 +38,7 @@ export const QuizView = ({ id, initialData }: Props) => {
     initialData
   });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(10);
 
   // every second, decrement countdown
@@ -61,7 +72,33 @@ export const QuizView = ({ id, initialData }: Props) => {
       </div>
     );
   }
+  if (quizComplete) {
+    return (
+      <div className="p-5 flex flex-col w-screen justify-center items-center h-screen">
+        <div>
+          <Card>
+            <CardHeader>
+              <h1 className="text-4xl font-bold text-gray-900">
+                {questionBank.title}
+              </h1>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xl">Quiz has now been completed</p>
+              <p className="text-xl">Results have been saved successfully</p>
 
+              <p className="text-xl mt-5">Your Score for this quiz: 8/10</p>
+            </CardContent>
+            <CardFooter>
+              <Button asChild>
+                {/* Temporary link, supposed to redirect back to student's dashboard */}
+                <Link href="join-quiz-room">Return to home</Link>
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="p-5 flex flex-col h-screen">
       <Heading>{questionBank.title}</Heading>
