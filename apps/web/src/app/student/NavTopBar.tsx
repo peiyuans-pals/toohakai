@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 const topbarItems = [
   {
@@ -21,22 +22,20 @@ const topbarItems = [
 ];
 
 export const NavTopBar = () => {
-  const pathname = usePathname();
+  //const pathname = usePathname();
   return (
-    <div className="">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button className=" bg-3">{buttonName(pathname)}</Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          {topbarItems.map((item) => (
-            <DropdownMenuItem key={item.name} onSelect={redirect(item.href)}>
-              {item.name}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button>Test</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        {topbarItems.map((item) => (
+          <Link key={item.name} href={item.href}>
+            <DropdownMenuItem key={item.name}>{item.name}</DropdownMenuItem>
+          </Link>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
@@ -48,6 +47,21 @@ function buttonName(path_name: string) {
       return "Quiz Reports";
   }
 }
+
+/**
+ * <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button className=" bg-3">{buttonName(pathname)}</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          {topbarItems.map((item) => (
+            <DropdownMenuItem key={item.name} onSelect={redirect(item.href)}>
+              {item.name}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+ */
 
 /**
    * <nav className="flex flex-1 space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 p-0 pr-4 border-r">

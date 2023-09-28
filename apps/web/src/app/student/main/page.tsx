@@ -5,7 +5,7 @@ import { cn } from "../../../utils/shadcn";
 import { usePathname } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import { ClockIcon, ColorWheelIcon } from "@radix-ui/react-icons";
-import { Button, Heading } from "src/components/ui";
+import { StudentView } from "src/components/ui/StudentView";
 
 const navItems = [
   {
@@ -17,7 +17,14 @@ const navItems = [
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col gap-4 absolute">
+    <StudentView>
+      <p>test</p>
+    </StudentView>
+  );
+}
+
+/**
+ * <div className="flex flex-col gap-4 absolute">
       {navItems.map((item) => (
         <Link href={item.href}>
           <Button variant="pill">
@@ -27,5 +34,4 @@ export default function HomePage() {
         </Link>
       ))}
     </div>
-  );
-}
+ */

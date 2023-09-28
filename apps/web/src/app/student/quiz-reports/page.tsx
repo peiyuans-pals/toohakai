@@ -11,6 +11,7 @@ import quizreport_topics from "../../../../public/mockdata/quiz-topics.json";
 import quizreport_data from "../../../../public/mockdata/student-quiz-reports.json";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { StudentView } from "src/components/ui/StudentView";
 
 export default function StudentQuizReports() {
   const [topic, setTopic] = useState("");
@@ -29,7 +30,7 @@ export default function StudentQuizReports() {
   }
 
   return (
-    <div className="flex-col justify-space">
+    <StudentView>
       <Heading>Student Quiz Reports</Heading>
       <div className="flex flex-row justify-between items-center gap-4 pt-2">
         <Input
@@ -51,7 +52,7 @@ export default function StudentQuizReports() {
       <div className="pt-2">
         <StudentQuizReportCards initialData={sortedData} />
       </div>
-    </div>
+    </StudentView>
   );
 }
 
