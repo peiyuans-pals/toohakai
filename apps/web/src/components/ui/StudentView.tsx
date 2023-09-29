@@ -7,7 +7,7 @@ interface Props {
 export const StudentView = ({ children }: Props) => {
   return (
     <div
-      className="min-h-full p-4 flex flex-col justify-start" // TODO: fix
+      className=" min-w-full p-4 flex flex-col justify-start" // TODO: fix
     >
       {children}
     </div>

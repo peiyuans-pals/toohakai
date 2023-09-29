@@ -1,17 +1,17 @@
 "use client";
 
-import { DashboardView, Heading } from "../../../components/ui";
-import { trpcServer } from "../../../utils/trpc/server";
+import { trpcServer } from "../../../../utils/trpc/server";
 import { cookies } from "next/headers";
-import { NavTopBar } from "../NavTopBar";
+import { NavTopBar } from "../_component/NavTopBar";
 import { TopicBar } from "../quiz-reports/_components/TopicBar";
 import { StudentQuizReportCards } from "../quiz-reports/_components/Cards";
 
-import quizreport_topics from "../../../../public/mockdata/quiz-topics.json";
-import quizreport_data from "../../../../public/mockdata/student-quiz-reports.json";
+import quizreport_topics from "../../../../../public/mockdata/quiz-topics.json";
+import quizreport_data from "../../../../../public/mockdata/student-quiz-reports.json";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { StudentView } from "src/components/ui/StudentView";
+import { Heading } from "src/components/ui";
 
 export default function StudentQuizReports() {
   const [topic, setTopic] = useState("");

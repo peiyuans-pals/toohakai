@@ -16,16 +16,16 @@ interface Props {
 
 export const StudentDashboardCards = ({ initialData }: Props) => {
   return (
-    <div className="grid grid-cols-4 gap-4 flex-col">
+    <div className="grid grid-rows sm:grid-cols-3  gap-4 flex-col">
       {initialData.map((item) => (
         <Link key={item.name} href={`${item.href}`}>
-          <Card className="aspect-square">
+          <Card>
             <CardHeader className="flex">
               <CardTitle className="flex font-bold justify-center">
                 {item.name}
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex justify-center">
+            <CardContent className="flex justify-center h-full items-center">
               {item.icon}
             </CardContent>
           </Card>

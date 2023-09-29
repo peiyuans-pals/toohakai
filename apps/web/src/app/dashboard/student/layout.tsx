@@ -1,11 +1,11 @@
 "use server";
 
 import { Metadata } from "next";
-import "../../app/styles.css";
-import "../../app/globals.css";
+import "../../../app/styles.css";
+import "../../../app/globals.css";
 import { Page } from "src/components/ui";
-import { NavTopBar } from "./NavTopBar";
-import { trpcServer } from "../../utils/trpc/server";
+import { NavTopBar } from "./_component/NavTopBar";
+import { trpcServer } from "../../../utils/trpc/server";
 import { cookies } from "next/headers";
 import { ProfileButton } from "src/components/ProfileButton";
 
@@ -29,7 +29,7 @@ export default async function StudentLayout({
         </div>
         <ProfileButton initialData={me} />
       </div>
-      <div className="flex-1">{children}</div>
+      <div className="flex">{children}</div>
     </Page>
   );
 }

@@ -15,12 +15,12 @@ interface Props {
 
 export const StudentQuizReportCards = ({ initialData }: Props) => {
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-rows-1 sm:grid-cols-4 gap-4">
       {initialData.map((item) => (
         <Link
           target={"_blank"}
           key={item.id}
-          href={`/student/quiz-reports/${item.id}`}
+          href={`/dashboard/student/quiz-reports/${item.id}`}
         >
           <Card className=" h-[200px] relative">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

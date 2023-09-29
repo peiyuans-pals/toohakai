@@ -4,29 +4,37 @@ import Link from "next/link";
 import { cn } from "../../../utils/shadcn";
 import { usePathname } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
-import { ClockIcon, ColorWheelIcon, HomeIcon } from "@radix-ui/react-icons";
+import {
+  ClockIcon,
+  ColorWheelIcon,
+  EnterIcon,
+  HomeIcon
+} from "@radix-ui/react-icons";
 import { StudentView } from "src/components/ui/StudentView";
 import { StudentDashboardCards } from "./_component/Card";
 
 const navItems = [
   {
     name: "Home",
-    href: "/student/main",
-    icon: <HomeIcon scale={40} />
+    href: "/dashboard/student",
+    icon: <HomeIcon className="w-1/2 h-1/2" />
   },
   {
     name: "Quiz Reports",
-    href: "/student/quiz-reports",
-    icon: <ClockIcon />
+    href: "/dashboard/student/quiz-reports",
+    icon: <ClockIcon className="w-1/2 h-1/2" />
+  },
+  {
+    name: "Join Quiz Room",
+    href: "/student/join-quiz-room",
+    icon: <EnterIcon className="w-1/2 h-1/2" />
   }
 ];
 
 export default function HomePage() {
   return (
     <StudentView>
-      <div className="pt-2 justify-center justify-items-center">
-        <StudentDashboardCards initialData={navItems} />
-      </div>
+      <StudentDashboardCards initialData={navItems} />
     </StudentView>
   );
 }

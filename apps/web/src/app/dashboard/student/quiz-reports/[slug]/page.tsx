@@ -1,9 +1,9 @@
 "use client";
-import { Heading } from "../../../../components/ui";
+import { Heading } from "../../../../../components/ui";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { ResultTable } from "../[slug]/_component/ResultTable";
 
-import initialData from "../../../../../public/mockdata/student-quiz-result.json";
+import initialData from "../../../../../../public/mockdata/student-quiz-result.json";
 import { StudentView } from "src/components/ui/StudentView";
 
 interface Props {
