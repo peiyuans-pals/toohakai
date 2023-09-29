@@ -8,12 +8,11 @@ import { ClockIcon, ColorWheelIcon, HomeIcon } from "@radix-ui/react-icons";
 import { StudentView } from "src/components/ui/StudentView";
 import { StudentDashboardCards } from "./_component/Card";
 
-
 const navItems = [
   {
     name: "Home",
     href: "/student/main",
-    icon: <HomeIcon fontSize={100}/>
+    icon: <HomeIcon scale={40} />
   },
   {
     name: "Quiz Reports",
@@ -26,21 +25,8 @@ export default function HomePage() {
   return (
     <StudentView>
       <div className="pt-2 justify-center justify-items-center">
-        <StudentDashboardCards initialData={navItems}/>
+        <StudentDashboardCards initialData={navItems} />
       </div>
     </StudentView>
   );
 }
-
-/**
- * <div className="flex flex-col gap-4 absolute">
-      {navItems.map((item) => (
-        <Link href={item.href}>
-          <Button variant="pill">
-            <ClockIcon />
-          </Button>
-          <Heading>{item.name}</Heading>
-        </Link>
-      ))}
-    </div>
- */

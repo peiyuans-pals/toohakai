@@ -11,25 +11,22 @@ import Link from "next/link";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
 interface Props {
-  initialData: { name: string; href: string; icon: React.JSX.Element; }[];
+  initialData: { name: string; href: string; icon: React.JSX.Element }[];
 }
 
 export const StudentDashboardCards = ({ initialData }: Props) => {
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-4 gap-4 flex-col">
       {initialData.map((item) => (
-        <Link
-          key={item.name}
-          href={`${item.href}`}
-        >
-          <Card className=" h-[200px]">
+        <Link key={item.name} href={`${item.href}`}>
+          <Card className="aspect-square">
             <CardHeader className="flex">
               <CardTitle className="flex font-bold justify-center">
                 {item.name}
               </CardTitle>
             </CardHeader>
             <CardContent className="flex justify-center">
-            {item.icon}
+              {item.icon}
             </CardContent>
           </Card>
         </Link>
