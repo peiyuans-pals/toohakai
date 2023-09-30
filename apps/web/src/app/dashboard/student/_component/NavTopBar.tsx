@@ -32,7 +32,9 @@ export const NavTopBar = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button>
-          {topbarItems.filter((item) => item.href === pathname)[0].name}
+          {pathname.split("/").length !== 5
+            ? topbarItems.filter((item) => item.href === pathname)[0].name
+            : "Quiz Reports"}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
