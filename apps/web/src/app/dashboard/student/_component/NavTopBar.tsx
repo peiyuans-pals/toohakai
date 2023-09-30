@@ -26,8 +26,6 @@ const topbarItems = [
 ];
 
 export const NavTopBar = () => {
-  const pathname = usePathname();
-  const pagename = topbarItems.find((item) => (item.href = pathname))?.name;
 
   return (
     <DropdownMenu>
@@ -37,7 +35,7 @@ export const NavTopBar = () => {
       <DropdownMenuContent>
         {topbarItems.map((item) => (
           <Link key={item.name} href={item.href}>
-            <DropdownMenuItem key={item.name}>{item.name}</DropdownMenuItem>
+            <DropdownMenuItem key={item.name}>{item.href}</DropdownMenuItem>
           </Link>
         ))}
       </DropdownMenuContent>
