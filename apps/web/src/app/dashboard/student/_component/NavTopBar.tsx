@@ -26,11 +26,14 @@ const topbarItems = [
 ];
 
 export const NavTopBar = () => {
+  const pathname = usePathname();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>Home</Button>
+        <Button>
+          {topbarItems.filter((item) => item.href === pathname)[0].name}
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {topbarItems.map((item) => (
