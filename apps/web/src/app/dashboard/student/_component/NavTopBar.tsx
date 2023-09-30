@@ -35,7 +35,7 @@ export const NavTopBar = () => {
       <DropdownMenuContent>
         {topbarItems.map((item) => (
           <Link key={item.name} href={item.href}>
-            <DropdownMenuItem key={item.name}>{item.href}</DropdownMenuItem>
+            <DropdownMenuItem key={item.name}>{item.name}</DropdownMenuItem>
           </Link>
         ))}
       </DropdownMenuContent>
