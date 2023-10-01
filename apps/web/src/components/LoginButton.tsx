@@ -2,8 +2,13 @@
 
 import { supabase } from "../utils/supabase/client";
 import { Button } from "@/components/ui/button";
+import { cn } from "../utils/shadcn";
 
-export const LoginButton = () => {
+interface Props {
+  className?: string;
+}
+
+export const LoginButton = ({ className }: Props) => {
   const handleLoginClick = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "azure",
@@ -18,7 +23,7 @@ export const LoginButton = () => {
 
   return (
     <Button
-      className="btn w-24"
+      className={cn("", className)}
       onClick={handleLoginClick}
       data-cy="login-button"
     >

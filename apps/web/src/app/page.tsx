@@ -15,20 +15,13 @@ export default function LoginPage({ params, searchParams }: NextPage) {
   const enableTestLogin = searchParams?.test === "true";
 
   return (
-    <div className="flex flex-row min-h-screen justify-center items-center bg-gradient-to-br from-green-800 to-green-700">
-      <Card className="h-96 w-96 rounded-md">
-        <CardHeader>
-          <CardTitle>Toohakai</CardTitle>
-          <CardDescription>A fun quiz app</CardDescription>
-        </CardHeader>
-        {/*<CardContent className="flex-1">*/}
-        {/*  <p>Card Content</p>*/}
-        {/*</CardContent>*/}
-        <CardFooter className="gap-2">
-          <LoginButton />
-          {enableTestLogin && <TestLoginButton />}
-        </CardFooter>
-      </Card>
+    <div className="flex flex-col min-h-screen justify-center items-center bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-green-300 to-green-500">
+      <h1 className="text-4xl font-bold mb-4">Toohakai</h1>
+      <h2 className="text-2xl mb-8">
+        Assess and practice, in the classroom and beyond.
+      </h2>
+      <LoginButton className="bg-white text-green-700 py-5 px-10 text-lg hover:bg-green-500 hover:text-white" />
+      {enableTestLogin && <TestLoginButton />}
     </div>
   );
 }

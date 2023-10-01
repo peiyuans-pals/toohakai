@@ -29,20 +29,32 @@ export const NavSidebar = () => {
   return (
     <nav className="flex flex-1 space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 p-0 pr-4 border-r">
       {sidebarItems.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          className={cn(
-            buttonVariants({ variant: "ghost" }),
-            pathname === item.href
-              ? "bg-primary hover:bg-primary text-white hover:text-white"
-              : "hover:bg-muted",
-            "justify-start"
-          )}
-        >
-          {item.name}
-        </Link>
+        <SidebarItem key={item.href} item={item} pathname={pathname} />
       ))}
     </nav>
+  );
+};
+
+interface SidebarItemProps {
+  item: (typeof sidebarItems)[0];
+  pathname: string;
+}
+
+const SidebarItem = ({ item, pathname }: SidebarItemProps) => {
+  return (
+    <Link
+      href={item.href}
+      className={cn(
+        buttonVariants({ variant: "ghost" }),
+        pathname === item.href
+          ? "bg-primary hover:bg-primary text-white hover:text-white"
+          : pathname.includes(item.href) && item.name !== "Home"
+          ? "border border-primary text-primary"
+          : "hover:bg-muted",
+        "justify-start"
+      )}
+    >
+      {item.name}
+    </Link>
   );
 };
