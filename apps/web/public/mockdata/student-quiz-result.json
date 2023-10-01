@@ -1,0 +1,26 @@
+{
+  "quiz-id": 1,
+  "quiz-name": "2023 Mid-Term Math",
+  "score": 6,
+  "fullscore": 10,
+  "result": [
+    {
+      "question": "What is 1+1?",
+      "option1": "1",
+      "option2": "2",
+      "option3": "3",
+      "option4": "4",
+      "selectedans": "option1",
+      "correctans": "option2"
+    },
+    {
+      "question": "2. What is 2+2?",
+      "option1": "1",
+      "option2": "2",
+      "option3": "3",
+      "option4": "4",
+      "selectedans": "option3",
+      "correctans": "option4"
+    }
+  ]
+}

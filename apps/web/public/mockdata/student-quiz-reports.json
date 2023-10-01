@@ -1,0 +1,40 @@
+{
+  "quiz-reports": [
+    {
+      "id": 1,
+      "topic": "Physics",
+      "name": "2023 Mid-Term Physics",
+      "length": 10,
+      "score": 5,
+      "fullscore": 10,
+      "date": "23 January 2023"
+    },
+    {
+      "id": 2,
+      "topic": "Physics",
+      "name": "2023 Final Physics",
+      "length": 15,
+      "score": 10,
+      "fullscore": 15,
+      "date": "2 March 2023"
+    },
+    {
+      "id": 3,
+      "topic": "Math",
+      "name": "2023 Mid-Term Math",
+      "length": 10,
+      "score": 6,
+      "fullscore": 10,
+      "date": "1 February 2023"
+    },
+    {
+      "id": 4,
+      "topic": "Biology",
+      "name": "2023 Final Bio",
+      "length": 15,
+      "score": 13,
+      "fullscore": 15,
+      "date": "7 July 2023"
+    }
+  ]
+}
