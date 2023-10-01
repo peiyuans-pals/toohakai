@@ -8,7 +8,7 @@ interface Props {
   className?: string;
 }
 
-export const LoginButton = ({className}: Props) => {
+export const LoginButton = ({ className }: Props) => {
   const handleLoginClick = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "azure",
