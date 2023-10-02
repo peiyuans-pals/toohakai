@@ -3,7 +3,6 @@ import {
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Cell,
   LabelList,
   ResponsiveContainer
