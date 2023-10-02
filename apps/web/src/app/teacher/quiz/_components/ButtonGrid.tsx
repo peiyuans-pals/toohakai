@@ -47,7 +47,7 @@ export const ButtonGridItem = ({
   return (
     <div
       className={cn(
-        "whitespace-nowrap relative rounded-sm border h-[200px] text-4xl font-medium ring-offset-background -z-20 ",
+        "whitespace-nowrap relative rounded-sm border h-[150px] text-4xl font-medium ring-offset-background -z-20 ",
         className,
         c
       )}

@@ -32,8 +32,6 @@ export const QuizView = ({ id, initialData }: Props) => {
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [manualControl, setManualControl] = useState<boolean>(false);
 
-  const percentage_1 = [25, 10, 15, 50]; //Percentage of students choosing option 1,2,3,4 respectively
-
   useEffect(() => {
     if (countdown > 0 && !questionEndedState) {
       setTimeout(() => setCountdown(countdown - 1), 1000);
@@ -60,6 +58,7 @@ export const QuizView = ({ id, initialData }: Props) => {
       setQuestionEndedState(false);
       setManualControl(false);
       setQuestionIndex(questionIndex + 1);
+      setTimeout(() => setCountdown(countdown - 1), 1000);
       return;
     }
     setQuizComplete(true);
@@ -69,7 +68,7 @@ export const QuizView = ({ id, initialData }: Props) => {
     setManualControl(true);
     return;
   }
-
+  //mock results (only percentage of people who chose option was hardcoded)
   let results_1 = [
     {
       option:
@@ -144,46 +143,47 @@ export const QuizView = ({ id, initialData }: Props) => {
   return (
     <div className="p-5 flex flex-col h-screen">
       <h1 className="text-4xl font-bold text-gray-900">{questionBank.title}</h1>
-      <p className="text-xl">
+      <p className="text-2xl">
         {questionBank.questions[question_id[questionIndex]].title}
       </p>
       <Progress className="mt-5" value={countdown * 10}></Progress>
       {questionEndedState && !manualControl && (
-        <p className="text-xl self-end">
+        <p className="text-2xl self-end">
           Next question in {countdown} seconds.
         </p>
       )}
       {!questionEndedState && !manualControl && (
-        <p className="text-xl self-end">
+        <p className="text-2xl self-end">
           Question ends in {countdown} seconds.
         </p>
       )}
-      {
-        questionEndedState &&
-        (<QuizChart results={results_1}></QuizChart>)
-        }
+      {questionEndedState && <QuizChart results={results_1}></QuizChart>}
 
       <div className="flex flex-col mt-auto mb-10">
-        <ButtonGrid>
-          {questionBank.questions[question_id[questionIndex]].answers.map(
-            (answer, key) => (
-              <div key={key} className="flex items-center justify-center">
-                <ButtonGridItem
-                  percentage={0}
-                  className="flex items-center w-full justify-center"
-                  isCorrect={answer.isCorrect}
-                  questionEndedState={questionEndedState}
-                >
-                  {answer.text}
-                </ButtonGridItem>
-              </div>
-            )
-          )}
-        </ButtonGrid>
-        <div className="h-16 flex justify-end">
+        {
+          !questionEndedState && (
+          <ButtonGrid>
+            {questionBank.questions[question_id[questionIndex]].answers.map(
+              (answer, key) => (
+                <div key={key} className="flex items-center justify-center">
+                  <ButtonGridItem
+                    percentage={0}
+                    className="flex items-center w-full justify-center"
+                    isCorrect={answer.isCorrect}
+                    questionEndedState={questionEndedState}
+                  >
+                    {answer.text}
+                  </ButtonGridItem>
+                </div>
+              )
+            )}
+          </ButtonGrid>
+          )
+        }
+        <div className="flex justify-end">
           {manualControl && questionEndedState && (
             <Button
-              className="text-xl h-16 w-48"
+              className="text-2xl h-16 w-60"
               onClick={nextQn}
               disabled={!questionEndedState}
             >
@@ -192,7 +192,7 @@ export const QuizView = ({ id, initialData }: Props) => {
           )}
           {!manualControl && questionEndedState && (
             <Button
-              className="text-xl h-16 w-48"
+              className="text-2xl h-16 w-60"
               onClick={pauseTimer}
               disabled={!questionEndedState}
             >
