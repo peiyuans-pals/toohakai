@@ -43,7 +43,7 @@ export const QuizView = ({ id, initialData }: Props) => {
       return;
     }
     if (countdown > 0 && questionEndedState && !manualControl) {
-      setTimeout(() => setCountdown(countdown - 1), 1000);
+      setTimeout(() => setCountdown(countdown - 1), 1000);      
       return;
     }
     setQuestionEndedState(true);
@@ -59,7 +59,6 @@ export const QuizView = ({ id, initialData }: Props) => {
       setQuestionEndedState(false);
       setManualControl(false);
       setQuestionIndex(questionIndex + 1);
-      setTimeout(() => setCountdown(countdown - 1), 1000);
       return;
     }
     setQuizComplete(true);
