@@ -16,6 +16,7 @@ import {
   CardHeader
 } from "@/components/ui/card";
 import Link from "next/link";
+import { QuizChart } from "./QuizChart";
 
 interface Props {
   id: number;
@@ -31,7 +32,7 @@ export const QuizView = ({ id, initialData }: Props) => {
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [manualControl, setManualControl] = useState<boolean>(false);
 
-  const percentage = [25, 10, 15, 50]; //Percentage of students choosing option 1,2,3,4 respectively
+  const percentage_1 = [25, 10, 15, 50]; //Percentage of students choosing option 1,2,3,4 respectively
 
   useEffect(() => {
     if (countdown > 0 && !questionEndedState) {
@@ -68,6 +69,45 @@ export const QuizView = ({ id, initialData }: Props) => {
     setManualControl(true);
     return;
   }
+
+  let results_1 = [
+    {
+      option:
+        questionBank?.questions[question_id[questionIndex]].answers[0].text,
+      correct:
+        questionBank?.questions[question_id[questionIndex]].answers[0]
+          .isCorrect,
+      label: `${35}%`,
+      tally: 35
+    },
+    {
+      option:
+        questionBank?.questions[question_id[questionIndex]].answers[1].text,
+      correct:
+        questionBank?.questions[question_id[questionIndex]].answers[1]
+          .isCorrect,
+      label: `${10}%`,
+      tally: 10
+    },
+    {
+      option:
+        questionBank?.questions[question_id[questionIndex]].answers[2].text,
+      correct:
+        questionBank?.questions[question_id[questionIndex]].answers[2]
+          .isCorrect,
+      label: `${5}%`,
+      tally: 5
+    },
+    {
+      option:
+        questionBank?.questions[question_id[questionIndex]].answers[3].text,
+      correct:
+        questionBank?.questions[question_id[questionIndex]].answers[3]
+          .isCorrect,
+      label: `${50}%`,
+      tally: 50
+    }
+  ];
 
   if (!questionBank) {
     return (
@@ -118,6 +158,10 @@ export const QuizView = ({ id, initialData }: Props) => {
           Question ends in {countdown} seconds.
         </p>
       )}
+      {
+        questionEndedState &&
+        (<QuizChart results={results_1}></QuizChart>)
+        }
 
       <div className="flex flex-col mt-auto mb-10">
         <ButtonGrid>
@@ -125,7 +169,7 @@ export const QuizView = ({ id, initialData }: Props) => {
             (answer, key) => (
               <div key={key} className="flex items-center justify-center">
                 <ButtonGridItem
-                  percentage={percentage[key]}
+                  percentage={0}
                   className="flex items-center w-full justify-center"
                   isCorrect={answer.isCorrect}
                   questionEndedState={questionEndedState}
