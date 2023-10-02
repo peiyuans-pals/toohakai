@@ -6,7 +6,7 @@ import {
 } from "src/app/teacher/quiz/_components/ButtonGrid";
 import { trpc } from "../../../../utils/trpc/client";
 import { TrpcReactQueryOptions } from "../../../../utils/trpc/lib";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,40 +32,46 @@ export const QuizView = ({ id, initialData }: Props) => {
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [manualControl, setManualControl] = useState<boolean>(false);
 
+  let intervalRef = useRef<ReturnType<typeof setInterval>>();
+  const decreaseNum = () => {
+    console.log(countdown)
+    if(countdown > 0){
+      setCountdown((prev) => prev - 1);
+    }
+    
+    if (countdown == 0 && !questionEndedState){
+      setQuestionEndedState(true)
+      setCountdown(10)
+    }
+    
+    if (countdown == 0 && questionEndedState){
+      nextQn()
+    }
+  };
+
   useEffect(() => {
-    if (countdown > 0 && !questionEndedState) {
-      setTimeout(() => setCountdown(countdown - 1), 1000);
-      return;
-    }
-    if (countdown == 0 && questionEndedState && !manualControl) {
-      nextQn();
-      return;
-    }
-    if (countdown > 0 && questionEndedState && !manualControl) {
-      setTimeout(() => setCountdown(countdown - 1), 1000);
-      return;
-    }
-    setQuestionEndedState(true);
-    setCountdown(10);
-    return;
-  }, [countdown]);
+    intervalRef.current = setInterval(decreaseNum, 1000);
+    return () => clearInterval(intervalRef.current);
+  },[countdown]);
   const question_id = [0, 1]; //mock question IDs
   let i = 0;
 
   function nextQn() {
     if (questionIndex < question_id.length - 1) {
-      setCountdown(10);
+      clearInterval(intervalRef.current);
       setQuestionEndedState(false);
-      setManualControl(false);
       setQuestionIndex(questionIndex + 1);
-      setTimeout(() => setCountdown(countdown - 1), 1000);
+      setManualControl(false)
+      setCountdown(10);
+      intervalRef.current = setInterval(decreaseNum, 1000);
       return;
     }
     setQuizComplete(true);
     return;
   }
-  function pauseTimer() {
-    setManualControl(true);
+  function stopTimer() {
+    clearInterval(intervalRef.current);
+    setManualControl(true)
     return;
   }
   //mock results (only percentage of people who chose option was hardcoded)
@@ -160,8 +166,7 @@ export const QuizView = ({ id, initialData }: Props) => {
       {questionEndedState && <QuizChart results={results_1}></QuizChart>}
 
       <div className="flex flex-col mt-auto mb-10">
-        {
-          !questionEndedState && (
+        {!questionEndedState && (
           <ButtonGrid>
             {questionBank.questions[question_id[questionIndex]].answers.map(
               (answer, key) => (
@@ -178,8 +183,7 @@ export const QuizView = ({ id, initialData }: Props) => {
               )
             )}
           </ButtonGrid>
-          )
-        }
+        )}
         <div className="flex justify-end">
           {manualControl && questionEndedState && (
             <Button
@@ -193,7 +197,7 @@ export const QuizView = ({ id, initialData }: Props) => {
           {!manualControl && questionEndedState && (
             <Button
               className="text-2xl h-16 w-60"
-              onClick={pauseTimer}
+              onClick={stopTimer}
               disabled={!questionEndedState}
             >
               Stop Countdown
