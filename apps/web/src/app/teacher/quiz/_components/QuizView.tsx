@@ -34,25 +34,25 @@ export const QuizView = ({ id, initialData }: Props) => {
 
   let intervalRef = useRef<ReturnType<typeof setInterval>>();
   const decreaseNum = () => {
-    console.log(countdown)
-    if(countdown > 0){
+    console.log(countdown);
+    if (countdown > 0) {
       setCountdown((prev) => prev - 1);
     }
-    
-    if (countdown == 0 && !questionEndedState){
-      setQuestionEndedState(true)
-      setCountdown(10)
+
+    if (countdown == 0 && !questionEndedState) {
+      setQuestionEndedState(true);
+      setCountdown(10);
     }
-    
-    if (countdown == 0 && questionEndedState){
-      nextQn()
+
+    if (countdown == 0 && questionEndedState) {
+      nextQn();
     }
   };
 
   useEffect(() => {
     intervalRef.current = setInterval(decreaseNum, 1000);
     return () => clearInterval(intervalRef.current);
-  },[countdown]);
+  }, [countdown]);
   const question_id = [0, 1]; //mock question IDs
   let i = 0;
 
@@ -61,7 +61,7 @@ export const QuizView = ({ id, initialData }: Props) => {
       clearInterval(intervalRef.current);
       setQuestionEndedState(false);
       setQuestionIndex(questionIndex + 1);
-      setManualControl(false)
+      setManualControl(false);
       setCountdown(10);
       intervalRef.current = setInterval(decreaseNum, 1000);
       return;
@@ -71,7 +71,7 @@ export const QuizView = ({ id, initialData }: Props) => {
   }
   function stopTimer() {
     clearInterval(intervalRef.current);
-    setManualControl(true)
+    setManualControl(true);
     return;
   }
   //mock results (only percentage of people who chose option was hardcoded)
