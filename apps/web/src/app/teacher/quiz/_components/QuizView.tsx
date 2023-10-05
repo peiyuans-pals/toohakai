@@ -34,7 +34,6 @@ export const QuizView = ({ id, initialData }: Props) => {
 
   let intervalRef = useRef<ReturnType<typeof setInterval>>();
   const decreaseNum = () => {
-    console.log(countdown);
     if (countdown > 0) {
       setCountdown((prev) => prev - 1);
     }
