@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Dispatch, SetStateAction, useState } from "react";
+import { ComboboxDemo } from "@/components/ui/combobox";
 
 interface Props {
   studentlist: string[];
@@ -19,8 +20,11 @@ export const StudentDropDownBar = ({
   studentlist,
   setStudent
 }: Props) => {
-  return (
-    <DropdownMenu>
+  return <ComboboxDemo></ComboboxDemo>;
+};
+
+/**
+ * <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button>{student}</Button>
       </DropdownMenuTrigger>
@@ -35,5 +39,4 @@ export const StudentDropDownBar = ({
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  );
-};
+ */
