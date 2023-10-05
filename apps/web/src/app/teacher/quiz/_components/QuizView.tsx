@@ -6,7 +6,7 @@ import {
 } from "src/app/teacher/quiz/_components/ButtonGrid";
 import { trpc } from "../../../../utils/trpc/client";
 import { TrpcReactQueryOptions } from "../../../../utils/trpc/lib";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +16,7 @@ import {
   CardHeader
 } from "@/components/ui/card";
 import Link from "next/link";
+import { QuizChart } from "./QuizChart";
 
 interface Props {
   id: number;
@@ -31,44 +32,86 @@ export const QuizView = ({ id, initialData }: Props) => {
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [manualControl, setManualControl] = useState<boolean>(false);
 
-  const percentage = [25, 10, 15, 50]; //Percentage of students choosing option 1,2,3,4 respectively
+  let intervalRef = useRef<ReturnType<typeof setInterval>>();
+  const decreaseNum = () => {
+    if (countdown > 0) {
+      setCountdown((prev) => prev - 1);
+    }
+
+    if (countdown == 0 && !questionEndedState) {
+      setQuestionEndedState(true);
+      setCountdown(10);
+    }
+
+    if (countdown == 0 && questionEndedState) {
+      nextQn();
+    }
+  };
 
   useEffect(() => {
-    if (countdown > 0 && !questionEndedState) {
-      setTimeout(() => setCountdown(countdown - 1), 1000);
-      return;
-    }
-    if (countdown == 0 && questionEndedState && !manualControl) {
-      nextQn();
-      return;
-    }
-    if (countdown > 0 && questionEndedState && !manualControl) {
-      setTimeout(() => setCountdown(countdown - 1), 1000);
-      return;
-    }
-    setQuestionEndedState(true);
-    setCountdown(10);
-    return;
+    intervalRef.current = setInterval(decreaseNum, 1000);
+    return () => clearInterval(intervalRef.current);
   }, [countdown]);
   const question_id = [0, 1]; //mock question IDs
   let i = 0;
 
   function nextQn() {
     if (questionIndex < question_id.length - 1) {
-      setCountdown(10);
+      clearInterval(intervalRef.current);
       setQuestionEndedState(false);
-      setManualControl(false);
       setQuestionIndex(questionIndex + 1);
-      setTimeout(() => setCountdown(countdown - 1), 1000);
+      setManualControl(false);
+      setCountdown(10);
+      intervalRef.current = setInterval(decreaseNum, 1000);
       return;
     }
     setQuizComplete(true);
     return;
   }
-  function pauseTimer() {
+  function stopTimer() {
+    clearInterval(intervalRef.current);
     setManualControl(true);
     return;
   }
+  //mock results (only percentage of people who chose option was hardcoded)
+  let results_1 = [
+    {
+      option:
+        questionBank?.questions[question_id[questionIndex]].answers[0].text,
+      correct:
+        questionBank?.questions[question_id[questionIndex]].answers[0]
+          .isCorrect,
+      label: `${35}%`,
+      tally: 35
+    },
+    {
+      option:
+        questionBank?.questions[question_id[questionIndex]].answers[1].text,
+      correct:
+        questionBank?.questions[question_id[questionIndex]].answers[1]
+          .isCorrect,
+      label: `${10}%`,
+      tally: 10
+    },
+    {
+      option:
+        questionBank?.questions[question_id[questionIndex]].answers[2].text,
+      correct:
+        questionBank?.questions[question_id[questionIndex]].answers[2]
+          .isCorrect,
+      label: `${5}%`,
+      tally: 5
+    },
+    {
+      option:
+        questionBank?.questions[question_id[questionIndex]].answers[3].text,
+      correct:
+        questionBank?.questions[question_id[questionIndex]].answers[3]
+          .isCorrect,
+      label: `${50}%`,
+      tally: 50
+    }
+  ];
 
   if (!questionBank) {
     return (
@@ -105,42 +148,45 @@ export const QuizView = ({ id, initialData }: Props) => {
   return (
     <div className="p-5 flex flex-col h-screen">
       <h1 className="text-4xl font-bold text-gray-900">{questionBank.title}</h1>
-      <p className="text-xl">
+      <p className="text-2xl">
         {questionBank.questions[question_id[questionIndex]].title}
       </p>
       <Progress className="mt-5" value={countdown * 10}></Progress>
       {questionEndedState && !manualControl && (
-        <p className="text-xl self-end">
+        <p className="text-2xl self-end">
           Next question in {countdown} seconds.
         </p>
       )}
       {!questionEndedState && !manualControl && (
-        <p className="text-xl self-end">
+        <p className="text-2xl self-end">
           Question ends in {countdown} seconds.
         </p>
       )}
+      {questionEndedState && <QuizChart results={results_1}></QuizChart>}
 
       <div className="flex flex-col mt-auto mb-10">
-        <ButtonGrid>
-          {questionBank.questions[question_id[questionIndex]].answers.map(
-            (answer, key) => (
-              <div key={key} className="flex items-center justify-center">
-                <ButtonGridItem
-                  percentage={percentage[key]}
-                  className="flex items-center w-full justify-center"
-                  isCorrect={answer.isCorrect}
-                  questionEndedState={questionEndedState}
-                >
-                  {answer.text}
-                </ButtonGridItem>
-              </div>
-            )
-          )}
-        </ButtonGrid>
-        <div className="h-16 flex justify-end">
+        {!questionEndedState && (
+          <ButtonGrid>
+            {questionBank.questions[question_id[questionIndex]].answers.map(
+              (answer, key) => (
+                <div key={key} className="flex items-center justify-center">
+                  <ButtonGridItem
+                    percentage={0}
+                    className="flex items-center w-full justify-center"
+                    isCorrect={answer.isCorrect}
+                    questionEndedState={questionEndedState}
+                  >
+                    {answer.text}
+                  </ButtonGridItem>
+                </div>
+              )
+            )}
+          </ButtonGrid>
+        )}
+        <div className="flex justify-end">
           {manualControl && questionEndedState && (
             <Button
-              className="text-xl h-16 w-48"
+              className="text-2xl h-16 w-60"
               onClick={nextQn}
               disabled={!questionEndedState}
             >
@@ -149,8 +195,8 @@ export const QuizView = ({ id, initialData }: Props) => {
           )}
           {!manualControl && questionEndedState && (
             <Button
-              className="text-xl h-16 w-48"
-              onClick={pauseTimer}
+              className="text-2xl h-16 w-60"
+              onClick={stopTimer}
               disabled={!questionEndedState}
             >
               Stop Countdown
