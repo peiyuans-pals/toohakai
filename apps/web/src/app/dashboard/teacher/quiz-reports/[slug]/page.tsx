@@ -45,14 +45,12 @@ export default function ExpandedReport({
           setStudent={setStudentName}
         />
       </div>
-      <div className=" p-5 rounded-sm border mt-5">
-        <QuizResultTable
-          studentquizResult={filteredStudentQuiz}
-          studentname={studentName}
-          studentscore={studentscore}
-          fullscore={fullscore}
-        />
-      </div>
+      <QuizResultTable
+        studentquizResult={filteredStudentQuiz}
+        studentname={studentName}
+        studentscore={studentscore}
+        fullscore={fullscore}
+      />
     </DashboardView>
   );
 }
