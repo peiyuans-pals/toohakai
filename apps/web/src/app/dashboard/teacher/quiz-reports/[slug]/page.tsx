@@ -2,7 +2,6 @@
 import { DashboardView, Heading } from "../../../../../components/ui";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import initialData from "../../../../../mockdata/teacher_quizreports_expanded.json";
-import { StudentDropDownBar } from "./_components/StudentDropDownBar";
 import { QuizResultTable } from "./_components/QuizResultTable";
 import { StudentComboBox } from "./_components/StudentComboBox";
 
