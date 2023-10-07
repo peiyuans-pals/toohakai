@@ -14,6 +14,7 @@ import { QuizReportCards } from "src/app/dashboard/teacher/quiz-reports//_compon
 
 import quizreport_topics from "../../../../mockdata/teacher_quizreports_topics.json";
 import quizreport_summary from "../../../../mockdata/teacher_quizreports_summary.json";
+import { MonthPicker } from "./_components/MonthPicker";
 
 export default function QuizReports() {
   const [topic, setTopic] = useState("");
@@ -50,65 +51,11 @@ export default function QuizReports() {
           setTopic={setTopic}
           quizreport_topics={quizreport_topics}
         />
-        <div>
-          <Input
-            name="MonthPicker"
-            type="month"
-            onChange={(e) => setDate(getDate(e.target.value))}
-          />
-        </div>
+        <MonthPicker date={date} setDate={setDate} />
       </div>
       <div className="pt-2">
         <QuizReportCards initialData={sortedData} />
       </div>
     </DashboardView>
   );
-}
-
-function getDate(input_date: string) {
-  if (input_date === "") {
-    return "";
-  }
-
-  var month = input_date.split("-")[1];
-
-  switch (month) {
-    case "01":
-      month = "January";
-      break;
-    case "02":
-      month = "February";
-      break;
-    case "03":
-      month = "March";
-      break;
-    case "04":
-      month = "April";
-      break;
-    case "05":
-      month = "May";
-      break;
-    case "06":
-      month = "June";
-      break;
-    case "07":
-      month = "July";
-      break;
-    case "08":
-      month = "August";
-      break;
-    case "09":
-      month = "September";
-      break;
-    case "10":
-      month = "October";
-      break;
-    case "11":
-      month = "November";
-      break;
-    case "12":
-      month = "December";
-      break;
-  }
-  return month + " " + input_date.split("-")[0];
 }

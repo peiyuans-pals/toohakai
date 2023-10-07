@@ -2,8 +2,8 @@
 import { DashboardView, Heading } from "../../../../../components/ui";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import initialData from "../../../../../mockdata/teacher_quizreports_expanded.json";
-import { StudentDropDownBar } from "./_components/StudentDropDownBar";
 import { QuizResultTable } from "./_components/QuizResultTable";
+import { StudentComboBox } from "./_components/StudentComboBox";
 
 interface Props {
   quizreportData: Record<string, any>[];
@@ -38,20 +38,25 @@ export default function ExpandedReport({
     <DashboardView>
       <Heading>{initialData.name}</Heading>
       <div className="flex pt-2">
-        <StudentDropDownBar
+        <StudentComboBox
           studentlist={student_names}
           student={studentName}
           setStudent={setStudentName}
         />
       </div>
-      <div className=" p-5 rounded-sm border mt-5">
-        <QuizResultTable
-          studentquizResult={filteredStudentQuiz}
-          studentname={studentName}
-          studentscore={studentscore}
-          fullscore={fullscore}
-        />
-      </div>
+      <QuizResultTable
+        studentquizResult={filteredStudentQuiz}
+        studentname={studentName}
+        studentscore={studentscore}
+        fullscore={fullscore}
+      />
     </DashboardView>
   );
 }
+/**
+ * <StudentDropDownBar
+          studentlist={student_names}
+          student={studentName}
+          setStudent={setStudentName}
+        />
+ */

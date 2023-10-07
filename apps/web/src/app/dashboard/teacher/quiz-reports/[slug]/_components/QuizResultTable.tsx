@@ -25,107 +25,109 @@ export const QuizResultTable = ({
 }: Props) => {
   return (
     <div>
-      <div className="flex flex-wrap flex-row justify-between">
+      <div className="flex flex-wrap flex-row justify-between pt-3">
         <Heading>{studentname}</Heading>
         <Heading>
           Total Score: {studentscore}/{fullscore}
         </Heading>
       </div>
-      {studentquizResult.map((item) => (
-        <div key={studentquizResult.indexOf(item)} className="pb-2 flex-col">
-          <h1>
-            <b>{item.question}</b>
-          </h1>
-          <div className="flex gap-0.5 items-center">
+      <div className="p-5 rounded-sm border mt-5">
+        {studentquizResult.map((item) => (
+          <div key={studentquizResult.indexOf(item)} className="pb-2 flex-col">
+            <h1>
+              <b>{item.question}</b>
+            </h1>
+            <div className="flex gap-0.5 items-center">
+              <p
+                style={{
+                  color:
+                    item.correctans === "option1" &&
+                    "option1" === item.selectedans
+                      ? "green"
+                      : "black"
+                }}
+              >
+                Option 1: {item.option1}
+              </p>
+              {item.correctans === "option1" ? (
+                <CheckIcon color="green" />
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="flex gap-0.5 items-center">
+              <p
+                style={{
+                  color:
+                    item.correctans === "option2" &&
+                    "option2" === item.selectedans
+                      ? "green"
+                      : "black"
+                }}
+              >
+                Option 2: {item.option2}
+              </p>
+              {item.correctans === "option2" ? (
+                <CheckIcon color="green" />
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="flex gap-0.5 items-center">
+              <p
+                style={{
+                  color:
+                    item.correctans === "option3" &&
+                    "option3" === item.selectedans
+                      ? "green"
+                      : "black"
+                }}
+              >
+                Option 3: {item.option3}
+              </p>
+              {item.correctans === "option3" ? (
+                <CheckIcon color="green" />
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="flex gap-0.5 items-center">
+              <p
+                style={{
+                  color:
+                    item.correctans === "option4" &&
+                    "option4" === item.selectedans
+                      ? "green"
+                      : "black"
+                }}
+              >
+                Option 4: {item.option4}
+              </p>
+              {item.correctans === "option4" ? (
+                <CheckIcon color="green" />
+              ) : (
+                <></>
+              )}
+            </div>
             <p
               style={{
-                color:
-                  item.correctans === "option1" &&
-                  "option1" === item.selectedans
-                    ? "green"
-                    : "black"
+                color: item.correctans === item.selectedans ? "green" : "red"
               }}
             >
-              Option 1: {item.option1}
+              {selectedAnsStatement(
+                item.option1,
+                item.option2,
+                item.option3,
+                item.option4,
+                item.selectedans
+              )}
             </p>
-            {item.correctans === "option1" ? (
-              <CheckIcon color="green" />
-            ) : (
-              <></>
-            )}
+            <div className="pt-2">
+              <Separator />
+            </div>
           </div>
-          <div className="flex gap-0.5 items-center">
-            <p
-              style={{
-                color:
-                  item.correctans === "option2" &&
-                  "option2" === item.selectedans
-                    ? "green"
-                    : "black"
-              }}
-            >
-              Option 2: {item.option2}
-            </p>
-            {item.correctans === "option2" ? (
-              <CheckIcon color="green" />
-            ) : (
-              <></>
-            )}
-          </div>
-          <div className="flex gap-0.5 items-center">
-            <p
-              style={{
-                color:
-                  item.correctans === "option3" &&
-                  "option3" === item.selectedans
-                    ? "green"
-                    : "black"
-              }}
-            >
-              Option 3: {item.option3}
-            </p>
-            {item.correctans === "option3" ? (
-              <CheckIcon color="green" />
-            ) : (
-              <></>
-            )}
-          </div>
-          <div className="flex gap-0.5 items-center">
-            <p
-              style={{
-                color:
-                  item.correctans === "option4" &&
-                  "option4" === item.selectedans
-                    ? "green"
-                    : "black"
-              }}
-            >
-              Option 4: {item.option4}
-            </p>
-            {item.correctans === "option4" ? (
-              <CheckIcon color="green" />
-            ) : (
-              <></>
-            )}
-          </div>
-          <p
-            style={{
-              color: item.correctans === item.selectedans ? "green" : "red"
-            }}
-          >
-            {selectedAnsStatement(
-              item.option1,
-              item.option2,
-              item.option3,
-              item.option4,
-              item.selectedans
-            )}
-          </p>
-          <div className="pt-2">
-            <Separator />
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
