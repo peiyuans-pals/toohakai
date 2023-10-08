@@ -14,6 +14,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "tsc -w",
     "lint": "eslint \"src/**/*.ts*\"",
+    "lint:fix": "eslint \"src/**/*.ts*\" --fix",
     "test": "jest",
     "prisma:migrate": "dotenv -e ../../apps/server/.env -- prisma migrate deploy",
     "prisma:migrate:resolve": "dotenv -e ../../apps/server/.env -- prisma migrate resolve",
