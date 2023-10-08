@@ -36,25 +36,31 @@ export enum ChatCompletionProvider {
 
 export const generateQuestionZodGpt = async (
   topic: string,
-  providerName: ChatCompletionProvider
+  _providerName: ChatCompletionProvider
 ) => {
   const openai = new OpenAIChatApi(
-    { apiKey: process.env.OPENAI_KEY },
+    { apiKey: process.env.OPENAI_KEY,
+      // ...(providerName === ChatCompletionProvider.ollama ? { basePath: "http://localhost:5033" } : {})
+      // pretending llmproxy is a self-hosted azure function
+      // azureDeployment: "ollama",
+      // azureEndpoint: "http://127.0.0.1:5044",
+    },
     {
       model: "gpt-3.5-turbo"
     }
   );
 
-  const provider: CompletionApi =
-    providerName === ChatCompletionProvider.openai ? openai : openai; // todo: add llama
+  console.log("isAzure:" + openai._isAzure);
+
+  console.log("client", openai._client)
 
   const response = await completion(
-    provider,
+    openai,
     `
       You are a teacher in a secondary school in singapore.
       You are creating a mock O Level quiz for your students.
       You want to create multiple choice questions for your students to answer.
-      There are only 4 options, A, B, C, D. 1 of them is correct.
+      There are only 4 options, A, B, C, D. Only 1 of them is correct.
       Keep the scope of the question to the topic of "${topic} in Singapore O Levels.
       Give a reason as to why the option is correct.
       `,

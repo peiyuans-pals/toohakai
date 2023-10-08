@@ -1,11 +1,7 @@
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure
-} from "../utils/trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../utils/trpc";
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
-import { generateQuestionZodGpt } from "../utils/gpt";
+import { ChatCompletionProvider, generateQuestionZodGpt } from "../utils/gpt";
 
 const mockData = [
   { id: "101", name: "Physics", questions: [] },
@@ -251,7 +247,7 @@ export const questionBankRouter = createTRPCRouter({
     }),
   deleteQuestion: protectedProcedure
     .meta({
-      description: "Delete a question from a questionBank!"
+      description: "Deletes a question from a questionBank!"
     })
     .input(
       z.object({
@@ -292,7 +288,7 @@ export const questionBankRouter = createTRPCRouter({
     .mutation(async (opts) => {
       const { topic } = opts.input;
 
-      const generated = await generateQuestionZodGpt(topic);
+      const generated = await generateQuestionZodGpt(topic, ChatCompletionProvider.ollama);
       console.log("generated", generated);
 
       return { generated };

@@ -35,7 +35,7 @@
     "eslint-config-custom-server": "workspace:*",
     "jest": "^26.6.3",
     "jest-presets": "workspace:*",
-    "llm-api": "workspace:*",
+    "llm-api": "^0.9.5",
     "logger": "workspace:*",
     "tsconfig": "workspace:*",
     "tsup": "^6.7.0",
