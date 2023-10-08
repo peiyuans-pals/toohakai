@@ -25,7 +25,9 @@ export default async function Quizzes() {
         <TabsContent value="all">
           <QuizGrid quizzes={quizzes} />
         </TabsContent>
-        <TabsContent value="upcoming">TODO: filter by upcoming quizzes</TabsContent>
+        <TabsContent value="upcoming">
+          TODO: filter by upcoming quizzes
+        </TabsContent>
         <TabsContent value="past">filter by past quizes</TabsContent>
       </Tabs>
 

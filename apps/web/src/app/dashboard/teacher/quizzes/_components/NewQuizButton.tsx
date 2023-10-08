@@ -126,7 +126,7 @@ export const NewQuizButton = ({ initialData }: Props) => {
       questionBankId: data.question_bank_id,
       numOfQuestions: data.no_of_questions,
       timePerQuestion: data.timer
-    })
+    });
     setQuizSettings(data);
   }
 

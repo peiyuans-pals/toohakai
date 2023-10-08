@@ -87,7 +87,11 @@ export const quizRouter = createTRPCRouter({
         }
       });
 
-      return { success: true, status: "quiz created successfully", quiz: newQuiz };
+      return {
+        success: true,
+        status: "quiz created successfully",
+        quiz: newQuiz
+      };
     }),
   delete: protectedProcedure
     .meta({
