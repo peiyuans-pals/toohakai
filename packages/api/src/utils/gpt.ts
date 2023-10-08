@@ -8,7 +8,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY // defaults to process.env["OPENAI_API_KEY"]
 });
 
-export const generateQuestion = async (topic: string) => {
+export const generateQuestionOpenai = async (topic: string) => {
   const completion = await openai.chat.completions.create({
     messages: [
       {
@@ -34,7 +34,7 @@ export enum ChatCompletionProvider {
   ollama = "ollama"
 }
 
-export const generateQuestionTyped = async (
+export const generateQuestionZodGpt = async (
   topic: string,
   providerName: ChatCompletionProvider
 ) => {

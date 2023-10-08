@@ -5,7 +5,7 @@ import {
 } from "../utils/trpc";
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
-import { generateQuestion, generateQuestionTyped } from "../utils/gpt";
+import { generateQuestionZodGpt } from "../utils/gpt";
 
 const mockData = [
   { id: "101", name: "Physics", questions: [] },
@@ -292,7 +292,7 @@ export const questionBankRouter = createTRPCRouter({
     .mutation(async (opts) => {
       const { topic } = opts.input;
 
-      const generated = await generateQuestionTyped(topic);
+      const generated = await generateQuestionZodGpt(topic);
       console.log("generated", generated);
 
       return { generated };
