@@ -288,8 +288,8 @@ export const questionBankRouter = createTRPCRouter({
     .mutation(async (opts) => {
       const { topic } = opts.input;
 
-      const generated = await generateQuestionZodGpt(topic, ChatCompletionProvider.ollama);
-      console.log("generated", generated);
+      const generated = await generateQuestionZodGpt(topic, ChatCompletionProvider.openai);
+      // console.log("generated", generated);
 
       return { generated };
     })

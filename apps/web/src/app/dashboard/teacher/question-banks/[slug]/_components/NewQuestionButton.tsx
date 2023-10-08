@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/form";
 import { trpc } from "../../../../../../utils/trpc/client";
 import { useState } from "react";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const formSchema = z.object({
   question_name: z.string().min(2, {
@@ -272,7 +273,9 @@ export const NewQuestionButton = ({
               <Button
                 onClick={handleAutoGenerate}
                 disabled={generateQuestion.isLoading}
+
               >
+                {generateQuestion.isLoading && (<ReloadIcon className="mr-2 h-4 w-4 animate-spin" />)}
                 Auto-generate
               </Button>
               <Button type="submit">Add Question</Button>
