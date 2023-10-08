@@ -18,6 +18,8 @@ importers:
         specifier: latest
         version: 1.10.14
 
+  apps/llmproxy: {}
+
   apps/server:
     dependencies:
       '@trpc/server':
