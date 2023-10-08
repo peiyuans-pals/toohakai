@@ -1,5 +1,5 @@
 import { createTRPCRouter, publicProcedure } from "../utils/trpc";
-import { observable } from '@trpc/server/observable';
+import { observable } from "@trpc/server/observable";
 
 export const quizSessionRouter = createTRPCRouter({
   randomNumber: publicProcedure.subscription(() => {
@@ -13,5 +13,5 @@ export const quizSessionRouter = createTRPCRouter({
         clearInterval(timer);
       };
     });
-  }),
+  })
 });

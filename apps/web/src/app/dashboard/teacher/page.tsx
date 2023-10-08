@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { SummaryCard, SummaryCardProps } from "./SummaryCard";
 import { getCleanedNameFromIdentities } from "../../../utils/strings";
+import RandomNumber from "./_components/RandomNumber";
 
 const summaryData: SummaryCardProps[] = [
   {
@@ -62,6 +63,8 @@ export default async function DashboardRoot() {
           />
         ))}
       </div>
+
+      <RandomNumber />
     </DashboardView>
   );
 }

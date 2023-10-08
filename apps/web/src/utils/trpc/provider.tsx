@@ -3,11 +3,10 @@
 import React, { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { trpc } from "./client";
-import { CreateTRPCClientOptions, httpBatchLink } from "@trpc/client";
+import { httpBatchLink, wsLink } from "@trpc/client";
 import superjson from "superjson";
 import { supabase } from "../supabase/client";
-import { AppRouter } from "api";
-import { getBaseUrl } from "./lib";
+import { getBaseUrl, wsClient } from "./lib";
 
 interface Props {
   children: React.ReactNode;
@@ -24,6 +23,9 @@ export default function TrpcProvider({ children }: Props) {
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
+        wsLink({
+          client: wsClient
+        }),
         httpBatchLink({
           url: `${getBaseUrl()}/trpc`, // TODO
           headers: async () => {

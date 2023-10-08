@@ -28,22 +28,19 @@ export const createTrpcContext = async ({
 
 export type Context = inferAsyncReturnType<typeof createTrpcContext>;
 
-const t = initTRPC
-  .meta<TRPCPanelMeta>()
-  .context<Context>()
-  .create({
-    transformer: superjson
-    // errorFormatter({ shape, error }) {
-    //   return {
-    //     ...shape,
-    //     data: {
-    //       ...shape.data,
-    //       zodError:
-    //         error.cause instanceof ZodError ? error.cause.flatten() : null,
-    //     },
-    //   };
-    // },
-  });
+const t = initTRPC.meta<TRPCPanelMeta>().context<Context>().create({
+  transformer: superjson
+  // errorFormatter({ shape, error }) {
+  //   return {
+  //     ...shape,
+  //     data: {
+  //       ...shape.data,
+  //       zodError:
+  //         error.cause instanceof ZodError ? error.cause.flatten() : null,
+  //     },
+  //   };
+  // },
+});
 
 const isAuthed = t.middleware((opts) => {
   const { ctx } = opts;

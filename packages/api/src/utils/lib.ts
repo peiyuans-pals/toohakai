@@ -8,7 +8,7 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   questionBank: questionBankRouter,
   quiz: quizRouter,
-  quizSession: quizSessionRouter,
+  quizSession: quizSessionRouter
 });
 
 // export type definition of API
