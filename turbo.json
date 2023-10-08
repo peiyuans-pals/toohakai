@@ -15,7 +15,10 @@
         "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
-        "SUPABASE_KEY"
+        "SUPABASE_KEY",
+        "OPENAI_KEY",
+        // packages/llm-api
+        "DEBUG"
       ]
     },
     "start": {
@@ -30,7 +33,10 @@
         "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
-        "SUPABASE_KEY"
+        "SUPABASE_KEY",
+        "OPENAI_KEY",
+        // packages/llm-api
+        "DEBUG"
       ]
     },
     "test": {
@@ -46,7 +52,10 @@
         "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
-        "SUPABASE_KEY"
+        "SUPABASE_KEY",
+        "OPENAI_KEY",
+        // packages/llm-api
+        "DEBUG"
       ]
     },
     "cypress:headless": {
@@ -61,7 +70,10 @@
         "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
-        "SUPABASE_KEY"
+        "SUPABASE_KEY",
+        "OPENAI_KEY",
+        // packages/llm-api
+        "DEBUG"
       ]
     },
     "cypress:ci": {
@@ -76,7 +88,10 @@
         "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         // apps/server/.env
         "SUPABASE_URL",
-        "SUPABASE_KEY"
+        "SUPABASE_KEY",
+        "OPENAI_KEY",
+        // packages/llm-api
+        "DEBUG"
       ]
     },
     "lint": {
@@ -86,7 +101,6 @@
       "dependsOn": ["^build"]
     },
     "dev": {
-      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },

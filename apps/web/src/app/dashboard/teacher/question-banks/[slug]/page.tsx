@@ -31,7 +31,10 @@ export default async function QuestionBank({ params }: PageProps) {
         <div className="flex flex-row gap-2">
           <EditQuestionBankButton id={id} currentName={questionBank.title} />
           <RemoveQuestionBankButton id={id} />
-          <NewQuestionButton questionBankId={id} />
+          <NewQuestionButton
+            questionBankId={id}
+            questionBankName={questionBank.title}
+          />
         </div>
       </div>
       <QuestionsDataTable id={id} initialData={questionBank} />

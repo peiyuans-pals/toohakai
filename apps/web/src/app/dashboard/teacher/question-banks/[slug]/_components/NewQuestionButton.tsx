@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/form";
 import { trpc } from "../../../../../../utils/trpc/client";
 import { useState } from "react";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const formSchema = z.object({
   question_name: z.string().min(2, {
@@ -51,9 +52,13 @@ const formSchema = z.object({
 
 interface Props {
   questionBankId: number;
+  questionBankName: string;
 }
 
-export const NewQuestionButton = ({ questionBankId }: Props) => {
+export const NewQuestionButton = ({
+  questionBankId,
+  questionBankName
+}: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -77,6 +82,27 @@ export const NewQuestionButton = ({ questionBankId }: Props) => {
     }
   });
 
+  const generateQuestion = trpc.questionBank.generateQuestion.useMutation({
+    onSuccess: (data) => {
+      // change form values
+      const { generated } = data;
+      form.setValue("question_name", generated.questionTitle);
+      form.setValue("option1", generated.answers[0].text);
+      form.setValue("option2", generated.answers[1].text);
+      form.setValue("option3", generated.answers[2].text);
+      form.setValue("option4", generated.answers[3].text);
+      // set correct radio button
+      form.setValue("correct", "2"); // TODO: fix this - it doesnt work :(
+    }
+  });
+
+  const handleAutoGenerate = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    generateQuestion.mutate({ topic: questionBankName, model: "gpt3.5" });
+  };
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     mutation.mutate({
@@ -85,6 +111,7 @@ export const NewQuestionButton = ({ questionBankId }: Props) => {
       answers: [values.option1, values.option2, values.option3, values.option4],
       correctAnswer: parseInt(values.correct)
     });
+    // disable all form fields
   }
 
   return (
@@ -96,8 +123,7 @@ export const NewQuestionButton = ({ questionBankId }: Props) => {
         <DialogHeader>
           <DialogTitle>New Question</DialogTitle>
           <DialogDescription>
-            Create a new question. Click &quot;Create New Question&quot; when
-            you&apos;re done.
+            Click &quot;Add Question&quot; when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -212,7 +238,7 @@ export const NewQuestionButton = ({ questionBankId }: Props) => {
                     <RadioGroup
                       className="col-span-3 grid grid-cols-1 items-center gap-4 self-start"
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      value={field.value}
                     >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="1" id="r1" />
@@ -236,8 +262,24 @@ export const NewQuestionButton = ({ questionBankId }: Props) => {
                 </FormItem>
               )}
             />
-            <DialogFooter className="mt-5">
-              <Button type="submit">Create New Question</Button>
+            {generateQuestion?.data?.generated.reason && (
+              <div className="mt-4 space-y-2 items-center col-span-4">
+                <p className="text-xs">
+                  Reason: {generateQuestion.data.generated.reason}
+                </p>
+              </div>
+            )}
+            <DialogFooter className="flex flex-row justify-between items-center mt-5">
+              <Button
+                onClick={handleAutoGenerate}
+                disabled={generateQuestion.isLoading}
+              >
+                {generateQuestion.isLoading && (
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                Auto-generate
+              </Button>
+              <Button type="submit">Add Question</Button>
             </DialogFooter>
           </form>
         </Form>

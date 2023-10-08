@@ -46,6 +46,7 @@ module.exports = {
         format: null,
         modifiers: ["unused"]
       }
-    ]
+    ],
+    "@typescript-eslint/no-explicit-any": 1
   }
 };
