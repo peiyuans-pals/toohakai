@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { trpcServer } from "../../../../utils/trpc/server";
 import { NewQuizButton } from "./_components/NewQuizButton";
+import QuizGrid from "./_components/QuizGrid";
 
 export default async function Quizzes() {
-  const questionBanks = await trpcServer(cookies).questionBank.list.query();
+  const questionBanks = await trpcServer(cookies).questionBank.list.query(); // will this cause worse performance?
+  const quizzes = await trpcServer(cookies).quiz.list.query();
   return (
     <DashboardView>
       <div className="flex flex-row justify-between items-center">
@@ -20,16 +22,16 @@ export default async function Quizzes() {
           <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
           <TabsTrigger value="past">Past</TabsTrigger>
         </TabsList>
-        <TabsContent value="account">
-          Make changes to your account here.
+        <TabsContent value="all">
+          <QuizGrid quizzes={quizzes} />
         </TabsContent>
-        <TabsContent value="password">Change your password here.</TabsContent>
+        <TabsContent value="upcoming">TODO: filter by upcoming quizzes</TabsContent>
+        <TabsContent value="past">filter by past quizes</TabsContent>
       </Tabs>
 
-      <div className="mt-2"></div>
-      <Link href="/dashboard/teacher/quizzes/1234">
-        <Button>Debug: Open a completed quiz from the past</Button>
-      </Link>
+      {/*<Link href="/dashboard/teacher/quizzes/1234">*/}
+      {/*  <Button>Debug: Open a completed quiz from the past</Button>*/}
+      {/*</Link>*/}
     </DashboardView>
   );
 }

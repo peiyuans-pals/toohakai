@@ -58,7 +58,9 @@ export const quizRouter = createTRPCRouter({
     .input(
       z.object({
         title: z.string().min(4).max(250),
-        questionBankId: z.number()
+        questionBankId: z.number(),
+        numOfQuestions: z.number(),
+        timePerQuestion: z.number()
       })
     )
     .mutation(async (opts) => {
@@ -67,6 +69,8 @@ export const quizRouter = createTRPCRouter({
       const newQuiz = await prisma.quiz.create({
         data: {
           title: opts.input.title,
+          numOfQuestions: opts.input.numOfQuestions,
+          timePerQuestion: opts.input.timePerQuestion,
           QuestionBank: {
             connect: {
               id: opts.input.questionBankId
@@ -83,7 +87,7 @@ export const quizRouter = createTRPCRouter({
         }
       });
 
-      return { success: true, status: "quiz created successfully", newQuiz };
+      return { success: true, status: "quiz created successfully", quiz: newQuiz };
     }),
   delete: protectedProcedure
     .meta({
