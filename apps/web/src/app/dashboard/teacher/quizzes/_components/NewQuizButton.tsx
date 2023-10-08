@@ -108,11 +108,25 @@ export const NewQuizButton = ({ initialData }: Props) => {
     }
   });
 
+  const trpcUtils = trpc.useContext();
+
+  const mutation = trpc.quiz.create.useMutation({
+    onSuccess: () => {
+      setOpen(false);
+      form.reset;
+      setInitializeQuiz(true);
+      trpcUtils.quiz.list.invalidate().then();
+    }
+  });
+
   function onSubmit(data: z.infer<typeof formSchema>) {
     console.log(data);
-    setOpen(false);
-    form.reset();
-    setInitializeQuiz(true);
+    mutation.mutate({
+      title: data.quiz_name,
+      questionBankId: data.question_bank_id,
+      numOfQuestions: data.no_of_questions,
+      timePerQuestion: data.timer
+    });
     setQuizSettings(data);
   }
 

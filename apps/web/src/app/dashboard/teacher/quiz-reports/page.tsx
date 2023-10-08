@@ -1,12 +1,5 @@
 "use client";
 import { DashboardView, Heading } from "../../../../components/ui";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { TopicBar } from "src/app/dashboard/teacher/quiz-reports/_components/TopicBar";
 import { Input } from "@/components/ui/input";

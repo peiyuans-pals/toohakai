@@ -67,13 +67,17 @@ enum QuizStatus {
 }
 
 model Quiz {
-  id             Int          @id @default(autoincrement())
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  title          String       @db.VarChar(255)
-  status         QuizStatus   @default(NOT_STARTED)
-  author         User         @relation(fields: [authorId], references: [id])
-  authorId       String
-  QuestionBank   QuestionBank @relation(fields: [questionBankId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  questionBankId Int
+  id              Int          @id @default(autoincrement())
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  title           String       @db.VarChar(255)
+  status          QuizStatus   @default(NOT_STARTED)
+  startTime       DateTime?
+  endTime         DateTime?
+  numOfQuestions  Int
+  timePerQuestion Int // in seconds
+  author          User         @relation(fields: [authorId], references: [id])
+  authorId        String
+  QuestionBank    QuestionBank @relation(fields: [questionBankId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  questionBankId  Int
 }
