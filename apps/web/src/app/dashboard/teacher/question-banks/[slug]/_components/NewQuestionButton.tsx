@@ -273,9 +273,10 @@ export const NewQuestionButton = ({
               <Button
                 onClick={handleAutoGenerate}
                 disabled={generateQuestion.isLoading}
-
               >
-                {generateQuestion.isLoading && (<ReloadIcon className="mr-2 h-4 w-4 animate-spin" />)}
+                {generateQuestion.isLoading && (
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                )}
                 Auto-generate
               </Button>
               <Button type="submit">Add Question</Button>

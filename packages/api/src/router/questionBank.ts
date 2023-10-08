@@ -1,4 +1,8 @@
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../utils/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure
+} from "../utils/trpc";
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
 import { ChatCompletionProvider, generateQuestionZodGpt } from "../utils/gpt";
@@ -288,7 +292,10 @@ export const questionBankRouter = createTRPCRouter({
     .mutation(async (opts) => {
       const { topic } = opts.input;
 
-      const generated = await generateQuestionZodGpt(topic, ChatCompletionProvider.openai);
+      const generated = await generateQuestionZodGpt(
+        topic,
+        ChatCompletionProvider.openai
+      );
       // console.log("generated", generated);
 
       return { generated };

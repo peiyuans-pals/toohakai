@@ -39,7 +39,8 @@ export const generateQuestionZodGpt = async (
   _providerName: ChatCompletionProvider
 ) => {
   const openai = new OpenAIChatApi(
-    { apiKey: process.env.OPENAI_KEY,
+    {
+      apiKey: process.env.OPENAI_KEY
       // ...(providerName === ChatCompletionProvider.ollama ? { basePath: "http://localhost:5033" } : {})
       // pretending llmproxy is a self-hosted azure function
       // azureDeployment: "ollama",
@@ -52,7 +53,7 @@ export const generateQuestionZodGpt = async (
 
   console.log("isAzure:" + openai._isAzure);
 
-  console.log("client", openai._client)
+  console.log("client", openai._client);
 
   const response = await completion(
     openai,
