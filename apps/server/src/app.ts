@@ -7,7 +7,7 @@ import { renderTrpcPanel } from "trpc-panel";
 
 const { json, urlencoded } = bodyParser;
 
-export const createServer = () => {
+export const createApp = () => {
   const app = express();
   app
     .disable("x-powered-by")

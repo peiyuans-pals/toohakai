@@ -1,13 +1,14 @@
 import { inferAsyncReturnType, initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { TRPCPanelMeta } from "trpc-panel";
-import { trpcExpress } from "../index";
 import { supabase } from "./supabase";
+import { CreateExpressContextOptions } from "@trpc/server/dist/adapters/express";
+import { CreateWSSContextFnOptions } from "@trpc/server/dist/adapters/ws";
 
 export const createTrpcContext = async ({
   req,
   res: _res
-}: trpcExpress.CreateExpressContextOptions) => {
+}: CreateExpressContextOptions | CreateWSSContextFnOptions) => {
   // TODO
   async function getUserFromHeader() {
     if (req.headers.authorization) {
@@ -29,7 +30,7 @@ export type Context = inferAsyncReturnType<typeof createTrpcContext>;
 
 const t = initTRPC
   .meta<TRPCPanelMeta>()
-  .context<typeof createTrpcContext>()
+  .context<Context>()
   .create({
     transformer: superjson
     // errorFormatter({ shape, error }) {
