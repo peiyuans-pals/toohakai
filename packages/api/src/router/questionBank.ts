@@ -274,7 +274,7 @@ export const questionBankRouter = createTRPCRouter({
         questionBank
       };
     }),
-  generateQuestion: publicProcedure
+  generateQuestion: protectedProcedure
     .meta({
       description: "Generate a question from GPT"
     })
