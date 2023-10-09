@@ -51,7 +51,7 @@ export const QuizView = ({ id, initialData }: Props) => {
   useEffect(() => {
     intervalRef.current = setInterval(decreaseNum, 1000);
     return () => clearInterval(intervalRef.current);
-  }, [countdown]);
+  }, [countdown, decreaseNum]);
   const question_id = [0, 1]; //mock question IDs
   let i = 0;
 
