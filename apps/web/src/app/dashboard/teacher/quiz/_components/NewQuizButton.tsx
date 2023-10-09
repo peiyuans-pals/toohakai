@@ -36,25 +36,25 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
 interface Props {
-	initialData: {
-			questionsCount: number;
-			_count: {
-					questions: number;
-			};
-			id: number;
-			createdAt: Date;
-			updatedAt: Date;
-			title: string;
-			authorId: string;
-	}
+  initialData: {
+    questionsCount: number;
+    _count: {
+      questions: number;
+    };
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    title: string;
+    authorId: string;
+  };
 }
 interface quizProps {
   no_of_questions: number;
   quiz_name: string;
   timer: number;
 }
-export const NewQuizButton = ( {initialData} : Props) => {
-	console.log(initialData)
+export const NewQuizButton = ({ initialData }: Props) => {
+  console.log(initialData);
   const [isOpen, setOpen] = useState<boolean>(false);
   const [initializeQuiz, setInitializeQuiz] = useState<boolean>(false);
   const [quizSettings, setQuizSettings] = useState<quizProps>({

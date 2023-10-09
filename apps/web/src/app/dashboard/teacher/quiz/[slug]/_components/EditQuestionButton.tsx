@@ -25,9 +25,7 @@ import {
   FormLabel,
   FormMessage
 } from "@/components/ui/form";
-import {
-  TrpcRouterOutputs
-} from "../../../../../../utils/trpc/lib";
+import { TrpcRouterOutputs } from "../../../../../../utils/trpc/lib";
 import { trpc } from "../../../../../../utils/trpc/client";
 import { useState } from "react";
 

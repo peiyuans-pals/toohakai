@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import {
   Sheet,
@@ -7,7 +7,7 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
+  SheetTrigger
 } from "@/components/ui/sheet";
 import { cn } from "../../../utils/shadcn";
 import { usePathname } from "next/navigation";
@@ -33,47 +33,45 @@ interface SidebarItemProps {
   pathname: string;
 }
 
-
 const SidebarItem = ({ item, pathname }: SidebarItemProps) => {
   return (
-		<SheetClose asChild>
-    <Link
-      href={item.href}
-      className={cn(
-        buttonVariants({ variant: "ghost" }),
-        pathname === item.href
-          ? "bg-primary hover:bg-primary text-white hover:text-white"
-          : pathname.endsWith(item.href) && item.name !== "Home"
-          ? "border border-primary text-primary"
-          : "hover:bg-muted",
-        "justify-end text-end"
-      )}
-    >
-      {item.name}
-    </Link>
-
-		</SheetClose>
+    <SheetClose asChild>
+      <Link
+        href={item.href}
+        className={cn(
+          buttonVariants({ variant: "ghost" }),
+          pathname === item.href
+            ? "bg-primary hover:bg-primary text-white hover:text-white"
+            : pathname.endsWith(item.href) && item.name !== "Home"
+            ? "border border-primary text-primary"
+            : "hover:bg-muted",
+          "justify-end text-end"
+        )}
+      >
+        {item.name}
+      </Link>
+    </SheetClose>
   );
 };
 export const MobileSideBar = () => {
-	const pathname = usePathname();
-	return(
-		<div>
-	<Sheet>
-          <SheetTrigger className="block sm:hidden ">
-            <Menu />
-          </SheetTrigger>
-          <SheetContent className="w-64" side="left">
-            <SheetHeader>
-              <SheetTitle>Navigation</SheetTitle>
-              <SheetDescription className="flex flex-col gap-2 pt-8">
-               {sidebarItems.map((item) => (
-        <SidebarItem key={item.href} item={item} pathname={pathname} />
-      ))}
-              </SheetDescription>
-            </SheetHeader>
-          </SheetContent>
-        </Sheet>	
-		</div>
-	)
-}
+  const pathname = usePathname();
+  return (
+    <div>
+      <Sheet>
+        <SheetTrigger className="block sm:hidden ">
+          <Menu />
+        </SheetTrigger>
+        <SheetContent className="w-64" side="left">
+          <SheetHeader>
+            <SheetTitle>Navigation</SheetTitle>
+            <SheetDescription className="flex flex-col gap-2 pt-8">
+              {sidebarItems.map((item) => (
+                <SidebarItem key={item.href} item={item} pathname={pathname} />
+              ))}
+            </SheetDescription>
+          </SheetHeader>
+        </SheetContent>
+      </Sheet>
+    </div>
+  );
+};

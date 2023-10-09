@@ -92,18 +92,18 @@ export const NewQuestionButton = ({
       form.setValue("option3", generated.answers[2].text);
       form.setValue("option4", generated.answers[3].text);
       // set correct radio button
-			if (generated.answers[0].isCorrect){
-				form.setValue("correct", "1")
-			}
-			if (generated.answers[1].isCorrect){
-				form.setValue("correct", "2")
-			}
-			if (generated.answers[2].isCorrect){
-				form.setValue("correct", "3")
-			}
-			if (generated.answers[3].isCorrect){
-				form.setValue("correct", "4")
-			}
+      if (generated.answers[0].isCorrect) {
+        form.setValue("correct", "1");
+      }
+      if (generated.answers[1].isCorrect) {
+        form.setValue("correct", "2");
+      }
+      if (generated.answers[2].isCorrect) {
+        form.setValue("correct", "3");
+      }
+      if (generated.answers[3].isCorrect) {
+        form.setValue("correct", "4");
+      }
     }
   });
 

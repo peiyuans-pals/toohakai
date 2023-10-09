@@ -22,9 +22,8 @@ const summaryData: SummaryCardProps[] = [
 ];
 
 export default async function DashboardRoot() {
-  const questionBankCount = await trpcServer(
-    cookies
-  ).questionBank.count.query();
+  const questionBankCount =
+    await trpcServer(cookies).questionBank.count.query();
 
   const me = await trpcServer(cookies).user.me.query();
   const name = getCleanedNameFromIdentities(me);
