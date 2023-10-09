@@ -98,7 +98,8 @@ export const CreateQuizButton = ({ id, initialData }: Props) => {
     }
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {// console.log(data);
+  function onSubmit(data: z.infer<typeof formSchema>) {
+    // console.log(data);
     console.log("createQuiz - data", data);
     mutation.mutate({
       title: data.quiz_name,
@@ -275,8 +276,10 @@ export const CreateQuizButton = ({ id, initialData }: Props) => {
             />
 
             <DialogFooter className="mt-5">
-              <Button type="submit"><ReaderIcon className="mr-2 h-4 w-4" />
-                                                  Create Quiz</Button>
+              <Button type="submit">
+                <ReaderIcon className="mr-2 h-4 w-4" />
+                Create Quiz
+              </Button>
             </DialogFooter>
           </form>
         </Form>

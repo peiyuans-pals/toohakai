@@ -277,14 +277,17 @@ export const AddQuestionButton = ({
                 onClick={handleAutoGenerate}
                 disabled={generateQuestion.isLoading}
               >
-                {generateQuestion.isLoading ?
-                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> :
-                <RocketIcon className="mr-2 h-4 w-4" />
-                }
+                {generateQuestion.isLoading ? (
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <RocketIcon className="mr-2 h-4 w-4" />
+                )}
                 Auto-generate
               </Button>
-              <Button type="submit"><PlusIcon className="mr-2 h-4 w-4" />
-                Add Question</Button>
+              <Button type="submit">
+                <PlusIcon className="mr-2 h-4 w-4" />
+                Add Question
+              </Button>
             </DialogFooter>
           </form>
         </Form>

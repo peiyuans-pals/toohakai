@@ -1,15 +1,20 @@
-"use client"
+"use client";
 // todo: use server
 
 import { Heading } from "../../../components/ui";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { trpc } from "../../../utils/trpc/client";
 import { NextPage } from "../../../types/next";
-
 
 export default function PreQuiz({ searchParams }: NextPage) {
   const mock_participants = [
@@ -27,11 +32,11 @@ export default function PreQuiz({ searchParams }: NextPage) {
     { id: 12, name: "Zack" }
   ];
 
-  const quizId = parseInt(searchParams.quiz_id as string)
+  const quizId = parseInt(searchParams.quiz_id as string);
 
-  const {data: quizSession, isLoading} = trpc.quiz.get.useQuery(quizId)
+  const { data: quizSession, isLoading } = trpc.quiz.get.useQuery(quizId);
 
-  if (isLoading) return <p>Loading...</p>
+  if (isLoading) return <p>Loading...</p>;
 
   if (!quizSession) {
     return <p>No quiz exists with id {quizId}</p>;
@@ -101,6 +106,5 @@ export default function PreQuiz({ searchParams }: NextPage) {
         </div>
       </div>
     </div>
-
   );
 }

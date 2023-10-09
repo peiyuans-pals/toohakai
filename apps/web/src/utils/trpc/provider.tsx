@@ -29,10 +29,12 @@ export default function TrpcProvider({ children }: Props) {
           condition: (op) => {
             return op.type === "subscription";
           },
-           true: wsLink<AppRouter>({ // use ws for subscriptions
-             client: wsClient
-           }),
-          false: httpBatchLink({ // use http for queries and mutations
+          true: wsLink<AppRouter>({
+            // use ws for subscriptions
+            client: wsClient
+          }),
+          false: httpBatchLink({
+            // use http for queries and mutations
             url: `${getBaseUrl()}/trpc`, // TODO
             maxURLLength: 2083,
             headers: async () => {
@@ -48,7 +50,7 @@ export default function TrpcProvider({ children }: Props) {
                 Authorization: `Bearer ${session.access_token}`
               };
             }
-          }),
+          })
         })
       ],
       transformer: superjson
@@ -56,7 +58,8 @@ export default function TrpcProvider({ children }: Props) {
   );
   return (
     <trpc.Provider queryClient={queryClient} client={trpcClient}>
-      <QueryClientProvider client={queryClient}>{children}
+      <QueryClientProvider client={queryClient}>
+        {children}
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </trpc.Provider>

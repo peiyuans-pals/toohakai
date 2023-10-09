@@ -30,10 +30,7 @@ export default async function QuestionBank({ params }: PageProps) {
           <Header id={id} initialData={questionBank} />
         </div>
         <div className="flex flex-row gap-2">
-          <CreateQuizButton
-            id={questionBank.id}
-            initialData={questionBank}
-          />
+          <CreateQuizButton id={questionBank.id} initialData={questionBank} />
           <EditQuestionBankButton id={id} currentName={questionBank.title} />
           <AddQuestionButton
             questionBankId={id}
