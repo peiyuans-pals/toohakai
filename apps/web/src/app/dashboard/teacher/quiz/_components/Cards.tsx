@@ -9,10 +9,9 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import Link from "next/link";
-import { EditQuestionBankButton } from "../[slug]/_components/EditQuestionBankButton";
-import { RemoveQuestionBankButton } from "../[slug]/_components/RemoveQuestionBankButton";
 import { trpc } from "../../../../../utils/trpc/client";
 import { TrpcReactQueryOptions } from "../../../../../utils/trpc/lib";
+import { NewQuizButton } from "./NewQuizButton";
 
 interface Props {
   initialData: TrpcReactQueryOptions["questionBank"]["list"]["initialData"];
@@ -27,12 +26,8 @@ export const QuestionBankCards = ({ initialData }: Props) => {
   );
   console.log(questionsBanks);
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
       {questionsBanks?.map((questionBank) => (
-        <Link
-          key={questionBank.id}
-          href={`/dashboard/teacher/question-banks/${questionBank.id}`}
-        >
           <Card key={questionBank.id} className="h-fit">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-xl font-semibold">
@@ -56,12 +51,22 @@ export const QuestionBankCards = ({ initialData }: Props) => {
                 {questionBank.questionsCount} Questions
               </p>
             </CardContent>
+						<CardFooter>
+							<div className="flex flex-row md:flex-col lg:flex-col xl:flex-col 2xl:flex-row justify-between w-full gap-1">
+        <Link
+          key={questionBank.id}
+          href={`/dashboard/teacher/quiz/${questionBank.id}`}
+        >
+								<Button className="w-full h-full" variant="outline">View</Button>
+        </Link>
+							<NewQuizButton initialData={questionBank} ></NewQuizButton>
+							</div>
+						</CardFooter>
             {/*<CardFooter className="flex flex-row justify-between">*/}
             {/*  <EditQuestionBankButton initialData={questionBank} />*/}
             {/*  <RemoveQuestionBankButton initialData={questionBank} />*/}
             {/*</CardFooter>*/}
           </Card>
-        </Link>
       ))}
     </div>
   );

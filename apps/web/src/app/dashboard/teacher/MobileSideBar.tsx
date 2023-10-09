@@ -1,8 +1,17 @@
-"use client";
-
+"use client"
 import Link from "next/link";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { cn } from "../../../utils/shadcn";
 import { usePathname } from "next/navigation";
+import { Menu } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 
 const sidebarItems = [
@@ -19,25 +28,15 @@ const sidebarItems = [
     href: "/dashboard/teacher/quiz-reports"
   }
 ];
-
-export const NavSidebar = () => {
-  const pathname = usePathname();
-  return (
-    <nav className="flex flex-1 flex-col space-x-0 space-y-1 p-0 pr-4 gap-2 border-r">
-      {sidebarItems.map((item) => (
-        <SidebarItem key={item.href} item={item} pathname={pathname} />
-      ))}
-    </nav>
-  );
-};
-
 interface SidebarItemProps {
   item: (typeof sidebarItems)[0];
   pathname: string;
 }
 
+
 const SidebarItem = ({ item, pathname }: SidebarItemProps) => {
   return (
+		<SheetClose asChild>
     <Link
       href={item.href}
       className={cn(
@@ -52,5 +51,29 @@ const SidebarItem = ({ item, pathname }: SidebarItemProps) => {
     >
       {item.name}
     </Link>
+
+		</SheetClose>
   );
 };
+export const MobileSideBar = () => {
+	const pathname = usePathname();
+	return(
+		<div>
+	<Sheet>
+          <SheetTrigger className="block sm:hidden ">
+            <Menu />
+          </SheetTrigger>
+          <SheetContent className="w-64" side="left">
+            <SheetHeader>
+              <SheetTitle>Navigation</SheetTitle>
+              <SheetDescription className="flex flex-col gap-2 pt-8">
+               {sidebarItems.map((item) => (
+        <SidebarItem key={item.href} item={item} pathname={pathname} />
+      ))}
+              </SheetDescription>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>	
+		</div>
+	)
+}

@@ -2,7 +2,6 @@
 
 import { DashboardView, Heading } from "../../../../../components/ui";
 import { NewQuestionButton } from "./_components/NewQuestionButton";
-import MockData from "../../../../../../public/mockdata/question-bank.json";
 import { QuestionsDataTable } from "./_components/DataTable";
 import { EditQuestionBankButton } from "./_components/EditQuestionBankButton";
 import { trpcServer } from "../../../../../utils/trpc/server";

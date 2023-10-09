@@ -40,7 +40,7 @@ export const MonthPicker = ({ date, setDate }: Props) => {
   return (
     <Popover>
       <PopoverTrigger
-        className=" w-auto bg-primary text-white hover:bg-primary/90 hover:text-white"
+        className=" w-auto flex-none bg-primary text-white hover:bg-primary/90 hover:text-white"
         asChild
       >
         <Button variant="outline">{date === "" ? "Select Date" : date}</Button>

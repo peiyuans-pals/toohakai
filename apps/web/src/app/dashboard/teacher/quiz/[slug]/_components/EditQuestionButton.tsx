@@ -26,8 +26,6 @@ import {
   FormMessage
 } from "@/components/ui/form";
 import {
-  TrpcReactQueryOptions,
-  TrpcRouterInputs,
   TrpcRouterOutputs
 } from "../../../../../../utils/trpc/lib";
 import { trpc } from "../../../../../../utils/trpc/client";

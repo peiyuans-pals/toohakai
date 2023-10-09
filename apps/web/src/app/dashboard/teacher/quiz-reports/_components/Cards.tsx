@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -6,7 +5,6 @@ import {
   CardHeader,
   CardTitle
 } from "@/components/ui/card";
-import { SizeIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
 interface Props {
@@ -15,7 +13,7 @@ interface Props {
 
 export const QuizReportCards = ({ initialData }: Props) => {
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
       {initialData.map((item) => (
         <Link
           target={"_blank"}

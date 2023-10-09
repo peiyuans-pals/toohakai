@@ -65,7 +65,7 @@ export const NewQuestionBankButton = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Create New Question Bank</Button>
+        <Button className="flex-none">New Question Bank</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

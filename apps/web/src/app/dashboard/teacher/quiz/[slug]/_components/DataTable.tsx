@@ -3,7 +3,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -42,7 +41,6 @@ export const QuestionsDataTable = ({ id, initialData }: Props) => {
   return (
     <div>
       <Table>
-        <TableCaption>List of questions in question bank</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-full">Question</TableHead>
