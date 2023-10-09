@@ -46,8 +46,8 @@ const formSchema = z.object({
     message: "Must contain at least 1 character"
   }),
   correct: z.string().min(1, {
-    message:"You need to select a correct option for this question" 
-  }),
+    message: "You need to select a correct option for this question"
+  })
 });
 
 interface Props {
@@ -91,7 +91,12 @@ export const NewQuestionButton = ({
       form.setValue("option2", generated.answers[1].text);
       form.setValue("option3", generated.answers[2].text);
       form.setValue("option4", generated.answers[3].text);
-			form.setValue("correct", (generated.answers.findIndex(answer => answer.isCorrect) + 1).toString());
+      form.setValue(
+        "correct",
+        (
+          generated.answers.findIndex((answer) => answer.isCorrect) + 1
+        ).toString()
+      );
     }
   });
 
