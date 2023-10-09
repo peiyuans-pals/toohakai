@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/form";
 import { trpc } from "../../../../../../utils/trpc/client";
 import { useState } from "react";
-import { ReloadIcon, PlusIcon } from "@radix-ui/react-icons";
+import { ReloadIcon, PlusIcon, RocketIcon } from "@radix-ui/react-icons";
 
 const formSchema = z.object({
   question_name: z.string().min(2, {
@@ -55,7 +55,7 @@ interface Props {
   questionBankName: string;
 }
 
-export const NewQuestionButton = ({
+export const AddQuestionButton = ({
   questionBankId,
   questionBankName
 }: Props) => {
@@ -78,7 +78,7 @@ export const NewQuestionButton = ({
     onSuccess: () => {
       form.reset();
       setOpen(false);
-      trpcUtils.questionBank.get.invalidate(questionBankId); // force a refetch
+      trpcUtils.questionBank.get.invalidate(questionBankId).then(); // force a refetch
     }
   });
 
@@ -277,12 +277,14 @@ export const NewQuestionButton = ({
                 onClick={handleAutoGenerate}
                 disabled={generateQuestion.isLoading}
               >
-                {generateQuestion.isLoading && (
-                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                )}
+                {generateQuestion.isLoading ?
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> :
+                <RocketIcon className="mr-2 h-4 w-4" />
+                }
                 Auto-generate
               </Button>
-              <Button type="submit">Add Question</Button>
+              <Button type="submit"><PlusIcon className="mr-2 h-4 w-4" />
+                Add Question</Button>
             </DialogFooter>
           </form>
         </Form>

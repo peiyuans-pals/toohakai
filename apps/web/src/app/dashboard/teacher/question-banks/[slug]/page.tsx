@@ -1,7 +1,7 @@
 "use server";
 
 import { DashboardView, Heading } from "../../../../../components/ui";
-import { NewQuestionButton } from "./_components/NewQuestionButton";
+import { AddQuestionButton } from "./_components/AddQuestionButton";
 import MockData from "../../../../../../public/mockdata/question-bank.json";
 import { QuestionsDataTable } from "./_components/DataTable";
 import { EditQuestionBankButton } from "./_components/EditQuestionBankButton";
@@ -32,10 +32,10 @@ export default async function QuestionBank({ params }: PageProps) {
         <div className="flex flex-row gap-2">
           <CreateQuizButton
             id={questionBank.id}
-            maxNumberOfQuestions={questionBank.questions.length}
+            initialData={questionBank}
           />
           <EditQuestionBankButton id={id} currentName={questionBank.title} />
-          <NewQuestionButton
+          <AddQuestionButton
             questionBankId={id}
             questionBankName={questionBank.title}
           />

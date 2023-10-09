@@ -5,16 +5,6 @@ import { useState } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Heading } from "../../../../../../components/ui";
-import Image from "next/image";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader
-} from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -34,8 +24,9 @@ import {
   FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { PlayIcon } from "@radix-ui/react-icons";
+import { PlayIcon, ReaderIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
+import { TrpcReactQueryOptions } from "../../../../../../utils/trpc/lib";
 
 interface QuizProps {
   no_of_questions: number;
@@ -45,17 +36,22 @@ interface QuizProps {
 
 interface Props {
   id: number;
-  maxNumberOfQuestions: number;
+  initialData: TrpcReactQueryOptions["questionBank"]["get"]["initialData"];
 }
 
-export const CreateQuizButton = ({ id, maxNumberOfQuestions }: Props) => {
+export const CreateQuizButton = ({ id, initialData }: Props) => {
+  const questionBank = trpc.questionBank.get.useQuery(id, {
+    initialData,
+    refetchOnMount: false
+  });
+
+  const maxNumberOfQuestions = questionBank.data?.questions.length ?? 0;
+
   const [isOpen, setOpen] = useState<boolean>(false);
+
   const formSchema = z.object({
     quiz_name: z.string().min(2, {
       message: "Quiz name must contain at least 2 characters"
-    }),
-    question_bank_id: z.number({
-      required_error: "Please select a question bank"
     }),
     no_of_questions: z.coerce
       .number({
@@ -83,7 +79,7 @@ export const CreateQuizButton = ({ id, maxNumberOfQuestions }: Props) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       quiz_name: "",
-      no_of_questions: 0,
+      no_of_questions: Math.min(5, maxNumberOfQuestions),
       timer: 30
     }
   });
@@ -102,8 +98,8 @@ export const CreateQuizButton = ({ id, maxNumberOfQuestions }: Props) => {
     }
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    // console.log(data);
+  function onSubmit(data: z.infer<typeof formSchema>) {// console.log(data);
+    console.log("createQuiz - data", data);
     mutation.mutate({
       title: data.quiz_name,
       questionBankId: id,
@@ -112,20 +108,25 @@ export const CreateQuizButton = ({ id, maxNumberOfQuestions }: Props) => {
     });
   }
 
-  const mock_participants = [
-    { id: 1, name: "John" },
-    { id: 2, name: "Doe" },
-    { id: 3, name: "Dan" },
-    { id: 4, name: "Joel" },
-    { id: 5, name: "Kai" },
-    { id: 6, name: "Zen" },
-    { id: 7, name: "Grace" },
-    { id: 8, name: "Rainer" },
-    { id: 9, name: "Peter" },
-    { id: 10, name: "William" },
-    { id: 11, name: "Ben" },
-    { id: 12, name: "Zack" }
-  ];
+  function onErrors(errors: any) {
+    console.log("createQuiz - errors", errors);
+    // todo
+  }
+
+  // const mock_participants = [
+  //   { id: 1, name: "John" },
+  //   { id: 2, name: "Doe" },
+  //   { id: 3, name: "Dan" },
+  //   { id: 4, name: "Joel" },
+  //   { id: 5, name: "Kai" },
+  //   { id: 6, name: "Zen" },
+  //   { id: 7, name: "Grace" },
+  //   { id: 8, name: "Rainer" },
+  //   { id: 9, name: "Peter" },
+  //   { id: 10, name: "William" },
+  //   { id: 11, name: "Ben" },
+  //   { id: 12, name: "Zack" }
+  // ];
 
   // if (initializeQuiz) { // todo: refactor this into a seperate modal component
   //   return (
@@ -211,7 +212,7 @@ export const CreateQuizButton = ({ id, maxNumberOfQuestions }: Props) => {
         <Form {...form}>
           <form
             className="grid grid-cols-1 items-center"
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit, onErrors)}
           >
             <FormField
               control={form.control}
@@ -274,7 +275,8 @@ export const CreateQuizButton = ({ id, maxNumberOfQuestions }: Props) => {
             />
 
             <DialogFooter className="mt-5">
-              <Button type="submit">Start Quiz Session</Button>
+              <Button type="submit"><ReaderIcon className="mr-2 h-4 w-4" />
+                                                  Create Quiz</Button>
             </DialogFooter>
           </form>
         </Form>

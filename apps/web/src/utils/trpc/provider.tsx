@@ -8,6 +8,7 @@ import superjson from "superjson";
 import { supabase } from "../supabase/client";
 import { getBaseUrl, wsClient } from "./lib";
 import { AppRouter } from "api";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 interface Props {
   children: React.ReactNode;
@@ -55,7 +56,9 @@ export default function TrpcProvider({ children }: Props) {
   );
   return (
     <trpc.Provider queryClient={queryClient} client={trpcClient}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </trpc.Provider>
   );
 }
