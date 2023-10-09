@@ -62,6 +62,7 @@ model Answer {
 // Quiz
 enum QuizStatus {
   NOT_STARTED
+  CANCELLED
   ONGOING
   ENDED
 }
