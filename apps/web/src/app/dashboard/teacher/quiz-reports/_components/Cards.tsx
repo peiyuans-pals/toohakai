@@ -20,7 +20,7 @@ export const QuizReportCards = ({ initialData }: Props) => {
           key={item.id}
           href={`/dashboard/teacher/quiz-reports/${item.id}`}
         >
-          <Card className=" h-[200px] relative">
+          <Card className=" ">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 {item.topic}
@@ -41,7 +41,7 @@ export const QuizReportCards = ({ initialData }: Props) => {
             <CardContent>
               <div className="text-2xl font-bold">{item.name}</div>
             </CardContent>
-            <CardFooter className="flex-col justify-start items-start absolute bottom-0">
+            <CardFooter className="flex-col justify-start items-start bottom-0">
               <p className="text-xs text-muted-foreground">
                 Average Score: {item.average}/{item.fullscore}
               </p>

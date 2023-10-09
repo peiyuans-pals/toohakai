@@ -45,9 +45,9 @@ const formSchema = z.object({
   option4: z.string().min(1, {
     message: "Must contain at least 1 character"
   }),
-  correct: z.enum(["1", "2", "3", "4"], {
-    required_error: "You need to select the correct option for this question"
-  })
+  correct: z.string().min(1, {
+    message:"You need to select a correct option for this question" 
+  }),
 });
 
 interface Props {
@@ -91,19 +91,7 @@ export const NewQuestionButton = ({
       form.setValue("option2", generated.answers[1].text);
       form.setValue("option3", generated.answers[2].text);
       form.setValue("option4", generated.answers[3].text);
-      // set correct radio button
-      if (generated.answers[0].isCorrect) {
-        form.setValue("correct", "1");
-      }
-      if (generated.answers[1].isCorrect) {
-        form.setValue("correct", "2");
-      }
-      if (generated.answers[2].isCorrect) {
-        form.setValue("correct", "3");
-      }
-      if (generated.answers[3].isCorrect) {
-        form.setValue("correct", "4");
-      }
+			form.setValue("correct", (generated.answers.findIndex(answer => answer.isCorrect) + 1).toString());
     }
   });
 

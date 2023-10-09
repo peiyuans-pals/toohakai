@@ -54,7 +54,6 @@ interface quizProps {
   timer: number;
 }
 export const NewQuizButton = ({ initialData }: Props) => {
-  console.log(initialData);
   const [isOpen, setOpen] = useState<boolean>(false);
   const [initializeQuiz, setInitializeQuiz] = useState<boolean>(false);
   const [quizSettings, setQuizSettings] = useState<quizProps>({
@@ -62,7 +61,7 @@ export const NewQuizButton = ({ initialData }: Props) => {
     quiz_name: "",
     timer: 0
   });
-  const [maxQns] = useState<number>(initialData.questionsCount);
+  const maxQns = initialData.questionsCount;
   const formSchema = z.object({
     quiz_name: z.string().min(2, {
       message: "Quiz name must contain at least 2 characters"
