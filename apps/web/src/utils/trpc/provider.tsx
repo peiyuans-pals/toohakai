@@ -3,10 +3,11 @@
 import React, { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { trpc } from "./client";
-import { httpBatchLink, wsLink } from "@trpc/client";
+import { httpBatchLink, splitLink, wsLink } from "@trpc/client";
 import superjson from "superjson";
 import { supabase } from "../supabase/client";
 import { getBaseUrl, wsClient } from "./lib";
+import { AppRouter } from "api";
 
 interface Props {
   children: React.ReactNode;
@@ -23,24 +24,30 @@ export default function TrpcProvider({ children }: Props) {
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
-        wsLink({
-          client: wsClient
-        }),
-        httpBatchLink({
-          url: `${getBaseUrl()}/trpc`, // TODO
-          headers: async () => {
-            const {
-              data: { session }
-            } = await supabase.auth.getSession();
-            // console.log("trpc/provider -> session", session);
-            if (!session)
+        splitLink({
+          condition: (op) => {
+            return op.type === "subscription";
+          },
+           true: wsLink<AppRouter>({ // use ws for subscriptions
+             client: wsClient
+           }),
+          false: httpBatchLink({ // use http for queries and mutations
+            url: `${getBaseUrl()}/trpc`, // TODO
+            maxURLLength: 2083,
+            headers: async () => {
+              const {
+                data: { session }
+              } = await supabase.auth.getSession();
+              // console.log("trpc/provider -> session", session);
+              if (!session)
+                return {
+                  "X-SLAY-QUEEN": "true" // unauthorized
+                };
               return {
-                "X-SLAY-QUEEN": "true" // unauthorized
+                Authorization: `Bearer ${session.access_token}`
               };
-            return {
-              Authorization: `Bearer ${session.access_token}`
-            };
-          }
+            }
+          }),
         })
       ],
       transformer: superjson
