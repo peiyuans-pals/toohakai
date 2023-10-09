@@ -55,7 +55,7 @@ export const NewQuestionBankButton = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    // console.log(values);
 
     mutation.mutate({
       title: values.topic_name

@@ -61,7 +61,7 @@ export const QuizView = ({ id, initialData }: Props) => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    // console.log(values);
     setIsSubmitted(true);
   }
 

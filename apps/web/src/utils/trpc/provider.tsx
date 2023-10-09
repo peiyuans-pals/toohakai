@@ -32,7 +32,7 @@ export default function TrpcProvider({ children }: Props) {
             const {
               data: { session }
             } = await supabase.auth.getSession();
-            console.log("trpc/provider -> session", session);
+            // console.log("trpc/provider -> session", session);
             if (!session)
               return {
                 "X-SLAY-QUEEN": "true" // unauthorized

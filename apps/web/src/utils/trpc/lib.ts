@@ -26,5 +26,5 @@ export type TrpcRouterInputs = RouterInputs;
 export type TrpcRouterOutputs = RouterOutputs;
 
 export const wsClient = createWSClient({
-  url: `${getBaseUrl().replace(/^http/, "ws")}`
+  url: `${getBaseUrl().replace(/^http/, "ws")}`,
 });

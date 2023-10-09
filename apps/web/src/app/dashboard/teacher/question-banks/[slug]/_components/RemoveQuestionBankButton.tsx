@@ -18,7 +18,7 @@ export const RemoveQuestionBankButton = ({ id }: Props) => {
 
   const mutation = trpc.questionBank.delete.useMutation({
     onSuccess: () => {
-      console.log("successfully deleted");
+      // console.log("successfully deleted");
       trpcUtils.questionBank.list.invalidate(); // force a refetch
       router.replace("/dashboard/teacher/question-banks");
     }

@@ -24,6 +24,9 @@ import {
 } from "@/components/ui/form";
 import { trpc } from "../../../../../../utils/trpc/client";
 import { useState } from "react";
+import { RemoveQuestionBankButton } from "./RemoveQuestionBankButton";
+import { Pencil2Icon } from "@radix-ui/react-icons";
+
 interface Props {
   id: number;
   currentName: string;
@@ -53,7 +56,7 @@ export const EditQuestionBankButton = ({ id, currentName }: Props) => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    // console.log(values);
     mutation.mutate({
       id,
       title: values.topic_name
@@ -63,7 +66,10 @@ export const EditQuestionBankButton = ({ id, currentName }: Props) => {
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Edit Question Bank Name</Button>
+        <Button>
+          <Pencil2Icon className="mr-2 h-4 w-4" />
+          Edit Question Bank
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
@@ -93,6 +99,8 @@ export const EditQuestionBankButton = ({ id, currentName }: Props) => {
               )}
             />
             <DialogFooter>
+              <RemoveQuestionBankButton id={id} />
+              <div className="flex-1" />
               <Button type="submit">Save Changes</Button>
             </DialogFooter>
           </form>

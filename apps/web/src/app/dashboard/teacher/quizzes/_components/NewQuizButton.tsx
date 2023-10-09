@@ -120,7 +120,7 @@ export const NewQuizButton = ({ initialData }: Props) => {
   });
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
+    // console.log(data);
     mutation.mutate({
       title: data.quiz_name,
       questionBankId: data.question_bank_id,

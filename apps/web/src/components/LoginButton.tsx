@@ -18,7 +18,7 @@ export const LoginButton = ({ className }: Props) => {
         redirectTo: `${window.location.origin}/auth/callback`
       }
     });
-    console.log(data, error);
+    // console.log(data, error);
     // todo: report error to hyperdx
   };
 

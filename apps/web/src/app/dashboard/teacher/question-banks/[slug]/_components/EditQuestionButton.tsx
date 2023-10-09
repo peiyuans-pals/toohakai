@@ -90,7 +90,7 @@ export const EditQuestionButton = ({ questionBankId, previousData }: Props) => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    // console.log(values);
     mutation.mutate({
       id: questionBankId,
       questionId: previousData.id,

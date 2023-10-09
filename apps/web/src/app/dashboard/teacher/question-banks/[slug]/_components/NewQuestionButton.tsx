@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/form";
 import { trpc } from "../../../../../../utils/trpc/client";
 import { useState } from "react";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import { ReloadIcon, PlusIcon } from "@radix-ui/react-icons";
 
 const formSchema = z.object({
   question_name: z.string().min(2, {
@@ -104,7 +104,7 @@ export const NewQuestionButton = ({
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    console.log("onSubmit - AddQuestion", values);
     mutation.mutate({
       id: questionBankId,
       title: values.question_name,
@@ -117,7 +117,10 @@ export const NewQuestionButton = ({
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>New Question</Button>
+        <Button>
+          <PlusIcon className="mr-2 h-4 w-4" />
+          New Question
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>

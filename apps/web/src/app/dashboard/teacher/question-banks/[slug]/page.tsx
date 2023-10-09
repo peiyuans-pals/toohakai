@@ -9,6 +9,7 @@ import { trpcServer } from "../../../../../utils/trpc/server";
 import { cookies } from "next/headers";
 import { Header } from "./_components/Header";
 import { RemoveQuestionBankButton } from "./_components/RemoveQuestionBankButton";
+import { CreateQuizButton } from "./_components/CreateQuizButton";
 
 interface PageProps {
   params: { slug: string };
@@ -29,8 +30,11 @@ export default async function QuestionBank({ params }: PageProps) {
           <Header id={id} initialData={questionBank} />
         </div>
         <div className="flex flex-row gap-2">
+          <CreateQuizButton
+            id={questionBank.id}
+            maxNumberOfQuestions={questionBank.questions.length}
+          />
           <EditQuestionBankButton id={id} currentName={questionBank.title} />
-          <RemoveQuestionBankButton id={id} />
           <NewQuestionButton
             questionBankId={id}
             questionBankName={questionBank.title}

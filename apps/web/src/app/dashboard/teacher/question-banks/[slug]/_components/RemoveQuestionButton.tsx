@@ -20,7 +20,7 @@ export const RemoveQuestionButton = ({ questionBankId, questionId }: Props) => {
 
   const mutation = trpc.questionBank.deleteQuestion.useMutation({
     onSuccess: () => {
-      console.log("successfully deleted");
+      // console.log("successfully deleted");
       trpcUtils.questionBank.get.invalidate(questionBankId); // force a refetch
     }
   });

@@ -25,7 +25,7 @@ export const QuestionBankCards = ({ initialData }: Props) => {
       initialData
     }
   );
-  console.log(questionsBanks);
+  // console.log(questionsBanks);
   return (
     <div className="grid grid-cols-4 gap-4">
       {questionsBanks?.map((questionBank) => (
