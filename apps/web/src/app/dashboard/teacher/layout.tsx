@@ -21,9 +21,9 @@ export default async function DashboardLayout({
   return (
     <Page>
       <div className="flex flex-row sticky h-16 items-center justify-between px-6 border-b bg-white">
-          <div>
-            <MobileSideBar></MobileSideBar>
-          </div>
+        <div>
+          <MobileSideBar></MobileSideBar>
+        </div>
         <div>
           <p className="font-extrabold text-2xl text-primary select-none">
             toohakai
