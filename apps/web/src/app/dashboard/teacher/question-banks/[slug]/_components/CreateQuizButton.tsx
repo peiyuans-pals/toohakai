@@ -201,8 +201,8 @@ export const CreateQuizButton = ({ id, initialData }: Props) => {
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
-          <PlayIcon className="mr-2 h-4 w-4" />
-          Create New Quiz
+          <PlayIcon className="mr-0 md:mr-2 h-4 w-4" />
+          <div className="hidden md:block">Create New Quiz</div>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px]">

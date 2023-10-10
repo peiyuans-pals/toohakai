@@ -25,7 +25,7 @@ import {
 import { trpc } from "../../../../../../utils/trpc/client";
 import { useState } from "react";
 import { RemoveQuestionBankButton } from "./RemoveQuestionBankButton";
-import { Pencil2Icon } from "@radix-ui/react-icons";
+import { Pencil2Icon, TrashIcon } from "@radix-ui/react-icons";
 
 interface Props {
   id: number;
@@ -100,8 +100,11 @@ export const EditQuestionBankButton = ({ id, currentName }: Props) => {
             />
             <DialogFooter>
               <RemoveQuestionBankButton id={id} />
-              <div className="flex-1" />
-              <Button type="submit">Save Changes</Button>
+              <div className="flex-1 mt-1" />
+              <Button type="submit">
+                <Pencil2Icon className="mr-2 h-4 w-4" />
+                Save Changes
+              </Button>
             </DialogFooter>
           </form>
         </Form>

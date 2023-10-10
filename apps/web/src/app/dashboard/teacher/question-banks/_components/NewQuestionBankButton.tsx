@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/form";
 import { trpc } from "../../../../../utils/trpc/client";
 import { useState } from "react";
+import { PlusIcon } from "@radix-ui/react-icons";
 
 const formSchema = z.object({
   topic_name: z
@@ -65,7 +66,10 @@ export const NewQuestionBankButton = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Create New Question Bank</Button>
+        <Button>
+          <PlusIcon className="mr-2 h-4 w-4" />
+          Create New Question Bank
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

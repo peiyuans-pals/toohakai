@@ -42,7 +42,6 @@ export const QuestionsDataTable = ({ id, initialData }: Props) => {
   return (
     <div>
       <Table>
-        <TableCaption>List of questions in question bank</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-full">Question</TableHead>
@@ -55,7 +54,9 @@ export const QuestionsDataTable = ({ id, initialData }: Props) => {
               <TableCell>
                 <Accordion type="single" collapsible>
                   <AccordionItem value="item">
-                    <AccordionTrigger>{question.title}</AccordionTrigger>
+                    <AccordionTrigger className="text-left">
+                      {question.title}
+                    </AccordionTrigger>
                     <AccordionContent>
                       <ul>
                         {question.answers.map((answer, index) => (
@@ -71,7 +72,7 @@ export const QuestionsDataTable = ({ id, initialData }: Props) => {
                   </AccordionItem>
                 </Accordion>
               </TableCell>
-              <TableCell className="flex">
+              <TableCell className="flex gap-1 flex-col lg:flex-row justify-between items-center">
                 <EditQuestionButton
                   questionBankId={id}
                   previousData={question}

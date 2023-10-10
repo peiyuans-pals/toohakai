@@ -8,6 +8,7 @@ import {
   PopoverTrigger
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { TrashIcon } from "@radix-ui/react-icons";
 interface Props {
   id: number;
 }
@@ -31,7 +32,10 @@ export const RemoveQuestionBankButton = ({ id }: Props) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="destructive">Delete Question Bank</Button>
+        <Button variant="destructive">
+          <TrashIcon className="mr-2 h-4 w-4" />
+          Delete Question Bank
+        </Button>
       </PopoverTrigger>
       <PopoverContent>
         <p className="mb-2 text-center">This action cannot be undone!</p>

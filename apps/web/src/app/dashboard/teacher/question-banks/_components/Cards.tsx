@@ -9,8 +9,6 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import Link from "next/link";
-import { EditQuestionBankButton } from "../[slug]/_components/EditQuestionBankButton";
-import { RemoveQuestionBankButton } from "../[slug]/_components/RemoveQuestionBankButton";
 import { trpc } from "../../../../../utils/trpc/client";
 import { TrpcReactQueryOptions } from "../../../../../utils/trpc/lib";
 
@@ -27,7 +25,7 @@ export const QuestionBankCards = ({ initialData }: Props) => {
   );
   // console.log(questionsBanks);
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
       {questionsBanks?.map((questionBank) => (
         <Link
           key={questionBank.id}

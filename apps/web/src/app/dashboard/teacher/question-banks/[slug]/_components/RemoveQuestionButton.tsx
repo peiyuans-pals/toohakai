@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { trpc } from "../../../../../../utils/trpc/client";
+import { TrashIcon } from "@radix-ui/react-icons";
 interface Props {
   questionBankId: number;
   questionId: number;
@@ -32,7 +33,10 @@ export const RemoveQuestionButton = ({ questionBankId, questionId }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="destructive">Remove</Button>
+        <Button variant="destructive">
+          <TrashIcon className="mr-2 h-4 w-4" />
+          Remove
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>This action cannot be undone</DropdownMenuLabel>

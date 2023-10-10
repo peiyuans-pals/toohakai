@@ -32,6 +32,7 @@ import {
 } from "../../../../../../utils/trpc/lib";
 import { trpc } from "../../../../../../utils/trpc/client";
 import { useState } from "react";
+import { Pencil2Icon } from "@radix-ui/react-icons";
 
 interface Props {
   questionBankId: number;
@@ -121,7 +122,10 @@ export const EditQuestionButton = ({ questionBankId, previousData }: Props) => {
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="mr-1">Edit</Button>
+        <Button className="w-full">
+          <Pencil2Icon className="mr-2 h-4 w-4" />
+          Edit
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
@@ -267,7 +271,10 @@ export const EditQuestionButton = ({ questionBankId, previousData }: Props) => {
               )}
             />
             <DialogFooter className="mt-5">
-              <Button type="submit">Save Changes</Button>
+              <Button type="submit">
+                <Pencil2Icon className="mr-2 h-4 w-4" />
+                Save Changes
+              </Button>
             </DialogFooter>
           </form>
         </Form>

@@ -29,14 +29,14 @@ export default async function QuestionBank({ params }: PageProps) {
           <p className="text-stone-700">Question Bank</p>
           <Header id={id} initialData={questionBank} />
         </div>
-        <div className="flex flex-row gap-2">
-          <CreateQuizButton id={questionBank.id} initialData={questionBank} />
-          <EditQuestionBankButton id={id} currentName={questionBank.title} />
-          <AddQuestionButton
-            questionBankId={id}
-            questionBankName={questionBank.title}
-          />
-        </div>
+      </div>
+      <div className="flex justify-end flex-row gap-2">
+        <CreateQuizButton id={questionBank.id} initialData={questionBank} />
+        <EditQuestionBankButton id={id} currentName={questionBank.title} />
+        <AddQuestionButton
+          questionBankId={id}
+          questionBankName={questionBank.title}
+        />
       </div>
       <QuestionsDataTable id={id} initialData={questionBank} />
     </DashboardView>

@@ -44,7 +44,7 @@ const SidebarItem = ({ item, pathname }: SidebarItemProps) => {
         buttonVariants({ variant: "ghost" }),
         pathname === item.href
           ? "bg-primary hover:bg-primary text-white hover:text-white"
-          : pathname.endsWith(item.href) && item.name !== "Home"
+          : pathname.includes(item.href) && item.name !== "Home"
           ? "border border-primary text-primary"
           : "hover:bg-muted",
         "justify-end text-end"
