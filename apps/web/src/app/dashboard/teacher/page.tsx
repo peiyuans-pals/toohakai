@@ -23,9 +23,8 @@ const summaryData: SummaryCardProps[] = [
 ];
 
 export default async function DashboardRoot() {
-  const questionBankCount = await trpcServer(
-    cookies
-  ).questionBank.count.query();
+  const questionBankCount =
+    await trpcServer(cookies).questionBank.count.query();
 
   const me = await trpcServer(cookies).user.me.query();
   const name = getCleanedNameFromIdentities(me);
@@ -52,7 +51,7 @@ export default async function DashboardRoot() {
         </CardHeader>
       </Card>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2">
         {summaryData.map((summaryItem) => (
           <SummaryCard
             key={summaryItem.title}

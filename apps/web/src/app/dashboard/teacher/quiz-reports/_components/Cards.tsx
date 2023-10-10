@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -6,7 +5,6 @@ import {
   CardHeader,
   CardTitle
 } from "@/components/ui/card";
-import { SizeIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
 interface Props {
@@ -15,14 +13,14 @@ interface Props {
 
 export const QuizReportCards = ({ initialData }: Props) => {
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
       {initialData.map((item) => (
         <Link
           target={"_blank"}
           key={item.id}
           href={`/dashboard/teacher/quiz-reports/${item.id}`}
         >
-          <Card className=" h-[200px] relative">
+          <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 {item.topic}
@@ -43,7 +41,7 @@ export const QuizReportCards = ({ initialData }: Props) => {
             <CardContent>
               <div className="text-2xl font-bold">{item.name}</div>
             </CardContent>
-            <CardFooter className="flex-col justify-start items-start absolute bottom-0">
+            <CardFooter className="flex-col justify-start items-start bottom-0">
               <p className="text-xs text-muted-foreground">
                 Average Score: {item.average}/{item.fullscore}
               </p>
