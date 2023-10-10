@@ -32,6 +32,15 @@ export const QuizView = ({ id, initialData }: Props) => {
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [manualControl, setManualControl] = useState<boolean>(false);
 
+  trpc.quizSession.listen.useSubscription(undefined, {
+    onData: (data) => {
+      console.log("socketListener", data);
+    },
+    onStarted: () => {
+      console.log("socketListener", "quiz started");
+    }
+  });
+
   let intervalRef = useRef<ReturnType<typeof setInterval>>();
   const decreaseNum = () => {
     if (countdown > 0) {

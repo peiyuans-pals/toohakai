@@ -21,7 +21,7 @@ const topbarItems = [
   },
   {
     name: "Join Room",
-    href: "/student/join-quiz-room"
+    href: "/student/join-quiz"
   }
 ];
 

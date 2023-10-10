@@ -26,7 +26,7 @@ const navItems = [
   },
   {
     name: "Join Quiz Room",
-    href: "/student/join-quiz-room",
+    href: "/student/join-quiz",
     icon: <EnterIcon className="w-1/2 h-1/2" />
   }
 ];

@@ -36,10 +36,17 @@ interface Props {
 export const QuizView = ({ id, initialData }: Props) => {
   const { data: questionBank, refetch } = trpc.questionBank.get.useQuery(id, {
     initialData
-  });
+  }); //  todo: student doesnt have access to this, need to get question from the socket
+
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(10);
+
+  trpc.quizSession.listen.useSubscription(undefined, {
+    onData: (data) => {
+      console.log("socketListener", data);
+    }
+  });
 
   // every second, decrement countdown
   useEffect(() => {
@@ -91,7 +98,7 @@ export const QuizView = ({ id, initialData }: Props) => {
             <CardFooter>
               <Button asChild>
                 {/* Temporary link, supposed to redirect back to student's dashboard */}
-                <Link href="join-quiz-room">Return to home</Link>
+                <Link href="/dashboard">Return to home</Link>
               </Button>
             </CardFooter>
           </Card>

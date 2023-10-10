@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Quiz" ALTER COLUMN "pinCode" DROP DEFAULT;
