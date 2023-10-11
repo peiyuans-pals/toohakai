@@ -14,7 +14,7 @@ export const TestLoginButton = () => {
       password: "password"
     });
     console.log(data, error);
-    router.replace("/dashboard/teacher")
+    router.replace("/dashboard/teacher");
   };
 
   return (
