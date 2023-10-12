@@ -1,0 +1,3 @@
+[submodule "apps/llmonitor"]
+	path = apps/llmonitor
+	url = https://github.com/llmonitor/llmonitor/
