@@ -1,11 +1,8 @@
 "use client";
 
-import {
-  ButtonGroup,
-  ButtonGroupItem
-} from "src/app/student/quiz/_components/ButtonGroup";
-import { trpc } from "../../../../utils/trpc/client";
-import { TrpcReactQueryOptions } from "../../../../utils/trpc/lib";
+import { ButtonGroup, ButtonGroupItem } from "./ButtonGroup";
+import { trpc } from "../../../../../utils/trpc/client";
+import { TrpcReactQueryOptions } from "../../../../../utils/trpc/lib";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,17 +27,18 @@ import {
 import Link from "next/link";
 
 interface Props {
-  id: number;
+  questionBankId: number;
   initialData: TrpcReactQueryOptions["questionBank"]["get"]["initialData"];
+	timePerQuestion: number;
 }
-export const QuizView = ({ id, initialData }: Props) => {
-  const { data: questionBank, refetch } = trpc.questionBank.get.useQuery(id, {
+export const QuizView = ({ questionBankId, initialData, timePerQuestion }: Props) => {
+  const { data: questionBank, refetch } = trpc.questionBank.get.useQuery(questionBankId, {
     initialData
   }); //  todo: student doesnt have access to this, need to get question from the socket
 
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
-  const [countdown, setCountdown] = useState<number>(10);
+  const [countdown, setCountdown] = useState<number>(timePerQuestion);
 
   trpc.quizSession.listen.useSubscription(undefined, {
     onData: (data) => {
@@ -50,10 +48,11 @@ export const QuizView = ({ id, initialData }: Props) => {
 
   // every second, decrement countdown
   useEffect(() => {
+		console.log(countdown)
     if (countdown >= 0) {
       setTimeout(() => setCountdown(countdown - 1), 1000);
     } else {
-      setCountdown(10);
+      setCountdown(timePerQuestion);
     }
   }, [countdown]);
   const question_id = 0; //mock question ID
@@ -110,7 +109,7 @@ export const QuizView = ({ id, initialData }: Props) => {
     <div className="p-5 flex flex-col h-screen">
       <Heading>{questionBank.title}</Heading>
       <p className="text-xl">{questionBank.questions[question_id].title}</p>
-      <Progress className="mt-5" value={countdown * 10}></Progress>
+      <Progress className="mt-5" value={(countdown / timePerQuestion)*100}></Progress>
       <Form {...form}>
         <form
           className="flex flex-col mt-auto mb-10"
