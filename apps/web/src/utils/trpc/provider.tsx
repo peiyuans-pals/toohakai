@@ -27,7 +27,7 @@ export default function TrpcProvider({ children }: Props) {
       links: [
         splitLink({
           condition: (op) => {
-            return op.type === "subscription";
+            return (op.type === "subscription") || (op.path.includes("Socket")) // any path with the word Socket in it
           },
           true: wsLink<AppRouter>({
             // use ws for subscriptions

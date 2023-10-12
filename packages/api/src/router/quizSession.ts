@@ -12,7 +12,7 @@ import { Prisma, QuizStatus, QuizParticipant, User } from "@prisma/client";
 import { supabase } from "../utils/supabase";
 
 // create a global event emitter (could be replaced by redis, etc)
-const ee = new EventEmitter();
+export const ee = new EventEmitter();
 
 type SocketData = any;
 
@@ -107,7 +107,32 @@ export const quizSessionRouter = createTRPCRouter({
         };
       });
     }),
-  users: publicProcedure
+  getParticipants: protectedProcedure
+    .input(z.object({ quizId: z.number() }))
+    .query(async (opts) => {
+      const quizId = opts.input.quizId;
+      const participants = await prisma.quizParticipant.findMany({
+        where: {
+          quizId: quizId
+        }
+      });
+
+      const participantsWithData = await Promise.all(
+        participants.map(async (participant) => {
+          const { data, error } = await supabase.auth.admin.getUserById(
+            participant.userId
+          );
+
+          return {
+            ...participant,
+            name: data?.user?.user_metadata.full_name ?? "oops no name"
+          };
+        })
+      );
+
+      return participantsWithData;
+    }),
+  participantsSubscription: publicProcedure
     .input(z.object({ quizId: z.number() }))
     .subscription((opts) => {
       return observable<QuizParticipant[]>((emit) => {

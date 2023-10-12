@@ -43,7 +43,9 @@ export default function PreQuiz({ searchParams }: NextPage) {
 
   const [participants, setParticipants] = useState<Participants>([]); // todo: use server
 
-  trpc.quizSession.users.useSubscription(
+  const initialPartipants = trpc.quizSession.getParticipants.useQuery({quizId: quizId}); // add onSuccess handler
+
+  trpc.quizSession.participantsSubscription.useSubscription(
     { quizId },
     {
       onData: (data) => {
