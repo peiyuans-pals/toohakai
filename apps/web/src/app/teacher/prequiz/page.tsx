@@ -37,13 +37,15 @@ export default function PreQuiz({ searchParams }: NextPage) {
 
   const mutation = trpc.quizSession.changeStatus.useMutation({
     onSuccess: (data) => {
-      router.push(`/teacher/quiz?quiz_id=${quizId}`);
+      router.push(`/teacher/quiz/${quizId}`);
     }
   });
 
   const [participants, setParticipants] = useState<Participants>([]); // todo: use server
 
-  const initialPartipants = trpc.quizSession.getParticipants.useQuery({quizId: quizId}); // add onSuccess handler
+  const initialPartipants = trpc.quizSession.getParticipants.useQuery({
+    quizId: quizId
+  }); // add onSuccess handler
 
   trpc.quizSession.participantsSubscription.useSubscription(
     { quizId },
@@ -129,10 +131,8 @@ export default function PreQuiz({ searchParams }: NextPage) {
                 </ScrollArea>
               </CardContent>
               <CardFooter className="flex justify-between">
-                <Button>Start Session</Button>
-                <Button variant="destructive" onClick={handleStartClick}>
-                  Cancel Session
-                </Button>
+                <Button onClick={handleStartClick}>Start Session</Button>
+                <Button variant="destructive">Cancel Session</Button>
               </CardFooter>
             </Card>
           </div>

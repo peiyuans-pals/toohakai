@@ -1,11 +1,8 @@
 "use client";
 
-import {
-  ButtonGrid,
-  ButtonGridItem
-} from "src/app/teacher/quiz/_components/ButtonGrid";
-import { trpc } from "../../../../utils/trpc/client";
-import { TrpcReactQueryOptions } from "../../../../utils/trpc/lib";
+import { ButtonGrid, ButtonGridItem } from "./ButtonGrid";
+import { trpc } from "../../../../../utils/trpc/client";
+import { TrpcReactQueryOptions } from "../../../../../utils/trpc/lib";
 import { useEffect, useRef, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -19,20 +16,32 @@ import Link from "next/link";
 import { QuizChart } from "./QuizChart";
 
 interface Props {
-  id: number;
+  questionBankId: number;
+  quizTitle: string;
   initialData: TrpcReactQueryOptions["questionBank"]["get"]["initialData"];
+  timePerQuestion: number;
+  rngSequence: number[];
 }
-export const QuizView = ({ id, initialData }: Props) => {
-  const { data: questionBank, refetch } = trpc.questionBank.get.useQuery(id, {
-    initialData
+export const QuizView = ({
+  questionBankId,
+  quizTitle,
+  initialData,
+  timePerQuestion,
+  rngSequence
+}: Props) => {
+  const questionBank = trpc.questionBank.get.useQuery(questionBankId, {
+    initialData,
+    refetchOnMount: false
   });
-  const [countdown, setCountdown] = useState<number>(10);
+  console.log(rngSequence);
+  const [countdown, setCountdown] = useState<number>(timePerQuestion);
+  const [timer, setTimer] = useState<number>(timePerQuestion);
   const [questionEndedState, setQuestionEndedState] = useState<boolean>(false);
   const [questionIndex, setQuestionIndex] = useState<number>(0);
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [manualControl, setManualControl] = useState<boolean>(false);
 
-    trpc.quizSession.listen.useSubscription(undefined, {
+  trpc.quizSession.listen.useSubscription(undefined, {
     onData: (data) => {
       console.log("socketListener", data);
     },
@@ -50,6 +59,7 @@ export const QuizView = ({ id, initialData }: Props) => {
     if (countdown == 0 && !questionEndedState) {
       setQuestionEndedState(true);
       setCountdown(10);
+      setTimer(10);
     }
 
     if (countdown == 0 && questionEndedState) {
@@ -61,16 +71,15 @@ export const QuizView = ({ id, initialData }: Props) => {
     intervalRef.current = setInterval(decreaseNum, 1000);
     return () => clearInterval(intervalRef.current);
   }, [countdown]);
-  const question_id = [0, 1]; //mock question IDs
-  let i = 0;
 
   function nextQn() {
-    if (questionIndex < question_id.length - 1) {
+    if (questionIndex < rngSequence.length - 1) {
       clearInterval(intervalRef.current);
       setQuestionEndedState(false);
       setQuestionIndex(questionIndex + 1);
       setManualControl(false);
-      setCountdown(10);
+      setCountdown(timePerQuestion);
+      setTimer(timePerQuestion);
       intervalRef.current = setInterval(decreaseNum, 1000);
       return;
     }
@@ -86,36 +95,40 @@ export const QuizView = ({ id, initialData }: Props) => {
   let results_1 = [
     {
       option:
-        questionBank?.questions[question_id[questionIndex]].answers[0].text,
+        questionBank.data?.questions[rngSequence[questionIndex]].answers[0]
+          .text,
       correct:
-        questionBank?.questions[question_id[questionIndex]].answers[0]
+        questionBank.data?.questions[rngSequence[questionIndex]].answers[0]
           .isCorrect,
       label: `${35}%`,
       tally: 35
     },
     {
       option:
-        questionBank?.questions[question_id[questionIndex]].answers[1].text,
+        questionBank.data?.questions[rngSequence[questionIndex]].answers[1]
+          .text,
       correct:
-        questionBank?.questions[question_id[questionIndex]].answers[1]
+        questionBank.data?.questions[rngSequence[questionIndex]].answers[1]
           .isCorrect,
       label: `${10}%`,
       tally: 10
     },
     {
       option:
-        questionBank?.questions[question_id[questionIndex]].answers[2].text,
+        questionBank.data?.questions[rngSequence[questionIndex]].answers[2]
+          .text,
       correct:
-        questionBank?.questions[question_id[questionIndex]].answers[2]
+        questionBank.data?.questions[rngSequence[questionIndex]].answers[2]
           .isCorrect,
       label: `${5}%`,
       tally: 5
     },
     {
       option:
-        questionBank?.questions[question_id[questionIndex]].answers[3].text,
+        questionBank.data?.questions[rngSequence[questionIndex]].answers[3]
+          .text,
       correct:
-        questionBank?.questions[question_id[questionIndex]].answers[3]
+        questionBank.data?.questions[rngSequence[questionIndex]].answers[3]
           .isCorrect,
       label: `${50}%`,
       tally: 50
@@ -135,9 +148,7 @@ export const QuizView = ({ id, initialData }: Props) => {
         <div>
           <Card>
             <CardHeader>
-              <h1 className="text-4xl font-bold text-gray-900">
-                {questionBank.title}
-              </h1>
+              <h1 className="text-4xl font-bold text-gray-900">{quizTitle}</h1>
             </CardHeader>
             <CardContent>
               <p className="text-xl">Quiz has now been completed</p>
@@ -156,11 +167,11 @@ export const QuizView = ({ id, initialData }: Props) => {
 
   return (
     <div className="p-5 flex flex-col h-screen">
-      <h1 className="text-4xl font-bold text-gray-900">{questionBank.title}</h1>
+      <h1 className="text-4xl font-bold text-gray-900">{quizTitle}</h1>
       <p className="text-2xl">
-        {questionBank.questions[question_id[questionIndex]].title}
+        {questionBank.data?.questions[rngSequence[questionIndex]].title}
       </p>
-      <Progress className="mt-5" value={countdown * 10}></Progress>
+      <Progress className="mt-5" value={(countdown / timer) * 100}></Progress>
       {questionEndedState && !manualControl && (
         <p className="text-2xl self-end">
           Next question in {countdown} seconds.
@@ -176,20 +187,20 @@ export const QuizView = ({ id, initialData }: Props) => {
       <div className="flex flex-col mt-auto mb-10">
         {!questionEndedState && (
           <ButtonGrid>
-            {questionBank.questions[question_id[questionIndex]].answers.map(
-              (answer, key) => (
-                <div key={key} className="flex items-center justify-center">
-                  <ButtonGridItem
-                    percentage={0}
-                    className="flex items-center w-full justify-center"
-                    isCorrect={answer.isCorrect}
-                    questionEndedState={questionEndedState}
-                  >
-                    {answer.text}
-                  </ButtonGridItem>
-                </div>
-              )
-            )}
+            {questionBank.data?.questions[
+              rngSequence[questionIndex]
+            ].answers.map((answer, key) => (
+              <div key={key} className="flex items-center justify-center">
+                <ButtonGridItem
+                  percentage={0}
+                  className="flex items-center w-full justify-center"
+                  isCorrect={answer.isCorrect}
+                  questionEndedState={questionEndedState}
+                >
+                  {answer.text}
+                </ButtonGridItem>
+              </div>
+            ))}
           </ButtonGrid>
         )}
         <div className="flex justify-end">
