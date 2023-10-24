@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import { render, screen } from "@testing-library/react";
-import { SummaryCard } from "@/app/dashboard/teacher/_components/SummaryCard";
+import { SummaryCard } from "@/app/dashboard/teacher/SummaryCard";
 
 describe("SummaryCard", () => {
   it("should render Summary Card correctly", () => {
