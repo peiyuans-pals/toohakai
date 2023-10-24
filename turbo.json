@@ -58,6 +58,25 @@
         "DEBUG"
       ]
     },
+    "test:ci": {
+      "outputs": ["coverage/**"],
+      "dependsOn": [],
+      "dotEnv": ["apps/web/.env", "apps/server/.env"],
+      "env": [
+        // apps/web/.env
+        "NODE_ENV",
+        "NEXT_PUBLIC_TOOHAKAI_API_URL",
+        "NEXT_PUBLIC_DEPLOYMENT_DOMAIN",
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        // apps/server/.env
+        "SUPABASE_URL",
+        "SUPABASE_KEY",
+        "OPENAI_KEY",
+        // packages/llm-api
+        "DEBUG"
+      ]
+    },
     "cypress:headless": {
       "dependsOn": [],
       "dotEnv": ["apps/web/.env", "apps/server/.env"],
