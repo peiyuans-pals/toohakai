@@ -33,7 +33,10 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
-      #      - name: Unit Tests
+      - name: Unit Tests
+        run: pnpm run test:ci
+
+      #      - name: E2E Tests
       #        run: pnpm test
 #      - name: E2E Tests
 #        run: ./.github/scripts/e2e.sh
