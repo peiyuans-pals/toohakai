@@ -12,3 +12,15 @@ server/dist
 public/dist
 .idea
 secrets
+/apps/web/coverage/lcov-report/base.css
+/apps/web/coverage/lcov-report/block-navigation.js
+/apps/web/coverage/lcov-report/favicon.png
+/apps/web/coverage/lcov-report/index.html
+/apps/web/coverage/lcov-report/prettify.css
+/apps/web/coverage/lcov-report/prettify.js
+/apps/web/coverage/lcov-report/sort-arrow-sprite.png
+/apps/web/coverage/lcov-report/sorter.js
+/apps/web/coverage/lcov-report/SummaryCard.tsx.html
+/apps/web/coverage/clover.xml
+/apps/web/coverage/coverage-final.json
+/apps/web/coverage/lcov.info

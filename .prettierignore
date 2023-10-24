@@ -11,6 +11,6 @@ dist-ssr
 .cache
 server/dist
 public/dist
-
+*/coverage
 #generated
 pnpm-lock.yaml
