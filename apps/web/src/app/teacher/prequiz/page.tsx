@@ -23,8 +23,13 @@ import {
   TrpcRouterOutputs
 } from "../../../utils/trpc/lib";
 
-
-type Participants = Parameters< NonNullable< Parameters<TrpcRouterOutputs["quizSession"]["participantsSubscription"]["subscribe"]>[0]["next"]>>[0]
+type Participants = Parameters<
+  NonNullable<
+    Parameters<
+      TrpcRouterOutputs["quizSession"]["participantsSubscription"]["subscribe"]
+    >[0]["next"]
+  >
+>[0];
 
 export default function PreQuiz({ searchParams }: NextPage) {
   const quizId = parseInt(searchParams.quiz_id as string);
@@ -121,9 +126,14 @@ export default function PreQuiz({ searchParams }: NextPage) {
                     </h4>
                     {participants.map((participant) => (
                       <div key={participant.userId}>
-                        <div className="text-sm flex flex-row justify-start items-center">{participant.name}
+                        <div className="text-sm flex flex-row justify-start items-center">
+                          {participant.name}
                           <div className="ml-4">
-                          {participant.connectionStatus === "CONNECTED" ? <CheckCircledIcon color="green" /> : <CrossCircledIcon color="red"/>}
+                            {participant.connectionStatus === "CONNECTED" ? (
+                              <CheckCircledIcon color="green" />
+                            ) : (
+                              <CrossCircledIcon color="red" />
+                            )}
                           </div>
                         </div>
                         <Separator className="my-2" />

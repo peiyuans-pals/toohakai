@@ -227,7 +227,7 @@ export const quizSessionRouter = createTRPCRouter({
           emit.next(participantsWithData);
         };
 
-        onQuizParticipantJoin().then(_r => {}); // emit once on connection to subscription
+        onQuizParticipantJoin().then((_r) => {}); // emit once on connection to subscription
 
         ee.on("join", onQuizParticipantJoin);
 
