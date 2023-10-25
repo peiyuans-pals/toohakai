@@ -31,11 +31,24 @@ jest.mock("next/navigation", () => {
   };
 });
 describe("NavSidebar", () => {
-  it("should render NavSidebar correctly", () => {
+  it("should render Home Item in NavSidebar correctly", () => {
     render(<NavSidebar />);
-
     const homeText = screen.getByText(/Home/i);
-
+    expect(homeText).toBeInTheDocument();
+  });
+  it("should render Question Banks Item in NavSidebar correctly", () => {
+    render(<NavSidebar />);
+    const homeText = screen.getByText(/Question Banks/i);
+    expect(homeText).toBeInTheDocument();
+  });
+  it("should render Quizzes Item in NavSidebar correctly", () => {
+    render(<NavSidebar />);
+    const homeText = screen.getByText(/Quizzes/i);
+    expect(homeText).toBeInTheDocument();
+  });
+  it("should render Quiz Reports Item in NavSidebar correctly", () => {
+    render(<NavSidebar />);
+    const homeText = screen.getByText(/Quiz Reports/i);
     expect(homeText).toBeInTheDocument();
   });
 });
