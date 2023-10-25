@@ -6,8 +6,7 @@ import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader,
-  CardTitle
+  CardHeader
 } from "@/components/ui/card";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -17,11 +16,18 @@ import { trpc } from "../../../utils/trpc/client";
 import { NextPage } from "../../../types/next";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { CheckCircledIcon, CrossCircledIcon } from "@radix-ui/react-icons";
 import {
-  TrpcInferObservable,
-  TrpcRouterOutputs
-} from "../../../utils/trpc/lib";
+  CheckCircledIcon,
+  CrossCircledIcon,
+  TrashIcon
+} from "@radix-ui/react-icons";
+import { TrpcRouterOutputs } from "../../../utils/trpc/lib";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from "@/components/ui/popover";
+import { cleanName } from "../../../utils/strings";
 
 type Participants = Parameters<
   NonNullable<
@@ -38,7 +44,7 @@ export default function PreQuiz({ searchParams }: NextPage) {
 
   const router = useRouter();
 
-  const mutation = trpc.quizSession.changeStatus.useMutation({
+  const changeQuizStatusMutation = trpc.quizSession.changeStatus.useMutation({
     onSuccess: (data) => {
       router.push(`/teacher/quiz/${quizId}`);
     }
@@ -46,9 +52,9 @@ export default function PreQuiz({ searchParams }: NextPage) {
 
   const [participants, setParticipants] = useState<Participants>([]); // todo: use server
 
-  const initialPartipants = trpc.quizSession.getParticipants.useQuery({
-    quizId: quizId
-  }); // add onSuccess handler
+  // const initialPartipants = trpc.quizSession.getParticipants.useQuery({
+  //   quizId: quizId
+  // }); // add onSuccess handler
 
   trpc.quizSession.participantsSubscription.useSubscription(
     { quizId },
@@ -61,7 +67,7 @@ export default function PreQuiz({ searchParams }: NextPage) {
   );
 
   const handleStartClick = () => {
-    mutation.mutate({
+    changeQuizStatusMutation.mutate({
       quizId: quizId,
       status: "ONGOING"
     });
@@ -119,15 +125,18 @@ export default function PreQuiz({ searchParams }: NextPage) {
                 <p className="text-xl">
                   Total participants: {participants.length}
                 </p>
+                <p className="text-xl">
+                  Total participants online: {participants.filter(p => p.connectionStatus === "CONNECTED").length}
+                </p>
                 <ScrollArea className="mt-5 h-[400px] text-center w-[100%] rounded-md border">
                   <div className="p-4">
-                    <h4 className="mb-4 text-sm font-medium leading-none">
+                    <h4 className="mb-4 text-sm font-pnpm medium leading-none">
                       Participants
                     </h4>
                     {participants.map((participant) => (
                       <div key={participant.userId}>
                         <div className="text-sm flex flex-row justify-start items-center">
-                          {participant.name}
+                          {cleanName(participant.name)}
                           <div className="ml-4">
                             {participant.connectionStatus === "CONNECTED" ? (
                               <CheckCircledIcon color="green" />
@@ -143,8 +152,24 @@ export default function PreQuiz({ searchParams }: NextPage) {
                 </ScrollArea>
               </CardContent>
               <CardFooter className="flex justify-between">
-                <Button onClick={handleStartClick}>Start Session</Button>
-                <Button variant="destructive">Cancel Session</Button>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button>Start Session</Button>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <p className="mb-2 text-center">
+                      Are you sure you're ready to start the session?
+                    </p>
+                    <Button
+                      className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 shadow-sm w-full"
+                      onClick={handleStartClick}
+                    >
+                      Yes, Start Session
+                    </Button>
+                  </PopoverContent>
+                </Popover>
+
+                <Button variant="destructive">Return to Dashboard</Button>
               </CardFooter>
             </Card>
           </div>

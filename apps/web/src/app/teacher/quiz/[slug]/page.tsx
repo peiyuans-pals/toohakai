@@ -39,9 +39,8 @@ export default async function Quiz({ params }: PageProps) {
     return (
       <div>
         <QuizView
-          questionBankId={questionBankId}
+          quizId={id}
           quizTitle={quizTitle}
-          initialData={questionBank}
           timePerQuestion={timePerQuestion}
           rngSequence={rngSequence}
         ></QuizView>

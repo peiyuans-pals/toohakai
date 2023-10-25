@@ -1,23 +1,19 @@
-import * as z from "zod";
-import * as imports from "../null";
-import {
-  CompleteAnswer,
-  RelatedAnswerModel,
-  CompleteQuestionBank,
-  RelatedQuestionBankModel
-} from "./index";
+import * as z from "zod"
+import * as imports from "../null"
+import { CompleteAnswer, RelatedAnswerModel, CompleteQuestionBank, RelatedQuestionBankModel, CompleteQuiz, RelatedQuizModel } from "./index"
 
 export const QuestionModel = z.object({
   id: z.number().int(),
   createdAt: z.date(),
   updatedAt: z.date(),
   title: z.string(),
-  questionBankId: z.number().int()
-});
+  questionBankId: z.number().int(),
+})
 
 export interface CompleteQuestion extends z.infer<typeof QuestionModel> {
-  answers: CompleteAnswer[];
-  QuestionBank: CompleteQuestionBank;
+  answers: CompleteAnswer[]
+  QuestionBank: CompleteQuestionBank
+  Quiz: CompleteQuiz[]
 }
 
 /**
@@ -25,9 +21,8 @@ export interface CompleteQuestion extends z.infer<typeof QuestionModel> {
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const RelatedQuestionModel: z.ZodSchema<CompleteQuestion> = z.lazy(() =>
-  QuestionModel.extend({
-    answers: RelatedAnswerModel.array(),
-    QuestionBank: RelatedQuestionBankModel
-  })
-);
+export const RelatedQuestionModel: z.ZodSchema<CompleteQuestion> = z.lazy(() => QuestionModel.extend({
+  answers: RelatedAnswerModel.array(),
+  QuestionBank: RelatedQuestionBankModel,
+  Quiz: RelatedQuizModel.array(),
+}))

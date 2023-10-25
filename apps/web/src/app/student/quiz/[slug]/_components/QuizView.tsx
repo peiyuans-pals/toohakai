@@ -32,26 +32,25 @@ import { supabase } from "../../../../../utils/supabase/client";
 
 interface Props {
   quiz: TrpcRouterOutputs["quiz"]["get"];
-  questionBankId: number;
-  initialData: TrpcReactQueryOptions["questionBank"]["get"]["initialData"];
-  timePerQuestion: number;
 }
-export const QuizView = ({
-  quiz,
-  questionBankId,
-  initialData,
-  timePerQuestion
-}: Props) => {
-  const { data: questionBank, refetch } = trpc.questionBank.get.useQuery(
-    questionBankId,
-    {
-      initialData
-    }
-  ); //  todo: student doesnt have access to this, need to get question from the socket
 
+type CurrentQuestion = Parameters<
+  NonNullable<
+    Parameters<
+      TrpcRouterOutputs["quizSession"]["currentQuestion"]["subscribe"]
+    >[0]["next"]
+  >
+>[0]["question"];
+
+export const QuizView = ({
+  quiz
+}:
+Props) => {
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
-  const [countdown, setCountdown] = useState<number>(timePerQuestion);
+  const [currentQuestion, setCurrentQuestion] =
+    useState<CurrentQuestion | null>(null);
+  const [countdown, setCountdown] = useState<number>(0);
 
   const [accessToken, setAccessToken] = useState<string>("");
 
@@ -65,7 +64,7 @@ export const QuizView = ({
     getAccessToken();
   }, []);
 
-  trpc.quizSession.listen.useSubscription(
+  trpc.quizSession.currentQuestion.useSubscription(
     {
       quizId: quiz?.id ?? 0,
       accessToken: accessToken
@@ -73,6 +72,9 @@ export const QuizView = ({
     {
       onData: (data) => {
         console.log("socketListener", data);
+        console.log("currentQuestion", data.question);
+        setCurrentQuestion(data.question);
+        setCountdown(data.questionDuration);
       },
       enabled: !!accessToken
     }
@@ -83,8 +85,6 @@ export const QuizView = ({
     // console.log(countdown)
     if (countdown >= 0) {
       setTimeout(() => setCountdown(countdown - 1), 1000);
-    } else {
-      setCountdown(timePerQuestion);
     }
   }, [countdown]);
   const question_id = 0; //mock question ID
@@ -103,13 +103,6 @@ export const QuizView = ({
     setIsSubmitted(true);
   }
 
-  if (!questionBank) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        Quiz not found.
-      </div>
-    );
-  }
   if (quizComplete) {
     return (
       <div className="p-5 flex flex-col w-screen justify-center items-center h-screen">
@@ -117,12 +110,14 @@ export const QuizView = ({
           <Card>
             <CardHeader>
               <h1 className="text-4xl font-bold text-gray-900">
-                {questionBank.title}
+                {quiz!.title} has ended.
               </h1>
             </CardHeader>
             <CardContent>
               <p className="text-xl">Quiz has now been completed</p>
-              <p className="text-xl">Results have been saved successfully</p>
+              <p className="text-xl">
+                Your results have been saved successfully
+              </p>
 
               <p className="text-xl mt-5">Your Score for this quiz: 8/10</p>
             </CardContent>
@@ -137,13 +132,34 @@ export const QuizView = ({
       </div>
     );
   }
+
+  if (currentQuestion === null) {
+    return (
+      <div className="p-5 flex flex-col w-screen justify-center items-center h-screen">
+        <Card>
+          <CardHeader>
+            <h1 className="text-4xl font-bold text-gray-900">
+              {quiz!.title} is going to start soon!
+            </h1>
+          </CardHeader>
+          <CardContent>
+            <p className="text-xl">
+              Please wait for the teacher to start the quiz
+            </p>
+            <p className="text-xl">Stay on this page!</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="p-5 flex flex-col h-screen">
-      <Heading>{questionBank.title}</Heading>
-      <p className="text-xl">{questionBank.questions[question_id].title}</p>
+      <p className="text-xl">{quiz?.title}</p>
+      <Heading>{currentQuestion.title}</Heading>
       <Progress
         className="mt-5"
-        value={(countdown / timePerQuestion) * 100}
+        value={(countdown / quiz!.timePerQuestion!) * 100}
       ></Progress>
       <Form {...form}>
         <form
@@ -161,7 +177,7 @@ export const QuizView = ({
                     disabled={isSubmitted}
                     onValueChange={field.onChange}
                   >
-                    {questionBank.questions[question_id].answers.map(
+                    {currentQuestion.answers.map(
                       (answer) => (
                         <div
                           key={answer.id}
@@ -172,9 +188,9 @@ export const QuizView = ({
                             className="flex items-center w-full justify-center"
                           >
                             {answer.text}
-                            {answer.isCorrect && isSubmitted ? (
-                              <CheckCircledIcon className="ml-2" />
-                            ) : null}
+                            {/*{isSubmitted ? (*/}
+                            {/*  <CheckCircledIcon className="ml-2" />*/}
+                            {/*) : null}*/}
                           </ButtonGroupItem>
                         </div>
                       )

@@ -7,14 +7,49 @@ import { observable } from "@trpc/server/observable";
 import { prisma } from "../utils/prisma";
 import { z } from "zod";
 import { EventEmitter } from "events";
+import TypedEmitter from "typed-emitter"
 import { TRPCError } from "@trpc/server";
-import { Prisma, QuizStatus, QuizParticipant, User } from "@prisma/client";
+import { QuizStatus, QuizParticipant } from "@prisma/client";
 import { supabase } from "../utils/supabase";
 
 // create a global event emitter (could be replaced by redis, etc)
-export const ee = new EventEmitter();
+export const ee = new EventEmitter() as TypedEmitter<MessageEvents>;
 
-type SocketData = any;
+type CurrentQuestionResponse = {
+  quizId: number;
+  question: {
+    id: number;
+    title: string;
+    answers: Array<{
+      id: number;
+      text: string;
+    }>;
+  } | null,
+  questionStartTime: Date | null;
+  questionDuration: number;
+}
+
+type CurrentQuestionResultsResponse = {
+  quizId: number;
+  question: {
+    id: number;
+    title: string;
+    answers: Array<{
+      id: number;
+      text: string;
+      isCorrect: boolean;
+      percentage: number;
+    }>;
+    }
+  questionReviewTime: number;
+}
+
+type MessageEvents = {
+  join: (data: QuizParticipant) => void; // when a user joins a room - happens only once
+  startQuiz: (data: { quizId: number }) => void;
+  currentQuestion: (data: CurrentQuestionResponse) => void;
+  currentQuestionResults: (data: CurrentQuestionResultsResponse) => void;
+}
 
 export const quizSessionRouter = createTRPCRouter({
   randomNumber: publicProcedure.subscription(() => {
@@ -79,6 +114,7 @@ export const quizSessionRouter = createTRPCRouter({
       const quiz = await prisma.quiz.update({
         where: {
           id: quizId
+          // status: "NOT_STARTED"
         },
         data: {
           status: status
@@ -91,15 +127,26 @@ export const quizSessionRouter = createTRPCRouter({
           message: "Invalid quiz id"
         });
       }
+
+      if (status === "ONGOING") {
+        // start quiz - set active qn to 1 and enable timer
+        // set quizQuestion to 1 with countdown timer
+        console.log("starting quiz via event emitter");
+        ee.emit("startQuiz", { quizId });
+      }
     }),
-  listen: publicProcedure // todo: make this protected via ws auth
+  currentQuestion: publicProcedure // todo: make this protected via ws auth
     .input(z.object({ quizId: z.number(), accessToken: z.string() }))
-    .subscription(({ ctx, input }) => {
-      return observable<SocketData>((emit) => {
+    .subscription(async ({ ctx, input }) => {
+
+      const user = await supabase.auth.getUser(input.accessToken);
+
+      return observable<CurrentQuestionResponse>((socketEmit) => {
         // event listeners
-        const onQuizParticipantJoin = (newParticipant: SocketData) => {
-          emit.next(newParticipant);
-        };
+        const onCurrentQuestion = (data: CurrentQuestionResponse) => {
+          console.log("currentQuestion", data);
+          socketEmit.next(data);
+        }
 
         // nested thenable
         supabase.auth
@@ -121,31 +168,60 @@ export const quizSessionRouter = createTRPCRouter({
               })
               .then((joinQuiz) => {
                 ee.emit("join", joinQuiz);
+
+                // emit current question immediately if exists
+                prisma.quiz
+                  .findUnique({
+                    where: {
+                      id: input.quizId
+                    },
+                    select: {
+                      currentQuestion: {
+                        select: {
+                          id: true,
+                          title: true,
+                          answers: {
+                            select: {
+                              id: true,
+                              text: true
+                            }
+                          }
+                        }
+                      },
+                      currentQuestionStartTime: true,
+                      timePerQuestion: true
+                    }
+                  })
+                  .then((res) => {
+                    if (res) {
+                      socketEmit.next({
+                        quizId: input.quizId,
+                        question: res.currentQuestion,
+                        questionStartTime: res.currentQuestionStartTime,
+                        questionDuration: res.timePerQuestion
+                      });
+                    }
+                  });
+
+                // event on listeners
+                ee.on("currentQuestion", onCurrentQuestion);
               })
               .catch((error: Error) => {
                 console.error(error);
                 // todo: kick the user
               });
-
-            console.log({
-              message: "oooh hellooooo",
-              socketId: ctx.socketId,
-              user: ctx.user,
-              input
-            });
-
-            ee.on("listen", onQuizParticipantJoin);
           })
           .catch((error: Error) => {
             // todo
-            emit.next({ message: "authy error", error: error.toString() });
+            console.error(error);
+            // socketEmit.next({ message: "authy error", error: error.toString() });
           });
 
         // unsubscribe function when client disconnects or stops subscribing
         return () => {
           console.log("client disconnected");
           // turn off all event listeners
-          ee.off("listen", onQuizParticipantJoin);
+          ee.off("currentQuestion", onCurrentQuestion);
 
           // update quizparticipants table
           supabase.auth
@@ -168,10 +244,27 @@ export const quizSessionRouter = createTRPCRouter({
                 });
             })
             .catch((error: Error) => {
-              console.log(error);
+              console.log("error", error);
               // todo
             });
         };
+      });
+    }),
+  currentQuestionResults: publicProcedure // todo: make this protected via ws auth
+    .input(z.object({ quizId: z.number(), accessToken: z.string() }))
+    .subscription(async ({ ctx, input }) => {
+      const user = await supabase.auth.getUser(input.accessToken);
+      return observable<CurrentQuestionResultsResponse>((socketEmit) => {
+        const onCurrentQuestionResults = (data: CurrentQuestionResultsResponse) => {
+          console.log("currentQuestionResults", data);
+          socketEmit.next(data);
+        }
+
+        ee.on("currentQuestionResults", onCurrentQuestionResults);
+
+        return () => {
+          ee.off("currentQuestionResults", onCurrentQuestionResults);
+        }
       });
     }),
   getParticipants: protectedProcedure
@@ -202,7 +295,13 @@ export const quizSessionRouter = createTRPCRouter({
   participantsSubscription: publicProcedure
     .input(z.object({ quizId: z.number() }))
     .subscription((opts) => {
-      return observable<QuizParticipant[]>((emit) => {
+      return observable<
+        Array<
+          QuizParticipant & {
+            name: string;
+          }
+        >
+      >((emit) => {
         const onQuizParticipantJoin = async () => {
           // get all participants for this quiz
           const participants = await prisma.quizParticipant.findMany({
@@ -219,7 +318,7 @@ export const quizSessionRouter = createTRPCRouter({
 
               return {
                 ...participant,
-                name: data?.user?.user_metadata.full_name ?? "oops no name"
+                name: data?.user?.user_metadata.full_name ?? "no name"
               };
             })
           );
@@ -237,4 +336,102 @@ export const quizSessionRouter = createTRPCRouter({
         };
       });
     })
+});
+
+//
+
+interface StartQuizArgs {
+  quizId: number;
+}
+
+ee.on("startQuiz", async ({ quizId }: StartQuizArgs) => {
+  const quizQuestionsQuery = await prisma.quiz.findUnique({
+    where: {
+      id: quizId
+    },
+    select: {
+      QuestionBank: {
+        select: {
+          questions: {
+            select: {
+              id: true,
+              title: true,
+              answers: {
+                select: {
+                  id: true,
+                  text: true,
+                  isCorrect: true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  });
+
+  const quizQuestions = quizQuestionsQuery?.QuestionBank.questions;
+
+  if (!quizQuestions || quizQuestions.length === 0) {
+    throw new Error("No questions found in quiz");
+  }
+
+  const quizState = await prisma.quiz.update({
+    where: {
+      id: quizId
+    },
+    data: {
+      currentQuestionStartTime: new Date(), // set now
+      currentQuestion: {
+        connect: {
+          id: quizQuestions[0].id // todo: get first question id
+        }
+      }
+    }
+  });
+  ee.emit("currentQuestion", {
+    quizId,
+    question: quizQuestions[0],
+    questionStartTime: quizState.currentQuestionStartTime,
+    questionDuration: quizState.timePerQuestion
+  });
+
+  setTimeout(async () => {
+    // todo: get results from db
+    ee.emit("currentQuestionResults", {
+      quizId,
+      question: { ...quizQuestions[0], answers: quizQuestions[0].answers.map((answer) => {
+          return {
+            ...answer,
+            percentage: 25 // todo
+          };
+        })
+      },
+      questionReviewTime: 10,
+    });
+  }, 10 * 1000); // 10 seconds // todo
+
+  setTimeout(async () => {
+    ee.emit("currentQuestion", {
+      quizId,
+      question: quizQuestions[1],
+      questionStartTime: quizState.currentQuestionStartTime,
+      questionDuration: quizState.timePerQuestion
+    });
+  }, quizState.timePerQuestion * 1000);
+
+  setTimeout(async () => {
+    // todo: get results from db
+    ee.emit("currentQuestionResults", {
+      quizId,
+      question: { ...quizQuestions[1], answers: quizQuestions[1].answers.map((answer) => {
+          return {
+            ...answer,
+            percentage: 25 // todo
+          };
+        })
+      },
+      questionReviewTime: 10,
+    });
+  }, 10 * 1000); // 10 seconds // todo
 });

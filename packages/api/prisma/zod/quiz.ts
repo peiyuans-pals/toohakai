@@ -1,14 +1,7 @@
-import * as z from "zod";
-import * as imports from "../null";
-import { QuizStatus } from "@prisma/client";
-import {
-  CompleteUser,
-  RelatedUserModel,
-  CompleteQuestionBank,
-  RelatedQuestionBankModel,
-  CompleteQuizParticipant,
-  RelatedQuizParticipantModel
-} from "./index";
+import * as z from "zod"
+import * as imports from "../null"
+import { QuizStatus } from "@prisma/client"
+import { CompleteUser, RelatedUserModel, CompleteQuestionBank, RelatedQuestionBankModel, CompleteQuizParticipant, RelatedQuizParticipantModel, CompleteQuestion, RelatedQuestionModel } from "./index"
 
 export const QuizModel = z.object({
   id: z.number().int(),
@@ -22,13 +15,18 @@ export const QuizModel = z.object({
   timePerQuestion: z.number().int(),
   authorId: z.string(),
   questionBankId: z.number().int(),
-  pinCode: z.string()
-});
+  pinCode: z.string(),
+  currentQuestionId: z.number().int().nullish(),
+  currentQuestionStartTime: z.date().nullish(),
+  currentQuestionReviewTime: z.date().nullish(),
+  currentQuestionReviewPause: z.boolean().nullish(),
+})
 
 export interface CompleteQuiz extends z.infer<typeof QuizModel> {
-  author: CompleteUser;
-  QuestionBank: CompleteQuestionBank;
-  participants: CompleteQuizParticipant[];
+  author: CompleteUser
+  QuestionBank: CompleteQuestionBank
+  participants: CompleteQuizParticipant[]
+  currentQuestion?: CompleteQuestion | null
 }
 
 /**
@@ -36,10 +34,9 @@ export interface CompleteQuiz extends z.infer<typeof QuizModel> {
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const RelatedQuizModel: z.ZodSchema<CompleteQuiz> = z.lazy(() =>
-  QuizModel.extend({
-    author: RelatedUserModel,
-    QuestionBank: RelatedQuestionBankModel,
-    participants: RelatedQuizParticipantModel.array()
-  })
-);
+export const RelatedQuizModel: z.ZodSchema<CompleteQuiz> = z.lazy(() => QuizModel.extend({
+  author: RelatedUserModel,
+  QuestionBank: RelatedQuestionBankModel,
+  participants: RelatedQuizParticipantModel.array(),
+  currentQuestion: RelatedQuestionModel.nullish(),
+}))
