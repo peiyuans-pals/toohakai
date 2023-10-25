@@ -7,8 +7,8 @@ interface PageProps {
   params: { slug: string };
 }
 export default async function Quiz({ params }: PageProps) {
-  const id = parseInt(params.slug);
-  const quiz = await trpcServer(cookies).quiz.get.query(id);
+  const quizId = parseInt(params.slug);
+  const quiz = await trpcServer(cookies).quiz.get.query(quizId);
   const timePerQuestion = quiz?.timePerQuestion;
   const questionBankId = quiz?.questionBankId;
   const quizTitle = quiz?.title;
@@ -17,12 +17,19 @@ export default async function Quiz({ params }: PageProps) {
     typeof timePerQuestion === "number" &&
     typeof quizTitle === "string"
   ) {
-    const questionBank =
-      await trpcServer(cookies).questionBank.get.query(questionBankId);
+    const questionBank = await trpcServer(cookies).questionBank.get.query(
+      questionBankId
+    );
 
     return (
       <div>
-        <QuizView questionBankId={questionBankId} timePerQuestion={timePerQuestion} initialData={questionBank}></QuizView>;
+        <QuizView
+          quiz={quiz}
+          questionBankId={questionBankId}
+          timePerQuestion={timePerQuestion}
+          initialData={questionBank}
+        ></QuizView>
+        ;
       </div>
     );
   } else return <p>No Quiz exists</p>;

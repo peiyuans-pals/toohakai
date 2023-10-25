@@ -93,17 +93,84 @@ export const quizSessionRouter = createTRPCRouter({
       }
     }),
   listen: publicProcedure // todo: make this protected via ws auth
-    .subscription(() => {
+    .input(z.object({ quizId: z.number(), accessToken: z.string() }))
+    .subscription(({ ctx, input }) => {
       return observable<SocketData>((emit) => {
+        // event listeners
         const onQuizParticipantJoin = (newParticipant: SocketData) => {
           emit.next(newParticipant);
         };
 
-        ee.on("listen", onQuizParticipantJoin);
+        // nested thenable
+        supabase.auth
+          .getUser(input.accessToken)
+          .then((user) => {
+            // emit.complete(); // ???
+
+            prisma.quizParticipant
+              .update({
+                where: {
+                  quizId_userId: {
+                    userId: user.data.user!.id,
+                    quizId: input.quizId
+                  }
+                },
+                data: {
+                  connectionStatus: "CONNECTED"
+                }
+              })
+              .then((joinQuiz) => {
+                ee.emit("join", joinQuiz);
+              })
+              .catch((error: Error) => {
+                console.error(error);
+                // todo: kick the user
+              });
+
+            console.log({
+              message: "oooh hellooooo",
+              socketId: ctx.socketId,
+              user: ctx.user,
+              input
+            });
+
+            ee.on("listen", onQuizParticipantJoin);
+          })
+          .catch((error: Error) => {
+            // todo
+            emit.next({ message: "authy error", error: error.toString() });
+          });
 
         // unsubscribe function when client disconnects or stops subscribing
         return () => {
+          console.log("client disconnected");
+          // turn off all event listeners
           ee.off("listen", onQuizParticipantJoin);
+
+          // update quizparticipants table
+          supabase.auth
+            .getUser(input.accessToken)
+            .then((user) => {
+              prisma.quizParticipant
+                .update({
+                  where: {
+                    quizId_userId: {
+                      userId: user.data.user!.id,
+                      quizId: input.quizId
+                    }
+                  },
+                  data: {
+                    connectionStatus: "DISCONNECTED"
+                  }
+                })
+                .then((joinQuiz) => {
+                  ee.emit("join", joinQuiz);
+                });
+            })
+            .catch((error: Error) => {
+              console.log(error);
+              // todo
+            });
         };
       });
     }),
@@ -159,6 +226,8 @@ export const quizSessionRouter = createTRPCRouter({
 
           emit.next(participantsWithData);
         };
+
+        onQuizParticipantJoin().then(_r => {}); // emit once on connection to subscription
 
         ee.on("join", onQuizParticipantJoin);
 

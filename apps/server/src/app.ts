@@ -48,8 +48,6 @@ export const createApp = () => {
         router: appRouter,
         createContext: createTrpcContext
       })
-      // next-auth
-      // todo
     );
 
   app.use("/trpc-panel", (_, res) => {

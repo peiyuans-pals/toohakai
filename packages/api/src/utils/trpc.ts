@@ -20,9 +20,12 @@ export const createTrpcContext = async ({
     return null;
   }
 
+  const socketId = req.headers["sec-websocket-key"] as string;
+
   const user = await getUserFromHeader();
   return {
-    user
+    user,
+    socketId
   };
 };
 

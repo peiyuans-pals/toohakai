@@ -2,7 +2,10 @@
 
 import { ButtonGroup, ButtonGroupItem } from "./ButtonGroup";
 import { trpc } from "../../../../../utils/trpc/client";
-import { TrpcReactQueryOptions } from "../../../../../utils/trpc/lib";
+import {
+  TrpcReactQueryOptions,
+  TrpcRouterOutputs
+} from "../../../../../utils/trpc/lib";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,30 +28,59 @@ import {
   CardHeader
 } from "@/components/ui/card";
 import Link from "next/link";
+import { supabase } from "../../../../../utils/supabase/client";
 
 interface Props {
+  quiz: TrpcRouterOutputs["quiz"]["get"];
   questionBankId: number;
   initialData: TrpcReactQueryOptions["questionBank"]["get"]["initialData"];
-	timePerQuestion: number;
+  timePerQuestion: number;
 }
-export const QuizView = ({ questionBankId, initialData, timePerQuestion }: Props) => {
-  const { data: questionBank, refetch } = trpc.questionBank.get.useQuery(questionBankId, {
-    initialData
-  }); //  todo: student doesnt have access to this, need to get question from the socket
+export const QuizView = ({
+  quiz,
+  questionBankId,
+  initialData,
+  timePerQuestion
+}: Props) => {
+  const { data: questionBank, refetch } = trpc.questionBank.get.useQuery(
+    questionBankId,
+    {
+      initialData
+    }
+  ); //  todo: student doesnt have access to this, need to get question from the socket
 
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(timePerQuestion);
 
-  trpc.quizSession.listen.useSubscription(undefined, {
-    onData: (data) => {
-      console.log("socketListener", data);
+  const [accessToken, setAccessToken] = useState<string>("");
+
+  useEffect(() => {
+    const getAccessToken = async () => {
+      const supabaseSession = await supabase.auth.getSession();
+      const accessToken = supabaseSession?.data.session?.access_token ?? "";
+      setAccessToken(accessToken);
+    };
+
+    getAccessToken();
+  }, []);
+
+  trpc.quizSession.listen.useSubscription(
+    {
+      quizId: quiz?.id ?? 0,
+      accessToken: accessToken
+    },
+    {
+      onData: (data) => {
+        console.log("socketListener", data);
+      },
+      enabled: !!accessToken
     }
-  });
+  );
 
   // every second, decrement countdown
   useEffect(() => {
-		console.log(countdown)
+    // console.log(countdown)
     if (countdown >= 0) {
       setTimeout(() => setCountdown(countdown - 1), 1000);
     } else {
@@ -109,7 +141,10 @@ export const QuizView = ({ questionBankId, initialData, timePerQuestion }: Props
     <div className="p-5 flex flex-col h-screen">
       <Heading>{questionBank.title}</Heading>
       <p className="text-xl">{questionBank.questions[question_id].title}</p>
-      <Progress className="mt-5" value={(countdown / timePerQuestion)*100}></Progress>
+      <Progress
+        className="mt-5"
+        value={(countdown / timePerQuestion) * 100}
+      ></Progress>
       <Form {...form}>
         <form
           className="flex flex-col mt-auto mb-10"
