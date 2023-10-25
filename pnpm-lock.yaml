@@ -82,7 +82,7 @@ importers:
         version: 2.0.12
       '@types/ws':
         specifier: ^8.5.6
-        version: 8.5.6
+        version: 8.5.8
       eslint:
         specifier: ^7.32.0
         version: 7.32.0
@@ -3086,7 +3086,7 @@ packages:
   /@types/debug@4.1.7:
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
     dependencies:
-      '@types/ms': 0.7.32
+      '@types/ms': 0.7.33
     dev: true
 
   /@types/express-serve-static-core@4.17.36:
@@ -3173,8 +3173,8 @@ packages:
       '@types/node': 18.17.15
     dev: true
 
-  /@types/ms@0.7.32:
-    resolution: {integrity: sha512-xPSg0jm4mqgEkNhowKgZFBNtwoEwF6gJ4Dhww+GFpm3IgtNseHQZ5IqdNwnquZEoANxyDAKDRAdVo4Z72VvD/g==}
+  /@types/ms@0.7.33:
+    resolution: {integrity: sha512-AuHIyzR5Hea7ij0P9q7vx7xu4z0C28ucwjAZC0ja7JhINyCnOw8/DnvAPQQ9TfOlCtZAmCERKQX9+o1mgQhuOQ==}
     dev: true
 
   /@types/node-fetch@2.6.5:
@@ -3279,8 +3279,8 @@ packages:
       '@types/node': 18.17.15
     dev: false
 
-  /@types/ws@8.5.6:
-    resolution: {integrity: sha512-8B5EO9jLVCy+B58PLHvLDuOD8DRVMgQzq8d55SjLCOn9kqGyqOvy27exVaTio1q1nX5zLu8/6N0n2ThSxOM6tg==}
+  /@types/ws@8.5.8:
+    resolution: {integrity: sha512-flUksGIQCnJd6sZ1l5dqCEG/ksaoAg/eUwiLAGTJQcfgvZJKF++Ta4bJA6A5aPSJmsr+xlseHn4KLgVlNnvPTg==}
     dependencies:
       '@types/node': 18.17.15
     dev: true
@@ -10700,20 +10700,6 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
-    dev: false
-
-  /ws@8.14.2:
-    resolution: {integrity: sha512-wEBG1ftX4jcglPxgFCMJmZ2PLtSbJ2Peg6TmpJFTbe9GZYOQCDPdMYu/Tm0/bGZkw8paZnJY45J4K2PZrLYq8g==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-    dev: true
 
   /xml-name-validator@3.0.0:
     resolution: {integrity: sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==}
