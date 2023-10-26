@@ -7,7 +7,7 @@ import { observable } from "@trpc/server/observable";
 import { prisma } from "../utils/prisma";
 import { z } from "zod";
 import { EventEmitter } from "events";
-import TypedEmitter from "typed-emitter"
+import TypedEmitter from "typed-emitter";
 import { TRPCError } from "@trpc/server";
 import { QuizStatus, QuizParticipant } from "@prisma/client";
 import { supabase } from "../utils/supabase";
@@ -24,10 +24,10 @@ type CurrentQuestionResponse = {
       id: number;
       text: string;
     }>;
-  } | null,
+  } | null;
   questionStartTime: Date | null;
   questionDuration: number;
-}
+};
 
 type CurrentQuestionResultsResponse = {
   quizId: number;
@@ -40,16 +40,16 @@ type CurrentQuestionResultsResponse = {
       isCorrect: boolean;
       percentage: number;
     }>;
-    }
+  };
   questionReviewTime: number;
-}
+};
 
 type MessageEvents = {
   join: (data: QuizParticipant) => void; // when a user joins a room - happens only once
   startQuiz: (data: { quizId: number }) => void;
   currentQuestion: (data: CurrentQuestionResponse) => void;
   currentQuestionResults: (data: CurrentQuestionResultsResponse) => void;
-}
+};
 
 export const quizSessionRouter = createTRPCRouter({
   randomNumber: publicProcedure.subscription(() => {
@@ -137,8 +137,7 @@ export const quizSessionRouter = createTRPCRouter({
     }),
   currentQuestion: publicProcedure // todo: make this protected via ws auth
     .input(z.object({ quizId: z.number(), accessToken: z.string() }))
-    .subscription(async ({ ctx, input }) => {
-
+    .subscription(async ({ input }) => {
       const user = await supabase.auth.getUser(input.accessToken);
 
       return observable<CurrentQuestionResponse>((socketEmit) => {
@@ -146,7 +145,7 @@ export const quizSessionRouter = createTRPCRouter({
         const onCurrentQuestion = (data: CurrentQuestionResponse) => {
           console.log("currentQuestion", data);
           socketEmit.next(data);
-        }
+        };
 
         // nested thenable
         supabase.auth
@@ -252,19 +251,21 @@ export const quizSessionRouter = createTRPCRouter({
     }),
   currentQuestionResults: publicProcedure // todo: make this protected via ws auth
     .input(z.object({ quizId: z.number(), accessToken: z.string() }))
-    .subscription(async ({ ctx, input }) => {
+    .subscription(async ({ input }) => {
       const user = await supabase.auth.getUser(input.accessToken);
       return observable<CurrentQuestionResultsResponse>((socketEmit) => {
-        const onCurrentQuestionResults = (data: CurrentQuestionResultsResponse) => {
+        const onCurrentQuestionResults = (
+          data: CurrentQuestionResultsResponse
+        ) => {
           console.log("currentQuestionResults", data);
           socketEmit.next(data);
-        }
+        };
 
         ee.on("currentQuestionResults", onCurrentQuestionResults);
 
         return () => {
           ee.off("currentQuestionResults", onCurrentQuestionResults);
-        }
+        };
       });
     }),
   getParticipants: protectedProcedure
@@ -282,6 +283,10 @@ export const quizSessionRouter = createTRPCRouter({
           const { data, error } = await supabase.auth.admin.getUserById(
             participant.userId
           );
+
+          if (error) {
+            throw error;
+          }
 
           return {
             ...participant,
@@ -315,6 +320,10 @@ export const quizSessionRouter = createTRPCRouter({
               const { data, error } = await supabase.auth.admin.getUserById(
                 participant.userId
               );
+
+              if (error) {
+                throw error;
+              }
 
               return {
                 ...participant,
@@ -400,14 +409,16 @@ ee.on("startQuiz", async ({ quizId }: StartQuizArgs) => {
     // todo: get results from db
     ee.emit("currentQuestionResults", {
       quizId,
-      question: { ...quizQuestions[0], answers: quizQuestions[0].answers.map((answer) => {
+      question: {
+        ...quizQuestions[0],
+        answers: quizQuestions[0].answers.map((answer) => {
           return {
             ...answer,
             percentage: 25 // todo
           };
         })
       },
-      questionReviewTime: 10,
+      questionReviewTime: 10
     });
   }, 10 * 1000); // 10 seconds // todo
 
@@ -424,14 +435,16 @@ ee.on("startQuiz", async ({ quizId }: StartQuizArgs) => {
     // todo: get results from db
     ee.emit("currentQuestionResults", {
       quizId,
-      question: { ...quizQuestions[1], answers: quizQuestions[1].answers.map((answer) => {
+      question: {
+        ...quizQuestions[1],
+        answers: quizQuestions[1].answers.map((answer) => {
           return {
             ...answer,
             percentage: 25 // todo
           };
         })
       },
-      questionReviewTime: 10,
+      questionReviewTime: 10
     });
   }, 10 * 1000); // 10 seconds // todo
 });

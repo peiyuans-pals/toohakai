@@ -2,7 +2,10 @@
 
 import { ButtonGrid, ButtonGridItem } from "./ButtonGrid";
 import { trpc } from "../../../../../utils/trpc/client";
-import { TrpcReactQueryOptions, TrpcRouterOutputs } from "../../../../../utils/trpc/lib";
+import {
+  TrpcReactQueryOptions,
+  TrpcRouterOutputs
+} from "../../../../../utils/trpc/lib";
 import { useEffect, useRef, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -56,7 +59,6 @@ export const QuizView = ({
   timePerQuestion,
   rngSequence
 }: Props) => {
-
   const [countdown, setCountdown] = useState<number>(timePerQuestion);
   const [timerDuration, setTimerDuration] = useState<number>(timePerQuestion);
   const [questionEndedState, setQuestionEndedState] = useState<boolean>(false);
@@ -87,9 +89,9 @@ export const QuizView = ({
     {
       onData: (data) => {
         console.log("socketListener", data);
-          console.log("currentQuestion", data.question);
-          setCurrentQuestion(data.question);
-          setCountdown(data.questionDuration);
+        console.log("currentQuestion", data.question);
+        setCurrentQuestion(data.question);
+        setCountdown(data.questionDuration);
       },
       onStarted: () => {
         console.log("socketListener", "quiz started");
@@ -103,9 +105,9 @@ export const QuizView = ({
     {
       onData: (data) => {
         console.log("socketListener", data);
-          console.log("currentQuestionResults", data.question);
-          setCurrentQuestionResults(data.question);
-          // setCountdown(data.questionDuration); // todo
+        console.log("currentQuestionResults", data.question);
+        setCurrentQuestionResults(data.question);
+        // setCountdown(data.questionDuration); // todo
       }
     }
   );
@@ -181,7 +183,7 @@ export const QuizView = ({
             <CardContent>
               <p className="text-xl">Quiz has now been completed</p>
               <p className="text-xl">
-                Everyone's results have been saved successfully
+                Everyone&apos;s results have been saved successfully
               </p>
             </CardContent>
             <CardFooter>
@@ -215,7 +217,10 @@ export const QuizView = ({
         <h1 className="text-4xl font-bold text-gray-900">
           {currentQuestion.title}
         </h1>
-        <Progress className="mt-5" value={(countdown / timerDuration) * 100}></Progress>
+        <Progress
+          className="mt-5"
+          value={(countdown / timerDuration) * 100}
+        ></Progress>
         {questionEndedState && !manualControl && (
           <p className="text-2xl self-end">
             Next question in {countdown} seconds.
@@ -226,7 +231,9 @@ export const QuizView = ({
             Question ends in {countdown} seconds.
           </p>
         )}
-        {questionEndedState && resultsData && <QuizChart results={resultsData}/>}
+        {questionEndedState && resultsData && (
+          <QuizChart results={resultsData} />
+        )}
 
         <div className="flex flex-col mt-auto mb-10">
           {!questionEndedState && (

@@ -126,7 +126,12 @@ export default function PreQuiz({ searchParams }: NextPage) {
                   Total participants: {participants.length}
                 </p>
                 <p className="text-xl">
-                  Total participants online: {participants.filter(p => p.connectionStatus === "CONNECTED").length}
+                  Total participants online:{" "}
+                  {
+                    participants.filter(
+                      (p) => p.connectionStatus === "CONNECTED"
+                    ).length
+                  }
                 </p>
                 <ScrollArea className="mt-5 h-[400px] text-center w-[100%] rounded-md border">
                   <div className="p-4">
@@ -158,7 +163,7 @@ export default function PreQuiz({ searchParams }: NextPage) {
                   </PopoverTrigger>
                   <PopoverContent>
                     <p className="mb-2 text-center">
-                      Are you sure you're ready to start the session?
+                      Are you sure you&apos;re ready to start the session?
                     </p>
                     <Button
                       className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 shadow-sm w-full"
