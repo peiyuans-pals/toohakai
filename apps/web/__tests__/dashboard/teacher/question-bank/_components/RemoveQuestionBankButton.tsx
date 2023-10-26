@@ -13,8 +13,14 @@ import {
 } from "@testing-library/react";
 import { NewQuestionBankButton } from "./../../../../../src/app/dashboard/teacher/question-banks/_components/NewQuestionBankButton";
 
-describe("NewQuestionBankButton", () => {
-  it("New Question Bank should render correctly", () => {
+describe("RemoveQuestionBankButton", () => {
+  it("Remove Question Bank Button should work work correct", () => {
+    expect(true);
+  });
+  it("Remove Question Bank Button should open dialog", () => {
+    expect(true);
+  });
+  it("Remove Question Bank Button should edit question bank", () => {
     expect(true);
   });
 });

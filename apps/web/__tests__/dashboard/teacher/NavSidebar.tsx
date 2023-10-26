@@ -16,10 +16,6 @@ const mockItem = [
     href: "/dashboard/teacher/question-banks"
   },
   {
-    name: "Quizzes",
-    href: "/dashboard/teacher/quizzes"
-  },
-  {
     name: "Quiz Reports",
     href: "/dashboard/teacher/quiz-reports"
   }
@@ -39,11 +35,6 @@ describe("NavSidebar", () => {
   it("should render Question Banks Item in NavSidebar correctly", () => {
     render(<NavSidebar />);
     const homeText = screen.getByText(/Question Banks/i);
-    expect(homeText).toBeInTheDocument();
-  });
-  it("should render Quizzes Item in NavSidebar correctly", () => {
-    render(<NavSidebar />);
-    const homeText = screen.getByText(/Quizzes/i);
     expect(homeText).toBeInTheDocument();
   });
   it("should render Quiz Reports Item in NavSidebar correctly", () => {
