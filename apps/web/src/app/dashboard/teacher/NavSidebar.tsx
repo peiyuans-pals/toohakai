@@ -15,10 +15,6 @@ const sidebarItems = [
     href: "/dashboard/teacher/question-banks"
   },
   {
-    name: "Quizzes",
-    href: "/dashboard/teacher/quizzes"
-  },
-  {
     name: "Quiz Reports",
     href: "/dashboard/teacher/quiz-reports"
   }
@@ -27,7 +23,7 @@ const sidebarItems = [
 export const NavSidebar = () => {
   const pathname = usePathname();
   return (
-    <nav className="flex flex-1 space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 p-0 pr-4 border-r">
+    <nav className="flex flex-1 flex-col space-x-0 space-y-1 p-0 pr-4 gap-2 border-r">
       {sidebarItems.map((item) => (
         <SidebarItem key={item.href} item={item} pathname={pathname} />
       ))}
@@ -51,7 +47,7 @@ const SidebarItem = ({ item, pathname }: SidebarItemProps) => {
           : pathname.includes(item.href) && item.name !== "Home"
           ? "border border-primary text-primary"
           : "hover:bg-muted",
-        "justify-start"
+        "justify-end text-end"
       )}
     >
       {item.name}

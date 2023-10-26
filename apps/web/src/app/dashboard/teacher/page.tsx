@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { SummaryCard, SummaryCardProps } from "./SummaryCard";
 import { getCleanedNameFromIdentities } from "../../../utils/strings";
+import RandomNumber from "./_components/RandomNumber";
 
 const summaryData: SummaryCardProps[] = [
   {
@@ -51,7 +52,7 @@ export default async function DashboardRoot() {
         </CardHeader>
       </Card>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2">
         {summaryData.map((summaryItem) => (
           <SummaryCard
             key={summaryItem.title}
@@ -62,6 +63,8 @@ export default async function DashboardRoot() {
           />
         ))}
       </div>
+
+      <RandomNumber />
     </DashboardView>
   );
 }

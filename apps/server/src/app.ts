@@ -7,7 +7,7 @@ import { renderTrpcPanel } from "trpc-panel";
 
 const { json, urlencoded } = bodyParser;
 
-export const createServer = () => {
+export const createApp = () => {
   const app = express();
   app
     .disable("x-powered-by")
@@ -48,8 +48,6 @@ export const createServer = () => {
         router: appRouter,
         createContext: createTrpcContext
       })
-      // next-auth
-      // todo
     );
 
   app.use("/trpc-panel", (_, res) => {

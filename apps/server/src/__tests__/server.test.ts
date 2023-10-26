@@ -1,9 +1,9 @@
 import supertest from "supertest";
-import { createServer } from "../server.js";
+import { createApp } from "../app.js";
 
 describe("server", () => {
   it("health check returns 200", async () => {
-    await supertest(createServer())
+    await supertest(createApp())
       .get("/healthz")
       .expect(200)
       .then((res) => {
@@ -12,7 +12,7 @@ describe("server", () => {
   });
 
   it("message endpoint says hello", async () => {
-    await supertest(createServer())
+    await supertest(createApp())
       .get("/message/jared")
       .expect(200)
       .then((res) => {

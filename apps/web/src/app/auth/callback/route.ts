@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     // const supabase = createRouteHandlerClient<Database>({ cookies }) // TODO
     const supabase = createRouteHandlerClient({ cookies });
     const res = await supabase.auth.exchangeCodeForSession(code);
-    console.log("supabase exchanged codes successfully");
+    // console.log("supabase exchanged codes successfully");
 
     // TODO: call api server to create/update user
     const userId = res.data.session?.user.id;

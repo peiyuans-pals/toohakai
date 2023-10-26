@@ -1,6 +1,10 @@
 import { UserIdentity } from "@supabase/supabase-js";
 import { TrpcRouterOutputs } from "./trpc/lib";
 
+export const cleanName = (name: string): string => {
+  return name.replace(/[^a-zA-Z ]/g, "");
+};
+
 export const getCleanedNameFromIdentities = (
   me: TrpcRouterOutputs["user"]["me"] | undefined
 ): string => {
@@ -8,7 +12,7 @@ export const getCleanedNameFromIdentities = (
   const identities: UserIdentity[] | undefined = me?.identities;
   const userIdentity = Array.isArray(identities) ? identities[0] : null;
   const userName: string = userIdentity?.identity_data?.name ?? me?.name ?? ""; // just in case there's no name default to ZZ
-  return userName.replace(/[^a-zA-Z ]/g, "");
+  return cleanName(userName);
 };
 
 export const getInitialsFromCleanedName = (cleanedName: string): string => {

@@ -71,6 +71,10 @@ export const quizRouter = createTRPCRouter({
           title: opts.input.title,
           numOfQuestions: opts.input.numOfQuestions,
           timePerQuestion: opts.input.timePerQuestion,
+          pinCode: Math.floor(Math.random() * 1000000)
+            .toString()
+            .padStart(6, "0")
+            .toString(),
           QuestionBank: {
             connect: {
               id: opts.input.questionBankId

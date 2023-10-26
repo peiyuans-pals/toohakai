@@ -14,3 +14,4 @@ public/dist
 */coverage
 #generated
 pnpm-lock.yaml
+packages/api/prisma/zod

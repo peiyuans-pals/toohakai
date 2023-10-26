@@ -1,13 +1,14 @@
 import { inferAsyncReturnType, initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { TRPCPanelMeta } from "trpc-panel";
-import { trpcExpress } from "../index";
 import { supabase } from "./supabase";
+import { CreateExpressContextOptions } from "@trpc/server/dist/adapters/express";
+import { CreateWSSContextFnOptions } from "@trpc/server/dist/adapters/ws";
 
 export const createTrpcContext = async ({
   req,
   res: _res
-}: trpcExpress.CreateExpressContextOptions) => {
+}: CreateExpressContextOptions | CreateWSSContextFnOptions) => {
   // TODO
   async function getUserFromHeader() {
     if (req.headers.authorization) {
@@ -19,30 +20,30 @@ export const createTrpcContext = async ({
     return null;
   }
 
+  const socketId = req.headers["sec-websocket-key"] as string;
+
   const user = await getUserFromHeader();
   return {
-    user
+    user,
+    socketId
   };
 };
 
 export type Context = inferAsyncReturnType<typeof createTrpcContext>;
 
-const t = initTRPC
-  .meta<TRPCPanelMeta>()
-  .context<typeof createTrpcContext>()
-  .create({
-    transformer: superjson
-    // errorFormatter({ shape, error }) {
-    //   return {
-    //     ...shape,
-    //     data: {
-    //       ...shape.data,
-    //       zodError:
-    //         error.cause instanceof ZodError ? error.cause.flatten() : null,
-    //     },
-    //   };
-    // },
-  });
+const t = initTRPC.meta<TRPCPanelMeta>().context<Context>().create({
+  transformer: superjson
+  // errorFormatter({ shape, error }) {
+  //   return {
+  //     ...shape,
+  //     data: {
+  //       ...shape.data,
+  //       zodError:
+  //         error.cause instanceof ZodError ? error.cause.flatten() : null,
+  //     },
+  //   };
+  // },
+});
 
 const isAuthed = t.middleware((opts) => {
   const { ctx } = opts;

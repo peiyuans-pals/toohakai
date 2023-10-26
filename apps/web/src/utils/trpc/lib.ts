@@ -1,5 +1,6 @@
 import { inferReactQueryProcedureOptions } from "@trpc/react-query";
-import { AppRouter, RouterInputs, RouterOutputs } from "api";
+import { AppRouter, InferObservable, RouterInputs, RouterOutputs } from "api";
+import { createWSClient } from "@trpc/client";
 
 export function getBaseUrl() {
   // if (typeof window !== 'undefined')
@@ -23,3 +24,8 @@ export function getBaseUrl() {
 export type TrpcReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>;
 export type TrpcRouterInputs = RouterInputs;
 export type TrpcRouterOutputs = RouterOutputs;
+export type TrpcInferObservable<TObservable> = InferObservable<TObservable>;
+
+export const wsClient = createWSClient({
+  url: `${getBaseUrl().replace(/^http/, "ws")}`
+});

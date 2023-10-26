@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/form";
 import { trpc } from "../../../../../../utils/trpc/client";
 import { useState } from "react";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import { ReloadIcon, PlusIcon, RocketIcon } from "@radix-ui/react-icons";
 
 const formSchema = z.object({
   question_name: z.string().min(2, {
@@ -45,9 +45,13 @@ const formSchema = z.object({
   option4: z.string().min(1, {
     message: "Must contain at least 1 character"
   }),
-  correct: z.enum(["1", "2", "3", "4"], {
-    required_error: "You need to select the correct option for this question"
-  })
+  correct: z
+    .string({
+      required_error: "You need to select a correct option for this question"
+    })
+    .min(1, {
+      message: "You need to select a correct option for this question"
+    })
 });
 
 interface Props {
@@ -55,7 +59,7 @@ interface Props {
   questionBankName: string;
 }
 
-export const NewQuestionButton = ({
+export const AddQuestionButton = ({
   questionBankId,
   questionBankName
 }: Props) => {
@@ -78,7 +82,7 @@ export const NewQuestionButton = ({
     onSuccess: () => {
       form.reset();
       setOpen(false);
-      trpcUtils.questionBank.get.invalidate(questionBankId); // force a refetch
+      trpcUtils.questionBank.get.invalidate(questionBankId).then(); // force a refetch
     }
   });
 
@@ -91,8 +95,12 @@ export const NewQuestionButton = ({
       form.setValue("option2", generated.answers[1].text);
       form.setValue("option3", generated.answers[2].text);
       form.setValue("option4", generated.answers[3].text);
-      // set correct radio button
-      form.setValue("correct", "2"); // TODO: fix this - it doesnt work :(
+      form.setValue(
+        "correct",
+        (
+          generated.answers.findIndex((answer) => answer.isCorrect) + 1
+        ).toString()
+      );
     }
   });
 
@@ -104,7 +112,7 @@ export const NewQuestionButton = ({
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    console.log("onSubmit - AddQuestion", values);
     mutation.mutate({
       id: questionBankId,
       title: values.question_name,
@@ -117,7 +125,10 @@ export const NewQuestionButton = ({
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>New Question</Button>
+        <Button>
+          <PlusIcon className="mr-2 h-4 w-4" />
+          New Question
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
@@ -274,12 +285,17 @@ export const NewQuestionButton = ({
                 onClick={handleAutoGenerate}
                 disabled={generateQuestion.isLoading}
               >
-                {generateQuestion.isLoading && (
+                {generateQuestion.isLoading ? (
                   <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <RocketIcon className="mr-2 h-4 w-4" />
                 )}
                 Auto-generate
               </Button>
-              <Button type="submit">Add Question</Button>
+              <Button type="submit">
+                <PlusIcon className="mr-2 h-4 w-4" />
+                Add Question
+              </Button>
             </DialogFooter>
           </form>
         </Form>
