@@ -9,7 +9,7 @@ interface PageProps {
 export default async function Quiz({ params }: PageProps) {
   const id = parseInt(params.slug);
   const quiz = await trpcServer(cookies).quiz.get.query(id);
-  const timePerQuestion = 20;//quiz?.timePerQuestion;
+  const timePerQuestion = 20; //quiz?.timePerQuestion;
   const numOfQuestions = quiz?.numOfQuestions;
   const questionBankId = quiz?.questionBankId;
   const quizTitle = quiz?.title;
@@ -49,4 +49,3 @@ export default async function Quiz({ params }: PageProps) {
     );
   } else return <p>No Quiz exists</p>;
 }
-
