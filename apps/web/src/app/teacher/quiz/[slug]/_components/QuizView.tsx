@@ -56,13 +56,9 @@ export const QuizView = ({
   timePerQuestion,
   rngSequence
 }: Props) => {
-  // const questionBank = trpc.questionBank.get.useQuery(questionBankId, {
-  //   initialData,
-  //   refetchOnMount: false
-  // });
-  // console.log(rngSequence);
+
   const [countdown, setCountdown] = useState<number>(timePerQuestion);
-  const [timer, setTimer] = useState<number>(timePerQuestion);
+  const [timerDuration, setTimerDuration] = useState<number>(timePerQuestion);
   const [questionEndedState, setQuestionEndedState] = useState<boolean>(false);
   const [questionIndex, setQuestionIndex] = useState<number>(0);
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
@@ -133,7 +129,7 @@ export const QuizView = ({
     if (countdown == 0 && !questionEndedState) {
       setQuestionEndedState(true);
       setCountdown(10);
-      setTimer(10);
+      setTimerDuration(10);
     }
 
     if (countdown == 0 && questionEndedState) {
@@ -153,7 +149,7 @@ export const QuizView = ({
       setQuestionIndex(questionIndex + 1);
       setManualControl(false);
       setCountdown(timePerQuestion);
-      setTimer(timePerQuestion);
+      setTimerDuration(timePerQuestion);
       intervalRef.current = setInterval(decreaseNum, 1000);
       return;
     }
@@ -219,7 +215,7 @@ export const QuizView = ({
         <h1 className="text-4xl font-bold text-gray-900">
           {currentQuestion.title}
         </h1>
-        <Progress className="mt-5" value={(countdown / timer) * 100}></Progress>
+        <Progress className="mt-5" value={(countdown / timerDuration) * 100}></Progress>
         {questionEndedState && !manualControl && (
           <p className="text-2xl self-end">
             Next question in {countdown} seconds.
