@@ -4,7 +4,6 @@ import {
   InferObservable,
   RouterInputs,
   RouterOutputs,
-  SubscriptionOutputs
 } from "api";
 import { createWSClient } from "@trpc/client";
 
