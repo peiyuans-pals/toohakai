@@ -42,10 +42,7 @@ type CurrentQuestion = Parameters<
   >
 >[0]["question"];
 
-export const QuizView = ({
-  quiz
-}:
-Props) => {
+export const QuizView = ({ quiz }: Props) => {
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [currentQuestion, setCurrentQuestion] =
@@ -177,24 +174,22 @@ Props) => {
                     disabled={isSubmitted}
                     onValueChange={field.onChange}
                   >
-                    {currentQuestion.answers.map(
-                      (answer) => (
-                        <div
-                          key={answer.id}
-                          className="flex items-center justify-center"
+                    {currentQuestion.answers.map((answer) => (
+                      <div
+                        key={answer.id}
+                        className="flex items-center justify-center"
+                      >
+                        <ButtonGroupItem
+                          value={String(answer.id)}
+                          className="flex items-center w-full justify-center"
                         >
-                          <ButtonGroupItem
-                            value={String(answer.id)}
-                            className="flex items-center w-full justify-center"
-                          >
-                            {answer.text}
-                            {/*{isSubmitted ? (*/}
-                            {/*  <CheckCircledIcon className="ml-2" />*/}
-                            {/*) : null}*/}
-                          </ButtonGroupItem>
-                        </div>
-                      )
-                    )}
+                          {answer.text}
+                          {/*{isSubmitted ? (*/}
+                          {/*  <CheckCircledIcon className="ml-2" />*/}
+                          {/*) : null}*/}
+                        </ButtonGroupItem>
+                      </div>
+                    ))}
                   </ButtonGroup>
                 </FormControl>
                 <FormMessage />
