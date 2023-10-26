@@ -133,6 +133,24 @@ export const quizSessionRouter = createTRPCRouter({
         // set quizQuestion to 1 with countdown timer
         console.log("starting quiz via event emitter");
         ee.emit("startQuiz", { quizId });
+
+        // make teacher also join the room
+        const { user } = opts.ctx.user.data;
+        const userId = user!.id;
+        await prisma.quizParticipant.upsert({
+          where: {
+            quizId_userId: {
+              userId,
+              quizId
+            }
+          },
+          update: {}, // ? what to update ?
+          create: {
+            userId,
+            quizId,
+            connectionStatus: "DISCONNECTED"
+          }
+        });
       }
     }),
   currentQuestion: publicProcedure // todo: make this protected via ws auth
