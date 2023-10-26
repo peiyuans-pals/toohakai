@@ -16,5 +16,5 @@
       "@/components/ui/*": ["src/components/shadcn/ui/*"]
     }
   },
-  "include": ["src", "next-env.d.ts", ".next/types/**/*.ts"]
+  "include": ["src", "__tests__", "next-env.d.ts", ".next/types/**/*.ts"]
 }
