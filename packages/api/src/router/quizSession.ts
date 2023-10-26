@@ -240,6 +240,9 @@ export const quizSessionRouter = createTRPCRouter({
                 })
                 .then((joinQuiz) => {
                   ee.emit("join", joinQuiz);
+                })
+                .catch((error: Error) => {
+                  console.error(error);
                 });
             })
             .catch((error: Error) => {
