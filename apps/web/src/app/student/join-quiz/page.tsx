@@ -21,7 +21,7 @@ export default function JoinQuiz({ searchParams }: NextPage) {
 
   const mutation = trpc.quizSession.join.useMutation({
     onSuccess: (data) => {
-      // router.push(`/student/quiz?quiz_id=${roomNumber}`); // ? should we get the quiz id from the response?
+      router.push(`/student/quiz/${roomNumber}`); // ? should we get the quiz id from the response?
     }
   });
 
