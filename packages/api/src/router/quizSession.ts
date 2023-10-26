@@ -243,8 +243,7 @@ export const quizSessionRouter = createTRPCRouter({
                 })
                 .catch((error: Error) => {
                   console.error(error);
-                }
-                );
+                });
             })
             .catch((error: Error) => {
               console.log("error", error);
