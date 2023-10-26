@@ -12,25 +12,13 @@ export default async function Quiz({ params }: PageProps) {
   const timePerQuestion = quiz?.timePerQuestion;
   const questionBankId = quiz?.questionBankId;
   const quizTitle = quiz?.title;
-  if (
-    typeof questionBankId === "number" &&
-    typeof timePerQuestion === "number" &&
-    typeof quizTitle === "string"
-  ) {
-    const questionBank = await trpcServer(cookies).questionBank.get.query(
-      questionBankId
-    );
+  if (!quiz) {
+    return <p>No Quiz exists</p>;
+  }
 
-    return (
-      <div>
-        <QuizView
-          quiz={quiz}
-          questionBankId={questionBankId}
-          timePerQuestion={timePerQuestion}
-          initialData={questionBank}
-        ></QuizView>
-        ;
-      </div>
-    );
-  } else return <p>No Quiz exists</p>;
+  return (
+    <div>
+      <QuizView quiz={quiz}></QuizView>;
+    </div>
+  );
 }
