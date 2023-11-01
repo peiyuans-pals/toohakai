@@ -25,7 +25,6 @@ type CurrentQuestionResponse = {
       text: string;
     }>;
   } | null;
-  questionStartTime: Date | null;
   questionDuration: number;
 };
 
@@ -205,7 +204,7 @@ export const quizSessionRouter = createTRPCRouter({
                           }
                         }
                       },
-                      currentQuestionStartTime: true,
+                      currentQuestionDisplayMode: true,
                       timePerQuestion: true
                     }
                   })
@@ -214,7 +213,6 @@ export const quizSessionRouter = createTRPCRouter({
                       socketEmit.next({
                         quizId: input.quizId,
                         question: res.currentQuestion,
-                        questionStartTime: res.currentQuestionStartTime,
                         questionDuration: res.timePerQuestion
                       });
                     }
@@ -365,6 +363,84 @@ export const quizSessionRouter = createTRPCRouter({
           ee.off("join", onQuizParticipantJoin);
         };
       });
+    }),
+  submitResponse: protectedProcedure
+    .input(
+      z.object({
+        quizId: z.number(),
+        questionId: z.number(),
+        answerId: z.number()
+      })
+    )
+    .mutation(async (opts) => {
+      const { user } = opts.ctx.user.data;
+      const userId = user!.id;
+      const quizId = opts.input.quizId;
+      const questionId = opts.input.questionId;
+      const answerId = opts.input.answerId;
+
+      // todo: check if user is a participant of this quiz
+
+      const quizParticipant = await prisma.quizParticipant.findUnique({
+        where: {
+          quizId_userId: {
+            userId,
+            quizId
+          }
+        }
+      });
+
+      if (!quizParticipant) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You are not a participant of this quiz"
+        });
+      }
+
+      // todo: check if question is still current in db
+      // if not return trpc error // todo: handle this error in frontend
+      const quiz = await prisma.quiz.findUnique({
+        where: {
+          id: quizId
+        },
+        select: {
+          currentQuestion: {
+            select: {
+              id: true
+            }
+          }
+        }
+      });
+
+      if (!quiz) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Invalid quiz id"
+        });
+      }
+
+      if (quiz.currentQuestion?.id !== questionId) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Question is not current"
+        });
+      }
+
+      // todo: submit answer to db
+
+      await prisma.quizResponse.create({
+        data: {
+          quizId,
+          answerId,
+          questionId,
+          userId
+        }
+      });
+
+      // return success
+      return { status: "success", message: "Answer submitted successfully!" };
+
+      //
     })
 });
 
@@ -411,61 +487,61 @@ ee.on("startQuiz", async ({ quizId }: StartQuizArgs) => {
       id: quizId
     },
     data: {
-      currentQuestionStartTime: new Date(), // set now
       currentQuestion: {
         connect: {
           id: quizQuestions[0].id // todo: get first question id
         }
-      }
+      },
+      currentQuestionDisplayMode: "QUESTION"
     }
   });
-  ee.emit("currentQuestion", {
-    quizId,
-    question: quizQuestions[0],
-    questionStartTime: quizState.currentQuestionStartTime,
-    questionDuration: quizState.timePerQuestion
-  });
-
-  setTimeout(async () => {
-    // todo: get results from db
-    ee.emit("currentQuestionResults", {
-      quizId,
-      question: {
-        ...quizQuestions[0],
-        answers: quizQuestions[0].answers.map((answer) => {
-          return {
-            ...answer,
-            percentage: 25 // todo
-          };
-        })
-      },
-      questionReviewTime: 10
-    });
-  }, 10 * 1000); // 10 seconds // todo
-
-  setTimeout(async () => {
-    ee.emit("currentQuestion", {
-      quizId,
-      question: quizQuestions[1],
-      questionStartTime: quizState.currentQuestionStartTime,
-      questionDuration: quizState.timePerQuestion
-    });
-  }, quizState.timePerQuestion * 1000);
-
-  setTimeout(async () => {
-    // todo: get results from db
-    ee.emit("currentQuestionResults", {
-      quizId,
-      question: {
-        ...quizQuestions[1],
-        answers: quizQuestions[1].answers.map((answer) => {
-          return {
-            ...answer,
-            percentage: 25 // todo
-          };
-        })
-      },
-      questionReviewTime: 10
-    });
-  }, 10 * 1000); // 10 seconds // todo
+  // ee.emit("currentQuestion", {
+  //   quizId,
+  //   question: quizQuestions[0],
+  //   questionStartTime: quizState.currentQuestionStartTime,
+  //   questionDuration: quizState.timePerQuestion
+  // });
+  //
+  // setTimeout(async () => {
+  //   // todo: get results from db
+  //   ee.emit("currentQuestionResults", {
+  //     quizId,
+  //     question: {
+  //       ...quizQuestions[0],
+  //       answers: quizQuestions[0].answers.map((answer) => {
+  //         return {
+  //           ...answer,
+  //           percentage: 25 // todo
+  //         };
+  //       })
+  //     },
+  //     questionReviewTime: 10
+  //   });
+  // }, 10 * 1000); // 10 seconds // todo
+  //
+  // setTimeout(async () => {
+  //   ee.emit("currentQuestion", {
+  //     quizId,
+  //     question: quizQuestions[1],
+  //     questionStartTime: quizState.currentQuestionStartTime,
+  //     questionDuration: quizState.timePerQuestion
+  //   });
+  // }, quizState.timePerQuestion * 1000);
+  //
+  // setTimeout(async () => {
+  //   // todo: get results from db
+  //   ee.emit("currentQuestionResults", {
+  //     quizId,
+  //     question: {
+  //       ...quizQuestions[1],
+  //       answers: quizQuestions[1].answers.map((answer) => {
+  //         return {
+  //           ...answer,
+  //           percentage: 25 // todo
+  //         };
+  //       })
+  //     },
+  //     questionReviewTime: 10
+  //   });
+  // }, 10 * 1000); // 10 seconds // todo
 });
