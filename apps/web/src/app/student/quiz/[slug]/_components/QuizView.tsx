@@ -173,18 +173,20 @@ export const QuizView = ({ quiz }: Props) => {
     submitResponseMutation.mutate({
       quizId: quiz!.id,
       questionId: currentQuestion!.id,
-      answerId: values.answer_id,
+      answerId: values.answer_id
     });
   }
 
   return (
     <div className="p-5 flex flex-col h-screen">
       <p className="text-xl">{quiz?.title}</p>
-      <Heading>{currentQuestion.title}</Heading>
       <Progress
-        className="mt-5"
-        value={((countdown % quiz.timePerQuestion) / quiz!.timePerQuestion!) * 100}
-      ></Progress>
+        className="mt-2 mb-4"
+        value={
+          ((countdown % quiz.timePerQuestion) / quiz!.timePerQuestion!) * 100
+        }
+      />
+      <Heading>{currentQuestion.title}</Heading>
       <Form {...form}>
         <form
           className="flex flex-col mt-auto mb-10"

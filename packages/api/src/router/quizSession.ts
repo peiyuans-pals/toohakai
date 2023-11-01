@@ -39,7 +39,7 @@ type CurrentQuestionResultsResponse = {
       id: number; // answer id
       text: string; // answer text
       isCorrect: boolean;
-      percentage: number;
+      percentage: string;
       tally: number;
     }>;
   };
@@ -274,7 +274,7 @@ export const quizSessionRouter = createTRPCRouter({
             (resultTallyItem) => {
               return {
                 ...resultTallyItem,
-                percentage: (resultTallyItem.tally / results.length) * 100
+                percentage: `${(resultTallyItem.tally / results.length) * 100}%`
               };
             }
           );
@@ -389,47 +389,47 @@ export const quizSessionRouter = createTRPCRouter({
                 // event on listeners
                 ee.on("currentQuestion", onCurrentQuestion);
               })
-              .catch((error: Error) => {
-                console.error(error);
-                // todo: kick the user and move the below up to the thenable
-
-                prisma.quiz
-                  .findUnique({
-                    where: {
-                      id: input.quizId
-                    },
-                    select: {
-                      currentQuestion: {
-                        select: {
-                          id: true,
-                          title: true,
-                          answers: {
-                            select: {
-                              id: true,
-                              text: true
-                            }
-                          }
-                        }
-                      },
-                      currentQuestionDisplayMode: true,
-                      timePerQuestion: true
-                    }
-                  })
-                  .then((res) => {
-                    if (res) {
-                      socketEmit.next({
-                        quizId: input.quizId,
-                        question: res.currentQuestion,
-                        questionDuration: res.timePerQuestion
-                      });
-                    }
-                  });
-              });
+              .catch((error: Error) => {});
           })
           .catch((error: Error) => {
             // todo
             console.error(error);
             // socketEmit.next({ message: "authy error", error: error.toString() });
+          })
+          .finally(() => {
+            // todo: kick the user and move the below up to the thenable
+
+            prisma.quiz
+              .findUnique({
+                where: {
+                  id: input.quizId
+                },
+                select: {
+                  currentQuestion: {
+                    select: {
+                      id: true,
+                      title: true,
+                      answers: {
+                        select: {
+                          id: true,
+                          text: true
+                        }
+                      }
+                    }
+                  },
+                  currentQuestionDisplayMode: true,
+                  timePerQuestion: true
+                }
+              })
+              .then((res) => {
+                if (res) {
+                  socketEmit.next({
+                    quizId: input.quizId,
+                    question: res.currentQuestion,
+                    questionDuration: res.timePerQuestion
+                  });
+                }
+              });
           });
 
         // unsubscribe function when client disconnects or stops subscribing

@@ -131,50 +131,6 @@ export const QuizView = ({
     return;
   }
 
-  //mock results (only percentage of people who chose option was hardcoded)
-  let results_1 = [
-    {
-      option:
-        questionBank.data?.questions[rngSequence[questionIndex]].answers[0]
-          .text,
-      correct:
-        questionBank.data?.questions[rngSequence[questionIndex]].answers[0]
-          .isCorrect,
-      label: `${35}%`,
-      tally: 35
-    },
-    {
-      option:
-        questionBank.data?.questions[rngSequence[questionIndex]].answers[1]
-          .text,
-      correct:
-        questionBank.data?.questions[rngSequence[questionIndex]].answers[1]
-          .isCorrect,
-      label: `${10}%`,
-      tally: 10
-    },
-    {
-      option:
-        questionBank.data?.questions[rngSequence[questionIndex]].answers[2]
-          .text,
-      correct:
-        questionBank.data?.questions[rngSequence[questionIndex]].answers[2]
-          .isCorrect,
-      label: `${5}%`,
-      tally: 5
-    },
-    {
-      option:
-        questionBank.data?.questions[rngSequence[questionIndex]].answers[3]
-          .text,
-      correct:
-        questionBank.data?.questions[rngSequence[questionIndex]].answers[3]
-          .isCorrect,
-      label: `${50}%`,
-      tally: 50
-    }
-  ];
-
   const quiz = trpc.quiz.get.useQuery(quizId);
 
   trpc.quizSession.timeLeft.useSubscription(
@@ -265,11 +221,13 @@ export const QuizView = ({
       <div className="flex flex-row">
         <h1 className="text-2xl">{quizTitle}</h1>
         <div className="flex-grow"></div>
+
         {questionEndedState && !manualControl && (
           <p className="text-2xl self-end">
             Next question in {countdown} seconds.
           </p>
         )}
+
         {!questionEndedState && !manualControl && (
           <p className="text-2xl self-end">
             Question ends in {countdown} seconds.
@@ -284,7 +242,7 @@ export const QuizView = ({
         {currentQuestion.title}
       </p>
       {questionEndedState && currentQuestionResults && (
-        <QuizChart results={currentQuestionResults?.answers}></QuizChart>
+        <QuizChart results={currentQuestionResults?.results}></QuizChart>
       )}
 
       <div className="flex flex-col mt-auto mb-10">

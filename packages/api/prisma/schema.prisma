@@ -150,4 +150,6 @@ model QuizResponse {
   questionId Int
   answer     Answer   @relation(fields: [answerId], references: [id])
   answerId   Int
+
+  @@unique([quizId, userId, questionId])
 }
