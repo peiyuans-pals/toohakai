@@ -4,7 +4,8 @@ import Link from "next/link";
 export interface SummaryCardProps {
   title: string;
   currentValue: string;
-  changeInValue: string;
+  changeInValue?: string;
+  subtitle?: string;
 }
 
 export const SummaryCard = ({
@@ -24,7 +25,8 @@ export const SummaryCard = ({
 const SummaryCardContent = ({
   title,
   currentValue,
-  changeInValue
+  changeInValue,
+  subtitle
 }: SummaryCardProps) => {
   return (
     <Card>
@@ -43,11 +45,19 @@ const SummaryCardContent = ({
           <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
         </svg>
       </CardHeader>
-      <CardContent>
+        <CardContent>
+      {changeInValue ?
+        <>
         <div className="text-2xl font-bold">{currentValue}</div>
         <p className="text-xs text-muted-foreground">
           {changeInValue} from last month
         </p>
+        </>
+
+        : (
+        <CardTitle className="text-2xl font-bold">{subtitle}</CardTitle>
+      )
+      }
       </CardContent>
     </Card>
   );
