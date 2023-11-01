@@ -45,21 +45,20 @@ export default async function DashboardRoot() {
       </Card>
 
       {ongoingQuizzes.length > 0 && (
-      <div className="mb-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2">
-          {ongoingQuizzes.map((quiz) => (
-            <SummaryCard
-              key={quiz.id}
-              title="ongoing quiz"
-              subtitle={quiz.title}
-              currentValue={quiz.status}
-              href={`/teacher/quiz/${quiz.id}`}
-            />
-          ))}
+        <div className="mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+            {ongoingQuizzes.map((quiz) => (
+              <SummaryCard
+                key={quiz.id}
+                title="ongoing quiz"
+                subtitle={quiz.title}
+                currentValue={quiz.status}
+                href={`/teacher/quiz/${quiz.id}`}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-      )
-      }
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2">
         {summaryData.map((summaryItem) => (

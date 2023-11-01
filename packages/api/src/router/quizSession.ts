@@ -9,7 +9,8 @@ import { z } from "zod";
 import { EventEmitter } from "events";
 import TypedEmitter from "typed-emitter";
 import { TRPCError } from "@trpc/server";
-import { QuizStatus, QuizParticipant } from "@prisma/client";
+import { QuizStatus, QuizParticipant, QuizDisplayMode } from "@prisma/client";
+import { differenceInMilliseconds } from "date-fns";
 import { supabase } from "../utils/supabase";
 
 // create a global event emitter (could be replaced by redis, etc)
@@ -33,11 +34,13 @@ type CurrentQuestionResultsResponse = {
   question: {
     id: number;
     title: string;
-    answers: Array<{
-      id: number;
-      text: string;
+    results: Array<{
+      // tallied results
+      id: number; // answer id
+      text: string; // answer text
       isCorrect: boolean;
       percentage: number;
+      tally: number;
     }>;
   };
   questionReviewTime: number;
@@ -45,7 +48,6 @@ type CurrentQuestionResultsResponse = {
 
 type MessageEvents = {
   join: (data: QuizParticipant) => void; // when a user joins a room - happens only once
-  startQuiz: (data: { quizId: number }) => void;
   currentQuestion: (data: CurrentQuestionResponse) => void;
   currentQuestionResults: (data: CurrentQuestionResultsResponse) => void;
 };
@@ -131,7 +133,8 @@ export const quizSessionRouter = createTRPCRouter({
         // start quiz - set active qn to 1 and enable timer
         // set quizQuestion to 1 with countdown timer
         console.log("starting quiz via event emitter");
-        ee.emit("startQuiz", { quizId });
+
+        // todo: set first question as active
 
         // make teacher also join the room
         const { user } = opts.ctx.user.data;
@@ -151,6 +154,202 @@ export const quizSessionRouter = createTRPCRouter({
           }
         });
       }
+    }),
+  changeQuestion: protectedProcedure
+    .input(
+      z.object({
+        quizId: z.number(),
+        questionId: z.number(),
+        questionDisplayMode: z.nativeEnum(QuizDisplayMode)
+      })
+    )
+    .mutation(async (opts) => {
+      const quizId = opts.input.quizId;
+      const questionId = opts.input.questionId;
+      const questionDisplayMode = opts.input.questionDisplayMode;
+
+      const quiz = await prisma.quiz.update({
+        where: {
+          id: quizId
+        },
+        data: {
+          currentQuestion: {
+            connect: {
+              id: questionId
+            }
+          },
+          currentQuestionDisplayMode: questionDisplayMode,
+          startEventTime: new Date(),
+          endEventTime: new Date(Date.now() + 20 * 1000) // 20 seconds from now
+        }
+      });
+
+      if (questionDisplayMode === "QUESTION") {
+        const question = await prisma.question.findUnique({
+          where: {
+            id: questionId
+          },
+          select: {
+            id: true,
+            title: true,
+            answers: {
+              select: {
+                id: true,
+                text: true
+              }
+            }
+          }
+        });
+
+        ee.emit("currentQuestion", {
+          quizId,
+          question,
+          questionDuration: quiz.timePerQuestion
+        });
+      }
+
+      if (questionDisplayMode === "REVIEW") {
+        const results = await prisma.quizResponse.findMany({
+          where: {
+            quizId: quizId,
+            questionId: questionId
+          },
+          select: {
+            answer: {
+              select: {
+                id: true,
+                text: true,
+                isCorrect: true
+              }
+            },
+            questionId: true,
+            userId: true
+          }
+        });
+
+        const question = await prisma.question.findUnique({
+          where: {
+            id: questionId
+          },
+          select: {
+            id: true,
+            title: true,
+            answers: {
+              select: {
+                id: true,
+                text: true,
+                isCorrect: true
+              }
+            }
+          }
+        });
+
+        if (question) {
+          interface HashMap {
+            [key: string]: {
+              id: number;
+              text: string;
+              isCorrect: boolean;
+              tally: number;
+            };
+          }
+
+          const resultsTally: HashMap = results.reduce((acc, result) => {
+            if (acc[result.answer.id.toString()]) {
+              // add to tally
+              acc[result.answer.id.toString()].tally += 1;
+            } else {
+              // create new entry
+              acc[result.answer.id.toString()] = {
+                id: result.answer.id,
+                text: result.answer.text,
+                isCorrect: result.answer.isCorrect,
+                tally: 1
+              };
+            }
+            return acc;
+          }, {} as HashMap);
+
+          const resultsTallyWithLabel = Object.values(resultsTally).map(
+            (resultTallyItem) => {
+              return {
+                ...resultTallyItem,
+                percentage: (resultTallyItem.tally / results.length) * 100
+              };
+            }
+          );
+
+          ee.emit("currentQuestionResults", {
+            quizId,
+            question: {
+              ...question,
+              results: resultsTallyWithLabel
+            },
+            questionReviewTime: 20 // todo
+          });
+        }
+      }
+
+      return { status: "success", message: "Question changed successfully!" };
+    }),
+  timeLeft: publicProcedure
+    .input(z.object({ quizId: z.number() }))
+    .subscription((opts) => {
+      return observable<{
+        timeLeft: number;
+        startEventTime: Date;
+        endEventTime: Date;
+        currentQuestionDisplayMode: QuizDisplayMode;
+        currentQuestionId: number;
+      }>((socketEmit) => {
+        const timer = setInterval(() => {
+          // get quiz from db
+          prisma.quiz
+            .findUnique({
+              where: {
+                id: opts.input.quizId
+              },
+              select: {
+                startEventTime: true,
+                endEventTime: true,
+                currentQuestionDisplayMode: true,
+                currentQuestion: {
+                  select: {
+                    id: true
+                  }
+                }
+              }
+            })
+            .then((quiz) => {
+              // console.log("then quiz", quiz);
+
+              if (!quiz) {
+                throw new TRPCError({
+                  code: "BAD_REQUEST",
+                  message: "Invalid quiz id"
+                });
+              }
+
+              const timeLeft = differenceInMilliseconds(
+                quiz.endEventTime,
+                new Date()
+              );
+
+              // emits a number every second
+              socketEmit.next({
+                timeLeft,
+                startEventTime: quiz.startEventTime,
+                endEventTime: quiz.endEventTime,
+                currentQuestionDisplayMode: quiz.currentQuestionDisplayMode,
+                currentQuestionId: quiz.currentQuestion?.id ?? 0
+              });
+            });
+        }, 1000);
+
+        return () => {
+          clearInterval(timer);
+        };
+      });
     }),
   currentQuestion: publicProcedure // todo: make this protected via ws auth
     .input(z.object({ quizId: z.number(), accessToken: z.string() }))
@@ -186,6 +385,14 @@ export const quizSessionRouter = createTRPCRouter({
                 ee.emit("join", joinQuiz);
 
                 // emit current question immediately if exists
+
+                // event on listeners
+                ee.on("currentQuestion", onCurrentQuestion);
+              })
+              .catch((error: Error) => {
+                console.error(error);
+                // todo: kick the user and move the below up to the thenable
+
                 prisma.quiz
                   .findUnique({
                     where: {
@@ -217,13 +424,6 @@ export const quizSessionRouter = createTRPCRouter({
                       });
                     }
                   });
-
-                // event on listeners
-                ee.on("currentQuestion", onCurrentQuestion);
-              })
-              .catch((error: Error) => {
-                console.error(error);
-                // todo: kick the user
               });
           })
           .catch((error: Error) => {
@@ -274,13 +474,16 @@ export const quizSessionRouter = createTRPCRouter({
       const user = await supabase.auth.getUser(input.accessToken);
       return observable<CurrentQuestionResultsResponse>((socketEmit) => {
         const onCurrentQuestionResults = (
-          data: CurrentQuestionResultsResponse
+          resultsData: CurrentQuestionResultsResponse
         ) => {
-          console.log("currentQuestionResults", data);
-          socketEmit.next(data);
+          console.log("currentQuestionResults", resultsData);
+          socketEmit.next(resultsData);
         };
 
+        // create handler
         ee.on("currentQuestionResults", onCurrentQuestionResults);
+
+        // todo: emit results immediately once (when user connects to subscription)
 
         return () => {
           ee.off("currentQuestionResults", onCurrentQuestionResults);
@@ -442,106 +645,4 @@ export const quizSessionRouter = createTRPCRouter({
 
       //
     })
-});
-
-//
-
-interface StartQuizArgs {
-  quizId: number;
-}
-
-ee.on("startQuiz", async ({ quizId }: StartQuizArgs) => {
-  const quizQuestionsQuery = await prisma.quiz.findUnique({
-    where: {
-      id: quizId
-    },
-    select: {
-      QuestionBank: {
-        select: {
-          questions: {
-            select: {
-              id: true,
-              title: true,
-              answers: {
-                select: {
-                  id: true,
-                  text: true,
-                  isCorrect: true
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  });
-
-  const quizQuestions = quizQuestionsQuery?.QuestionBank.questions;
-
-  if (!quizQuestions || quizQuestions.length === 0) {
-    throw new Error("No questions found in quiz");
-  }
-
-  const quizState = await prisma.quiz.update({
-    where: {
-      id: quizId
-    },
-    data: {
-      currentQuestion: {
-        connect: {
-          id: quizQuestions[0].id // todo: get first question id
-        }
-      },
-      currentQuestionDisplayMode: "QUESTION"
-    }
-  });
-  // ee.emit("currentQuestion", {
-  //   quizId,
-  //   question: quizQuestions[0],
-  //   questionStartTime: quizState.currentQuestionStartTime,
-  //   questionDuration: quizState.timePerQuestion
-  // });
-  //
-  // setTimeout(async () => {
-  //   // todo: get results from db
-  //   ee.emit("currentQuestionResults", {
-  //     quizId,
-  //     question: {
-  //       ...quizQuestions[0],
-  //       answers: quizQuestions[0].answers.map((answer) => {
-  //         return {
-  //           ...answer,
-  //           percentage: 25 // todo
-  //         };
-  //       })
-  //     },
-  //     questionReviewTime: 10
-  //   });
-  // }, 10 * 1000); // 10 seconds // todo
-  //
-  // setTimeout(async () => {
-  //   ee.emit("currentQuestion", {
-  //     quizId,
-  //     question: quizQuestions[1],
-  //     questionStartTime: quizState.currentQuestionStartTime,
-  //     questionDuration: quizState.timePerQuestion
-  //   });
-  // }, quizState.timePerQuestion * 1000);
-  //
-  // setTimeout(async () => {
-  //   // todo: get results from db
-  //   ee.emit("currentQuestionResults", {
-  //     quizId,
-  //     question: {
-  //       ...quizQuestions[1],
-  //       answers: quizQuestions[1].answers.map((answer) => {
-  //         return {
-  //           ...answer,
-  //           percentage: 25 // todo
-  //         };
-  //       })
-  //     },
-  //     questionReviewTime: 10
-  //   });
-  // }, 10 * 1000); // 10 seconds // todo
 });

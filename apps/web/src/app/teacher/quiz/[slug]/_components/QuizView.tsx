@@ -2,7 +2,10 @@
 
 import { ButtonGrid, ButtonGridItem } from "./ButtonGrid";
 import { trpc } from "../../../../../utils/trpc/client";
-import { TrpcReactQueryOptions } from "../../../../../utils/trpc/lib";
+import {
+  TrpcReactQueryOptions,
+  TrpcRouterOutputs
+} from "../../../../../utils/trpc/lib";
 import { useEffect, useRef, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -14,8 +17,34 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { QuizChart } from "./QuizChart";
+import { supabase } from "../../../../../utils/supabase/client";
+
+type CurrentQuestion = Parameters<
+  NonNullable<
+    Parameters<
+      TrpcRouterOutputs["quizSession"]["currentQuestion"]["subscribe"]
+    >[0]["next"]
+  >
+>[0]["question"];
+
+type CurrentQuestionResults = Parameters<
+  NonNullable<
+    Parameters<
+      TrpcRouterOutputs["quizSession"]["currentQuestionResults"]["subscribe"]
+    >[0]["next"]
+  >
+>[0]["question"];
+
+type Participants = Parameters<
+  NonNullable<
+    Parameters<
+      TrpcRouterOutputs["quizSession"]["participantsSubscription"]["subscribe"]
+    >[0]["next"]
+  >
+>[0];
 
 interface Props {
+  quizId: number;
   questionBankId: number;
   quizTitle: string;
   initialData: TrpcReactQueryOptions["questionBank"]["get"]["initialData"];
@@ -23,6 +52,7 @@ interface Props {
   rngSequence: number[];
 }
 export const QuizView = ({
+  quizId,
   questionBankId,
   quizTitle,
   initialData,
@@ -40,6 +70,23 @@ export const QuizView = ({
   const [questionIndex, setQuestionIndex] = useState<number>(0);
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [manualControl, setManualControl] = useState<boolean>(false);
+
+  const [currentQuestion, setCurrentQuestion] =
+    useState<CurrentQuestion | null>(null);
+  const [currentQuestionResults, setCurrentQuestionResults] =
+    useState<CurrentQuestionResults | null>(null);
+
+  const [accessToken, setAccessToken] = useState<string>("");
+
+  useEffect(() => {
+    const getAccessToken = async () => {
+      const supabaseSession = await supabase.auth.getSession();
+      const accessToken = supabaseSession?.data.session?.access_token ?? "";
+      setAccessToken(accessToken);
+    };
+
+    getAccessToken();
+  }, []);
 
   let intervalRef = useRef<ReturnType<typeof setInterval>>();
   const decreaseNum = () => {
@@ -77,11 +124,13 @@ export const QuizView = ({
     setQuizComplete(true);
     return;
   }
-  function stopTimer() {
+
+  function stopReviewCountdown() {
     clearInterval(intervalRef.current);
     setManualControl(true);
     return;
   }
+
   //mock results (only percentage of people who chose option was hardcoded)
   let results_1 = [
     {
@@ -126,13 +175,60 @@ export const QuizView = ({
     }
   ];
 
-  if (!questionBank) {
+  const quiz = trpc.quiz.get.useQuery(quizId);
+
+  trpc.quizSession.timeLeft.useSubscription(
+    {
+      quizId: quizId
+    },
+    {
+      enabled: !quizComplete,
+      onData: (data) => {
+        console.log("timeLeft", data);
+        // if data.timeLeft is not NAN, set countdown to data.timeLeft
+        if (!isNaN(data.timeLeft)) {
+          setCountdown(Math.floor(data.timeLeft / 1000)); // make this int
+        }
+      }
+    }
+  );
+
+  trpc.quizSession.currentQuestion.useSubscription(
+    {
+      quizId,
+      accessToken
+    },
+    {
+      enabled: !quizComplete,
+      onData: (data) => {
+        console.log("currentQuestion", data);
+        setCurrentQuestion(data.question);
+      }
+    }
+  );
+
+  trpc.quizSession.currentQuestionResults.useSubscription(
+    {
+      quizId,
+      accessToken
+    },
+    {
+      enabled: !quizComplete,
+      onData: (data) => {
+        console.log("currentQuestionResults", data);
+        setCurrentQuestionResults(data.question);
+      }
+    }
+  );
+
+  if (!quiz) {
     return (
       <div className="flex items-center justify-center h-screen">
         Quiz not found.
       </div>
     );
   }
+
   if (quizComplete) {
     return (
       <div className="p-5 flex flex-col w-screen justify-center items-center h-screen">
@@ -156,36 +252,49 @@ export const QuizView = ({
     );
   }
 
+  if (!currentQuestion) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div className="p-5 flex flex-col h-screen">
-      <h1 className="text-4xl font-bold text-gray-900">{quizTitle}</h1>
-      <p className="text-2xl">
-        {questionBank.data?.questions[rngSequence[questionIndex]].title}
+      <div className="flex flex-row">
+        <h1 className="text-2xl">{quizTitle}</h1>
+        <div className="flex-grow"></div>
+        {questionEndedState && !manualControl && (
+          <p className="text-2xl self-end">
+            Next question in {countdown} seconds.
+          </p>
+        )}
+        {!questionEndedState && !manualControl && (
+          <p className="text-2xl self-end">
+            Question ends in {countdown} seconds.
+          </p>
+        )}
+      </div>
+      <Progress
+        className="mt-1 mb-5"
+        value={((countdown % timer) / timer) * 100}
+      ></Progress>
+      <p className="text-4xl font-bold text-gray-900">
+        {currentQuestion.title}
       </p>
-      <Progress className="mt-5" value={(countdown / timer) * 100}></Progress>
-      {questionEndedState && !manualControl && (
-        <p className="text-2xl self-end">
-          Next question in {countdown} seconds.
-        </p>
+      {questionEndedState && currentQuestionResults && (
+        <QuizChart results={currentQuestionResults?.answers}></QuizChart>
       )}
-      {!questionEndedState && !manualControl && (
-        <p className="text-2xl self-end">
-          Question ends in {countdown} seconds.
-        </p>
-      )}
-      {questionEndedState && <QuizChart results={results_1}></QuizChart>}
 
       <div className="flex flex-col mt-auto mb-10">
         {!questionEndedState && (
           <ButtonGrid>
-            {questionBank.data?.questions[
-              rngSequence[questionIndex]
-            ].answers.map((answer, key) => (
+            {currentQuestion.answers.map((answer, key) => (
               <div key={key} className="flex items-center justify-center">
                 <ButtonGridItem
                   percentage={0}
                   className="flex items-center w-full justify-center"
-                  isCorrect={answer.isCorrect}
                   questionEndedState={questionEndedState}
                 >
                   {answer.text}
@@ -207,7 +316,7 @@ export const QuizView = ({
           {!manualControl && questionEndedState && (
             <Button
               className="text-2xl h-16 w-60"
-              onClick={stopTimer}
+              onClick={stopReviewCountdown}
               disabled={!questionEndedState}
             >
               Stop Countdown

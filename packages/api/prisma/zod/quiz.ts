@@ -1,7 +1,7 @@
 import * as z from "zod"
 import * as imports from "../null"
 import { QuizStatus, QuizDisplayMode } from "@prisma/client"
-import { CompleteUser, RelatedUserModel, CompleteQuestionBank, RelatedQuestionBankModel, CompleteQuizParticipant, RelatedQuizParticipantModel, CompleteQuestion, RelatedQuestionModel, CompleteQuizResponse, RelatedQuizResponseModel } from "./index"
+import { CompleteUser, RelatedUserModel, CompleteQuestionBank, RelatedQuestionBankModel, CompleteQuizParticipant, RelatedQuizParticipantModel, CompleteQuizResponse, RelatedQuizResponseModel, CompleteQuestion, RelatedQuestionModel } from "./index"
 
 export const QuizModel = z.object({
   id: z.number().int(),
@@ -18,14 +18,16 @@ export const QuizModel = z.object({
   pinCode: z.string(),
   currentQuestionId: z.number().int().nullish(),
   currentQuestionDisplayMode: z.nativeEnum(QuizDisplayMode).nullish(),
+  startEventTime: z.date().nullish(),
+  endEventTime: z.date().nullish(),
 })
 
 export interface CompleteQuiz extends z.infer<typeof QuizModel> {
   author: CompleteUser
   QuestionBank: CompleteQuestionBank
   participants: CompleteQuizParticipant[]
-  currentQuestion?: CompleteQuestion | null
   QuizResponse: CompleteQuizResponse[]
+  currentQuestion?: CompleteQuestion | null
 }
 
 /**
@@ -37,6 +39,6 @@ export const RelatedQuizModel: z.ZodSchema<CompleteQuiz> = z.lazy(() => QuizMode
   author: RelatedUserModel,
   QuestionBank: RelatedQuestionBankModel,
   participants: RelatedQuizParticipantModel.array(),
-  currentQuestion: RelatedQuestionModel.nullish(),
   QuizResponse: RelatedQuizResponseModel.array(),
+  currentQuestion: RelatedQuestionModel.nullish(),
 }))

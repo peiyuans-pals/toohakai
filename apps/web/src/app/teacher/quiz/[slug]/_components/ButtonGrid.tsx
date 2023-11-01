@@ -14,7 +14,7 @@ interface ButtonGridProps {
 interface ButtonGridItemProps {
   children: React.ReactNode;
   percentage: number;
-  isCorrect: boolean;
+  isCorrect?: boolean;
   className?: string;
   questionEndedState: boolean;
 }
@@ -36,7 +36,7 @@ export const ButtonGridItem = ({
   children,
   className,
   percentage,
-  isCorrect,
+  isCorrect = false,
   questionEndedState
 }: ButtonGridItemProps) => {
   const c =
@@ -47,7 +47,7 @@ export const ButtonGridItem = ({
   return (
     <div
       className={cn(
-        "whitespace-nowrap relative rounded-sm border h-[150px] text-4xl font-medium ring-offset-background -z-20 ",
+        "whitespace-nowrap relative rounded-sm border-2 h-[150px] text-4xl font-medium ring-offset-background -z-20 ",
         className,
         c
       )}

@@ -131,10 +131,12 @@ model Quiz {
   questionBankId             Int
   pinCode                    String
   participants               QuizParticipant[]
+  QuizResponse               QuizResponse[]
   currentQuestion            Question?         @relation(fields: [currentQuestionId], references: [id])
   currentQuestionId          Int?
   currentQuestionDisplayMode QuizDisplayMode?
-  QuizResponse               QuizResponse[]
+  startEventTime             DateTime? // time when current event starts
+  endEventTime               DateTime? // time when current event ends
 }
 
 model QuizResponse {

@@ -61,6 +61,29 @@ export const QuizView = ({ quiz }: Props) => {
     getAccessToken();
   }, []);
 
+  const submitResponseMutation = trpc.quizSession.submitResponse.useMutation({
+    onSuccess: () => {
+      setIsSubmitted(true);
+      // todo
+    }
+  });
+
+  trpc.quizSession.timeLeft.useSubscription(
+    {
+      quizId: quiz!.id
+    },
+    {
+      enabled: !quizComplete && !!quiz,
+      onData: (data) => {
+        // console.log("timeLeft", data);
+        // if data.timeLeft is not NAN, set countdown to data.timeLeft
+        if (!isNaN(data.timeLeft)) {
+          setCountdown(Math.floor(data.timeLeft / 1000)); // make this int
+        }
+      }
+    }
+  );
+
   trpc.quizSession.currentQuestion.useSubscription(
     {
       quizId: quiz?.id ?? 0,
@@ -77,14 +100,6 @@ export const QuizView = ({ quiz }: Props) => {
     }
   );
 
-  // every second, decrement countdown
-  useEffect(() => {
-    // console.log(countdown)
-    if (countdown >= 0) {
-      setTimeout(() => setCountdown(countdown - 1), 1000);
-    }
-  }, [countdown]);
-  const question_id = 0; //mock question ID
   const formSchema = z.object({
     answer_id: z.coerce.number({
       required_error: "Please select an answer",
@@ -95,9 +110,12 @@ export const QuizView = ({ quiz }: Props) => {
     resolver: zodResolver(formSchema)
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // console.log(values);
-    setIsSubmitted(true);
+  if (!quiz) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Quiz not found.
+      </div>
+    );
   }
 
   if (quizComplete) {
@@ -130,7 +148,7 @@ export const QuizView = ({ quiz }: Props) => {
     );
   }
 
-  if (currentQuestion === null) {
+  if (!currentQuestion) {
     return (
       <div className="p-5 flex flex-col w-screen justify-center items-center h-screen">
         <Card>
@@ -150,13 +168,22 @@ export const QuizView = ({ quiz }: Props) => {
     );
   }
 
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // console.log(values);
+    submitResponseMutation.mutate({
+      quizId: quiz!.id,
+      questionId: currentQuestion!.id,
+      answerId: values.answer_id,
+    });
+  }
+
   return (
     <div className="p-5 flex flex-col h-screen">
       <p className="text-xl">{quiz?.title}</p>
       <Heading>{currentQuestion.title}</Heading>
       <Progress
         className="mt-5"
-        value={(countdown / quiz!.timePerQuestion!) * 100}
+        value={((countdown % quiz.timePerQuestion) / quiz!.timePerQuestion!) * 100}
       ></Progress>
       <Form {...form}>
         <form
