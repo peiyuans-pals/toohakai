@@ -31,7 +31,8 @@ export default function QuizReports() {
   const reportsSummaryArray = Object.values(reportsSummary!);
 
   const topics = reportsSummaryArray.map((item) => ({
-    topic: item.quiz.QuestionBank.title
+    // @ts-ignore
+    topic: (item.quiz.QuestionBank).title
   }));
 
   //TODO: Do a proper fix for default
@@ -44,7 +45,8 @@ export default function QuizReports() {
       (item) =>
         item.quiz.title.includes(topic) &&
         // item.quiz.updatedAt.includes(date) &&
-        item.quiz.QuestionBank.title.includes(searchText)
+        // @ts-ignore
+        item.quiz.QuestionBank!.title.includes(searchText)
     );
   }
 
