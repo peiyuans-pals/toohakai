@@ -21,6 +21,15 @@ interface Props {
 }
 export const QuizChart = ({ results }: Props) => {
   const formattedData = results.map((result) => {
+    if (result.percentage == "NaN%") {
+      console.log("Is NaN");
+      return {
+        option: result.text,
+        correct: result.isCorrect,
+        label: `0%`,
+        tally: result.tally
+      };
+    }
     return {
       option: result.text,
       correct: result.isCorrect,
@@ -29,13 +38,13 @@ export const QuizChart = ({ results }: Props) => {
     };
   });
 
-  // console.log("formattedData for QuizChart", formattedData);
+  //console.log("formattedData for QuizChart", formattedData);
 
   return (
     <ResponsiveContainer height="100%" width="100%">
-      <BarChart width={1280} height={720} data={results}>
+      <BarChart width={1280} height={720} data={formattedData}>
         <XAxis dataKey="option" fontSize={20} />
-        <YAxis />
+        <YAxis />:
         <Bar dataKey="tally">
           <LabelList
             dataKey="label"
@@ -43,10 +52,10 @@ export const QuizChart = ({ results }: Props) => {
             fill="black"
             fontSize={40}
           />
-          {results.map((entry, index) => (
+          {formattedData.map((entry, index) => (
             <Cell
               key={`cell-${index}`}
-              fill={entry.isCorrect === true ? "#16a249" : "#cbd5e1"}
+              fill={entry.correct === true ? "#16a249" : "#cbd5e1"}
             />
           ))}
         </Bar>
