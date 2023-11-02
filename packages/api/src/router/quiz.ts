@@ -1,6 +1,18 @@
 import { prisma } from "../utils/prisma";
 import { createTRPCRouter, protectedProcedure } from "../utils/trpc";
 import { z } from "zod";
+import { User, Quiz } from "@prisma/client";
+
+type QuizReportHashmap = {
+  [key: string]: {
+    user: User,
+    responses: {
+      questionId: number,
+      answer: string,
+      isCorrect: boolean,
+    }[]
+  }
+}
 
 const mockData = [
   { title: "Physics quiz 2 Jan", authorId: 12, questionBankId: 13 },
@@ -140,5 +152,150 @@ export const quizRouter = createTRPCRouter({
         status: "quiz updated successfully",
         quiz: newQuiz
       };
+    }),
+  getReportsSummary: protectedProcedure
+    .query(async () => {
+
+      // get all quiz responses tabulated by quizId
+
+      const quizResponses = await prisma.quizResponse.findMany({
+        include: {
+          answer: {
+            select: {
+              isCorrect: true
+            }
+          },
+          Quiz: {
+            include: {
+              QuestionBank: {
+                include: {
+                  questions: true
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // grou (reduce) into key value pairs by quizId
+
+      type quizReportsSummaryHashmap = {
+        [key: string]: {
+          quiz: Quiz,
+          participants: {
+              [key: string]: {
+                userId: string,
+                responses: {
+                  questionId: number,
+                  isCorrect: boolean
+                }[]
+              }
+            }
+          averageScore: number,
+        }
+      }
+
+      const quizReports = quizResponses.reduce((acc, curr) => {
+        if (!acc[curr.quizId]) {
+          acc[curr.quizId] = {
+            quiz: curr.Quiz,
+            participants: {
+              [curr.userId.toString()]: {
+                userId: curr.userId,
+                responses: [
+                  {
+                    questionId: curr.questionId,
+                    isCorrect: curr.answer.isCorrect
+                  }
+                ]
+              }
+            },
+            averageScore: 0 // todo in next reducer
+          }
+        } else {
+          if (!acc[curr.quizId].participants[curr.userId.toString()]) {
+            acc[curr.quizId].participants[curr.userId.toString()] = {
+              userId: curr.userId,
+              responses: [
+                {
+                  questionId: curr.questionId,
+                  isCorrect: curr.answer.isCorrect
+                }
+              ]
+            }
+          } else {
+            acc[curr.quizId].participants[curr.userId.toString()].responses.push({
+              questionId: curr.questionId,
+              isCorrect: curr.answer.isCorrect
+            })
+          }
+        }
+        return acc;
+      }, {} as quizReportsSummaryHashmap);
+
+      console.log("quizReports", quizReports);
+
+      return quizReports as Exclude<typeof quizReports, "number">
+
+    }),
+  getReport: protectedProcedure
+    .meta({ description: "Get results of a quiz" })
+    .input(z.object({ quizId: z.number() }))
+    .query(async (opts) => {
+
+      const quiz = await prisma.quiz.findUnique({
+        where: {
+          id: opts.input.quizId
+        }
+      });
+
+      const quizResponses = await prisma.quizResponse.findMany({
+        where: {
+          quizId: opts.input.quizId
+        },
+        include: {
+          User: true,
+          answer: {
+            select: {
+              id: true,
+              questionId: true,
+              isCorrect: true,
+              text: true
+            }
+          }
+        },
+      });
+
+
+
+
+
+      const quizReports = quizResponses.reduce((acc, curr) => {
+        if (!acc[curr.userId]) {
+          acc[curr.userId] = {
+            user: curr.User,
+            responses: [
+              {
+                questionId: curr.questionId,
+                answer: curr.answer.text,
+                isCorrect: curr.answer.isCorrect
+              }
+            ]
+          }
+        } else {
+          acc[curr.userId].responses.push({
+            questionId: curr.questionId,
+            answer: curr.answer.text,
+            isCorrect: curr.answer.isCorrect
+          })
+        }
+        return acc;
+      }, {} as QuizReportHashmap);
+
+      return {
+        quiz,
+        quizReports
+      }
     })
+
 });

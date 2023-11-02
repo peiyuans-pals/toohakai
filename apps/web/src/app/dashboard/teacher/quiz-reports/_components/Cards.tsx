@@ -6,24 +6,42 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import Link from "next/link";
+import { TrpcReactQueryOptions, TrpcRouterOutputs } from "../../../../../utils/trpc/lib";
+
+type ReportsSummary = TrpcReactQueryOptions["quiz"]["getReportsSummary"]["initialData"]
+
+type Report = ReportsSummary[keyof ReportsSummary]
 
 interface Props {
-  initialData: Record<string, any>[]; // todo: set as trpc type
+  initialData: Record<string, any> // ReportsSummary // todo: set as trpc type
 }
 
 export const QuizReportCards = ({ initialData }: Props) => {
+
+  if (initialData === undefined) {
+    return <p>
+      No reports available
+    </p>
+  }
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
-      {initialData.map((item) => (
-        <Link
+      {(Object.values(initialData)).map((reportSummary) => {
+
+        console.log("QuizReportCards data", reportSummary)
+
+        if (typeof reportSummary === "number") return null
+        if (typeof reportSummary.quiz === "number") return null
+
+        return <Link
           target={"_blank"}
-          key={item.id}
-          href={`/dashboard/teacher/quiz-reports/${item.id}`}
+          key={reportSummary.quiz.id.toString()}
+          href={`/dashboard/teacher/quiz-reports/${reportSummary.quiz.id}`}
         >
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                {item.topic}
+                {reportSummary.quiz.QuestionBank?.title ?? ""}
               </CardTitle>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -39,20 +57,20 @@ export const QuizReportCards = ({ initialData }: Props) => {
               </svg>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{item.name}</div>
+              <div className="text-2xl font-bold">{reportSummary.quiz.title}</div>
             </CardContent>
             <CardFooter className="flex-col justify-start items-start bottom-0">
               <p className="text-xs text-muted-foreground">
-                Average Score: {item.average}/{item.fullscore}
+                Average Score: {reportSummary.averageScore}
               </p>
               <p className="text-xs text-muted-foreground">
-                {item.length} Questions
+                {reportSummary.quiz.numOfQuestions} Questions
               </p>
-              <p className="text-xs text-muted-foreground">{item.date}</p>
+              <p className="text-xs text-muted-foreground">{reportSummary.quiz.updatedAt.toLocaleString()}</p>
             </CardFooter>
           </Card>
         </Link>
-      ))}
+      })}
     </div>
   );
 };
