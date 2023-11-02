@@ -59,17 +59,21 @@ export const QuizView = ({
   timePerQuestion,
   rngSequence
 }: Props) => {
-  const { data: questionBank } = trpc.questionBank.get.useQuery(questionBankId, {
-    initialData,
-    refetchOnMount: false
-  });
+  const { data: questionBank } = trpc.questionBank.get.useQuery(
+    questionBankId,
+    {
+      initialData,
+      refetchOnMount: false
+    }
+  );
 
   useEffect(() => {
     console.log("rngSequence", rngSequence);
   }, []);
   const [countdown, setCountdown] = useState<number>(timePerQuestion);
   const [timer, setTimer] = useState<number>(timePerQuestion);
-  const [isQuestionResultsMode, setIsQuestionResultsMode] = useState<boolean>(false);
+  const [isQuestionResultsMode, setIsQuestionResultsMode] =
+    useState<boolean>(false);
   const [questionIndex, setQuestionIndex] = useState<number>(0);
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [manualControl, setManualControl] = useState<boolean>(false);
@@ -95,9 +99,16 @@ export const QuizView = ({
     onSuccess: () => {
       console.log("changeQuestionMutation success");
     }
-  })
+  });
 
   const quiz = trpc.quiz.get.useQuery(quizId);
+
+  const changeStatusMutation = trpc.quizSession.changeStatus.useMutation({
+    onSuccess: () => {
+      console.log("changeStatusMutation success");
+      // todo: navigate to results page
+    }
+  });
 
   useEffect(() => {
     // only once: check if quiz currentQuestion is null, if so, change to first question
@@ -106,27 +117,31 @@ export const QuizView = ({
         quizId: quizId,
         questionId: rngSequence[0],
         questionDisplayMode: "QUESTION"
-      })
+      });
     }
   }, [quiz.data]);
 
   function nextQn() {
     if (questionIndex < rngSequence.length - 1) {
-      console.log("nextQn", questionIndex, rngSequence.length - 1)
+      console.log("nextQn", questionIndex, rngSequence.length - 1);
       const nextQnId = rngSequence[questionIndex + 1];
 
       changeQuestionMutation.mutate({
         quizId: quizId,
         questionId: nextQnId,
         questionDisplayMode: "QUESTION"
-      })
+      });
 
-      setQuestionIndex(cur => cur + 1);
+      setQuestionIndex((cur) => cur + 1);
       // setManualControl(false);
     } else {
       setQuizComplete(true);
       console.log("quiz complete");
       // todo call server
+      changeStatusMutation.mutate({
+        quizId: quizId,
+        status: "ENDED"
+      });
     }
   }
 
@@ -188,7 +203,7 @@ export const QuizView = ({
         quizId: quizId,
         questionId: currentQuestion?.id ?? 0,
         questionDisplayMode: "REVIEW"
-      })
+      });
     } else if (countdown <= 0 && isQuestionResultsMode && !manualControl) {
       // switch to next question
       nextQn();

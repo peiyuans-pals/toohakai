@@ -254,16 +254,21 @@ export const quizSessionRouter = createTRPCRouter({
             };
           }
 
-          const initialTallyValueNestedArray = question.answers.map((answer) => (
-            [answer.id, {
-              id: answer.id,
-              text: answer.text,
-              isCorrect: answer.isCorrect,
-              tally: 0
-            }]
-          ))
+          const initialTallyValueNestedArray = question.answers.map(
+            (answer) => [
+              answer.id,
+              {
+                id: answer.id,
+                text: answer.text,
+                isCorrect: answer.isCorrect,
+                tally: 0
+              }
+            ]
+          );
 
-          const initialTallyValue = Object.fromEntries(initialTallyValueNestedArray)
+          const initialTallyValue = Object.fromEntries(
+            initialTallyValueNestedArray
+          );
 
           const resultsTally: HashMap = results.reduce((acc, result) => {
             if (acc[result.answer.id.toString()]?.tally) {
