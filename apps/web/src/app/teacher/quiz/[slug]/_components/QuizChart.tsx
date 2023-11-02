@@ -55,7 +55,7 @@ export const QuizChart = ({ results }: Props) => {
           {formattedData.map((entry, index) => (
             <Cell
               key={`cell-${index}`}
-              fill={entry.isCorrect === true ? "#16a249" : "#cbd5e1"}
+              fill={entry.correct === true ? "#16a249" : "#cbd5e1"}
             />
           ))}
         </Bar>
