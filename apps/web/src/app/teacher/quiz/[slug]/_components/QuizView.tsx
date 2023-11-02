@@ -59,14 +59,17 @@ export const QuizView = ({
   timePerQuestion,
   rngSequence
 }: Props) => {
-  const questionBank = trpc.questionBank.get.useQuery(questionBankId, {
+  const { data: questionBank } = trpc.questionBank.get.useQuery(questionBankId, {
     initialData,
     refetchOnMount: false
   });
-  console.log(rngSequence);
+
+  useEffect(() => {
+    console.log("rngSequence", rngSequence);
+  }, []);
   const [countdown, setCountdown] = useState<number>(timePerQuestion);
   const [timer, setTimer] = useState<number>(timePerQuestion);
-  const [questionEndedState, setQuestionEndedState] = useState<boolean>(false);
+  const [isQuestionResultsMode, setIsQuestionResultsMode] = useState<boolean>(false);
   const [questionIndex, setQuestionIndex] = useState<number>(0);
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [manualControl, setManualControl] = useState<boolean>(false);
@@ -88,45 +91,45 @@ export const QuizView = ({
     getAccessToken();
   }, []);
 
-  let intervalRef = useRef<ReturnType<typeof setInterval>>();
-  const decreaseNum = () => {
-    if (countdown > 0) {
-      setCountdown((prev) => prev - 1);
+  const changeQuestionMutation = trpc.quizSession.changeQuestion.useMutation({
+    onSuccess: () => {
+      console.log("changeQuestionMutation success");
     }
+  })
 
-    if (countdown == 0 && !questionEndedState) {
-      setQuestionEndedState(true);
-      setCountdown(10);
-      setTimer(10);
-    }
-
-    if (countdown == 0 && questionEndedState) {
-      nextQn();
-    }
-  };
 
   useEffect(() => {
-    intervalRef.current = setInterval(decreaseNum, 1000);
-    return () => clearInterval(intervalRef.current);
-  }, [countdown]);
+    // only once: check if quiz currentQuestion is null, if so, change to first question
+    if (quiz.data && quiz.data.currentQuestionId === null) {
+      changeQuestionMutation.mutate({
+        quizId: quizId,
+        questionId: rngSequence[0],
+        questionDisplayMode: "QUESTION"
+      })
+    }
+  }, []);
 
   function nextQn() {
     if (questionIndex < rngSequence.length - 1) {
-      clearInterval(intervalRef.current);
-      setQuestionEndedState(false);
-      setQuestionIndex(questionIndex + 1);
-      setManualControl(false);
-      setCountdown(timePerQuestion);
-      setTimer(timePerQuestion);
-      intervalRef.current = setInterval(decreaseNum, 1000);
-      return;
+      console.log("nextQn", questionIndex, rngSequence.length - 1)
+      const nextQnId = rngSequence[questionIndex + 1];
+
+      changeQuestionMutation.mutate({
+        quizId: quizId,
+        questionId: nextQnId,
+        questionDisplayMode: "QUESTION"
+      })
+
+      setQuestionIndex(cur => cur + 1);
+      // setManualControl(false);
+    } else {
+      setQuizComplete(true);
+      console.log("quiz complete");
+      // todo call server
     }
-    setQuizComplete(true);
-    return;
   }
 
   function stopReviewCountdown() {
-    clearInterval(intervalRef.current);
     setManualControl(true);
     return;
   }
@@ -140,11 +143,12 @@ export const QuizView = ({
     {
       enabled: !quizComplete,
       onData: (data) => {
-        console.log("timeLeft", data);
+        // console.log("timeLeft", data);
         // if data.timeLeft is not NAN, set countdown to data.timeLeft
         if (!isNaN(data.timeLeft)) {
           setCountdown(Math.floor(data.timeLeft / 1000)); // make this int
         }
+        setIsQuestionResultsMode(data.currentQuestionDisplayMode === "REVIEW");
       }
     }
   );
@@ -176,6 +180,21 @@ export const QuizView = ({
       }
     }
   );
+
+  // when countdown hits 0, call changeQuestion
+  useEffect(() => {
+    if (countdown <= 0 && !isQuestionResultsMode) {
+      // switch to results view
+      changeQuestionMutation.mutate({
+        quizId: quizId,
+        questionId: currentQuestion?.id ?? 0,
+        questionDisplayMode: "REVIEW"
+      })
+    } else if (countdown <= 0 && isQuestionResultsMode && !manualControl) {
+      // switch to next question
+      nextQn();
+    }
+  }, [countdown]);
 
   if (!quiz) {
     return (
@@ -222,13 +241,13 @@ export const QuizView = ({
         <h1 className="text-2xl">{quizTitle}</h1>
         <div className="flex-grow"></div>
 
-        {questionEndedState && !manualControl && (
+        {isQuestionResultsMode && !manualControl && (
           <p className="text-2xl self-end">
             Next question in {countdown} seconds.
           </p>
         )}
 
-        {!questionEndedState && !manualControl && (
+        {!isQuestionResultsMode && !manualControl && (
           <p className="text-2xl self-end">
             Question ends in {countdown} seconds.
           </p>
@@ -241,19 +260,19 @@ export const QuizView = ({
       <p className="text-4xl font-bold text-gray-900">
         {currentQuestion.title}
       </p>
-      {questionEndedState && currentQuestionResults && (
+      {isQuestionResultsMode && currentQuestionResults && (
         <QuizChart results={currentQuestionResults?.results}></QuizChart>
       )}
 
       <div className="flex flex-col mt-auto mb-10">
-        {!questionEndedState && (
+        {!isQuestionResultsMode && (
           <ButtonGrid>
             {currentQuestion.answers.map((answer, key) => (
               <div key={key} className="flex items-center justify-center">
                 <ButtonGridItem
                   percentage={0}
                   className="flex items-center w-full justify-center"
-                  questionEndedState={questionEndedState}
+                  questionEndedState={isQuestionResultsMode}
                 >
                   {answer.text}
                 </ButtonGridItem>
@@ -262,20 +281,20 @@ export const QuizView = ({
           </ButtonGrid>
         )}
         <div className="flex justify-end">
-          {manualControl && questionEndedState && (
+          {manualControl && isQuestionResultsMode && (
             <Button
               className="text-2xl h-16 w-60"
               onClick={nextQn}
-              disabled={!questionEndedState}
+              disabled={!isQuestionResultsMode}
             >
               Next Question
             </Button>
           )}
-          {!manualControl && questionEndedState && (
+          {!manualControl && isQuestionResultsMode && (
             <Button
               className="text-2xl h-16 w-60"
               onClick={stopReviewCountdown}
-              disabled={!questionEndedState}
+              disabled={!isQuestionResultsMode}
             >
               Stop Countdown
             </Button>

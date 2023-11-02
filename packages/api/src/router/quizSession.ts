@@ -180,7 +180,7 @@ export const quizSessionRouter = createTRPCRouter({
           },
           currentQuestionDisplayMode: questionDisplayMode,
           startEventTime: new Date(),
-          endEventTime: new Date(Date.now() + 20 * 1000) // 20 seconds from now
+          endEventTime: new Date(Date.now() + 30 * 1000) // 30 seconds from now // todo: make this dynamic
         }
       });
 
@@ -285,7 +285,7 @@ export const quizSessionRouter = createTRPCRouter({
               ...question,
               results: resultsTallyWithLabel
             },
-            questionReviewTime: 20 // todo
+            questionReviewTime: quiz.timePerQuestion // todo
           });
         }
       }
