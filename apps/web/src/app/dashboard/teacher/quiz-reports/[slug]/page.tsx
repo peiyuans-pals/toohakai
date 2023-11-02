@@ -1,9 +1,9 @@
 "use client";
 import { DashboardView, Heading } from "../../../../../components/ui";
 import React, { Dispatch, SetStateAction, useState } from "react";
-import initialData from "../../../../../mockdata/teacher_quizreports_expanded.json";
 import { QuizResultTable } from "./_components/QuizResultTable";
 import { StudentComboBox } from "./_components/StudentComboBox";
+import { trpc } from "../../../../../utils/trpc/client";
 
 interface Props {
   quizreportData: Record<string, any>[];
@@ -15,11 +15,23 @@ export default function ExpandedReport({
 }: {
   params: { slug: string };
 }) {
-  //trpc.call for quizreportexpanded data window.location.href.split("/").pop()
-  const [pageURL, setPageURL] = useState(params.slug);
-  const [studentquiz, setStudentQuiz] = useState(initialData.data[0].quiz);
+  const { data: initialData, isLoading } = trpc.quiz.getReportsSummary.useQuery();
 
-  var student_names = initialData.data.map((student) => student.student);
+  console
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!initialData) {
+    return <div>
+      No report found
+    </div>
+  }
+
+  return null
+
+  var student_names = initialData.map((student) => student.student);
   const [studentName, setStudentName] = useState(student_names[0]);
 
   let studentscore = initialData.data[0].score;
@@ -53,10 +65,4 @@ export default function ExpandedReport({
     </DashboardView>
   );
 }
-/**
- * <StudentDropDownBar
-          studentlist={student_names}
-          student={studentName}
-          setStudent={setStudentName}
-        />
- */
+
