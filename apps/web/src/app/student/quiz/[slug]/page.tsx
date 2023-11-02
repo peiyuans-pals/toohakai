@@ -12,8 +12,21 @@ export default async function Quiz({ params }: PageProps) {
   const timePerQuestion = quiz?.timePerQuestion;
   const questionBankId = quiz?.questionBankId;
   const quizTitle = quiz?.title;
+
   if (!quiz) {
-    return <p>No Quiz exists</p>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <p>No Quiz exists</p>
+      </div>
+    );
+  }
+
+  if (quiz.status === "ENDED") {
+    return (
+      <div className="mb-4 flex flex-col items-center justify-center h-screen">
+        <p>Quiz has ended</p>
+      </div>
+    );
   }
 
   return (

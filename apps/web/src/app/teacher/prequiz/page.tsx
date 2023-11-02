@@ -28,6 +28,7 @@ import {
   PopoverTrigger
 } from "@/components/ui/popover";
 import { cleanName } from "../../../utils/strings";
+import QRCode from "react-qr-code";
 
 type Participants = Parameters<
   NonNullable<
@@ -96,17 +97,22 @@ export default function PreQuiz({ searchParams }: NextPage) {
       <div className=" flex rounded-md bg-background border h-[90%] w-[75%]">
         <div className="w-[50%]">
           <div className=" flex flex-col justify-center items-center h-[50%] border-b">
+            <Heading>Room ID: {quizSession.id}</Heading>
             <Heading>PIN: {quizSession.pinCode}</Heading>
           </div>
           <div className="flex flex-col justify-center items-center h-[50%]">
-            <Heading>QR Code to Quiz</Heading>
-            <Image
-              src="/mock_qr_code.png"
-              width={250}
-              height={250}
-              alt="QR code of quiz"
-              className=" drop-shadow-lg mb-5 "
-            />
+            <Heading>Scan QR Code!</Heading>
+            {/*<Image*/}
+            {/*  src="/mock_qr_code.png"*/}
+            {/*  width={250}*/}
+            {/*  height={250}*/}
+            {/*  alt="QR code of quiz"*/}
+            {/*  className=" drop-shadow-lg mb-5 "*/}
+            {/*/>*/}
+
+            <div>
+              <QRCode value={`${window.location.origin}/student/join-quiz`} />
+            </div>
           </div>
         </div>
         <div className="flex flex-col h-[100%] border-l w-[50%]">

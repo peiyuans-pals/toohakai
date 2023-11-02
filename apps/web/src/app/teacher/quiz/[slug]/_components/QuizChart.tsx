@@ -8,17 +8,29 @@ import {
   ResponsiveContainer
 } from "recharts";
 
-interface Props {
-  option: string | undefined;
-  correct: boolean | undefined;
-  label: string;
+interface ResultItem {
+  id: number;
+  text: string | undefined;
+  isCorrect: boolean | undefined;
+  percentage: string;
   tally: number;
 }
 
-interface ArrayProps {
-  results: Props[];
+interface Props {
+  results: ResultItem[];
 }
-export const QuizChart = ({ results }: ArrayProps) => {
+export const QuizChart = ({ results }: Props) => {
+  const formattedData = results.map((result) => {
+    return {
+      option: result.text,
+      correct: result.isCorrect,
+      label: `${result.percentage}%`,
+      tally: result.tally
+    };
+  });
+
+  // console.log("formattedData for QuizChart", formattedData);
+
   return (
     <ResponsiveContainer height="100%" width="100%">
       <BarChart width={1280} height={720} data={results}>
@@ -34,7 +46,7 @@ export const QuizChart = ({ results }: ArrayProps) => {
           {results.map((entry, index) => (
             <Cell
               key={`cell-${index}`}
-              fill={entry.correct === true ? "#16a249" : "#cbd5e1"}
+              fill={entry.isCorrect === true ? "#16a249" : "#cbd5e1"}
             />
           ))}
         </Bar>

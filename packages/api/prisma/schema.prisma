@@ -46,6 +46,7 @@ model User {
   QuestionBank    QuestionBank[]
   Quiz            Quiz[]
   QuizParticipant QuizParticipant[]
+  QuizResponse    QuizResponse[]
 }
 
 // Questions
@@ -61,24 +62,26 @@ model QuestionBank {
 }
 
 model Question {
-  id             Int          @id @default(autoincrement())
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  title          String       @db.VarChar(255)
+  id             Int            @id @default(autoincrement())
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  title          String         @db.VarChar(255)
   answers        Answer[]
-  QuestionBank   QuestionBank @relation(fields: [questionBankId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  QuestionBank   QuestionBank   @relation(fields: [questionBankId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   questionBankId Int
   Quiz           Quiz[]
+  QuizResponse   QuizResponse[]
 }
 
 model Answer {
-  id         Int      @id @default(autoincrement())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  text       String
-  isCorrect  Boolean
-  Question   Question @relation(fields: [questionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  questionId Int
+  id           Int            @id @default(autoincrement())
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  text         String
+  isCorrect    Boolean
+  Question     Question       @relation(fields: [questionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  questionId   Int
+  QuizResponse QuizResponse[]
 }
 
 // Quiz
@@ -105,6 +108,13 @@ model QuizParticipant {
   @@unique([quizId, userId]) // https://flaviocopes.com/prisma-multiple-fields-unique-key/
 }
 
+enum QuizDisplayMode {
+  // ALL
+  QUESTION
+  // ANSWER
+  REVIEW
+}
+
 model Quiz {
   id                         Int               @id @default(autoincrement())
   createdAt                  DateTime          @default(now())
@@ -121,9 +131,25 @@ model Quiz {
   questionBankId             Int
   pinCode                    String
   participants               QuizParticipant[]
+  QuizResponse               QuizResponse[]
   currentQuestion            Question?         @relation(fields: [currentQuestionId], references: [id])
   currentQuestionId          Int?
-  currentQuestionStartTime   DateTime?
-  currentQuestionReviewTime  DateTime?
-  currentQuestionReviewPause Boolean?
+  currentQuestionDisplayMode QuizDisplayMode?
+  startEventTime             DateTime? // time when current event starts
+  endEventTime               DateTime? // time when current event ends
+}
+
+model QuizResponse {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  Quiz       Quiz     @relation(fields: [quizId], references: [id])
+  quizId     Int
+  User       User     @relation(fields: [userId], references: [id])
+  userId     String
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId Int
+  answer     Answer   @relation(fields: [answerId], references: [id])
+  answerId   Int
+
+  @@unique([quizId, userId, questionId])
 }

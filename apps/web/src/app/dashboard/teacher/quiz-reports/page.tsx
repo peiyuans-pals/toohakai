@@ -5,26 +5,48 @@ import { TopicBar } from "src/app/dashboard/teacher/quiz-reports/_components/Top
 import { Input } from "@/components/ui/input";
 import { QuizReportCards } from "src/app/dashboard/teacher/quiz-reports//_components/Cards";
 
-import quizreport_topics from "../../../../mockdata/teacher_quizreports_topics.json";
-import quizreport_summary from "../../../../mockdata/teacher_quizreports_summary.json";
 import { MonthPicker } from "./_components/MonthPicker";
+import { trpc } from "../../../../utils/trpc/client";
 
 export default function QuizReports() {
+  const { data: reportsSummary, isLoading } =
+    trpc.quiz.getReportsSummary.useQuery();
+
   const [topic, setTopic] = useState("");
   const [searchText, setSearchText] = useState("");
   const [date, setDate] = useState("");
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!reportsSummary && !isLoading) {
+    return (
+      <div>
+        <p>No reports</p>
+      </div>
+    );
+  }
+
+  const reportsSummaryArray = Object.values(reportsSummary!);
+
+  const topics = reportsSummaryArray.map((item) => ({
+    // @ts-ignore
+    topic: item.quiz.QuestionBank.title
+  }));
+
   //TODO: Do a proper fix for default
-  let sortedData = quizreport_summary.summary.filter((item) =>
-    item.topic.includes("")
+  let sortedData = reportsSummaryArray.filter((item) =>
+    item.quiz.title.includes("")
   );
 
   if (topic || date || searchText) {
-    sortedData = quizreport_summary.summary.filter(
+    sortedData = reportsSummaryArray.filter(
       (item) =>
-        item.topic.includes(topic) &&
-        item.date.includes(date) &&
-        item.name.includes(searchText)
+        item.quiz.title.includes(topic) &&
+        // item.quiz.updatedAt.includes(date) &&
+        // @ts-ignore
+        item.quiz.QuestionBank!.title.includes(searchText)
     );
   }
 
@@ -42,7 +64,7 @@ export default function QuizReports() {
         <TopicBar
           topic={topic === "" ? "Topic" : topic}
           setTopic={setTopic}
-          quizreport_topics={quizreport_topics}
+          quizreport_topics={topics}
         />
         <MonthPicker date={date} setDate={setDate} />
       </div>

@@ -7,9 +7,9 @@ interface PageProps {
   params: { slug: string };
 }
 export default async function Quiz({ params }: PageProps) {
-  const id = parseInt(params.slug);
-  const quiz = await trpcServer(cookies).quiz.get.query(id);
-  const timePerQuestion = 20; //quiz?.timePerQuestion;
+  const quizId = parseInt(params.slug);
+  const quiz = await trpcServer(cookies).quiz.get.query(quizId);
+  const timePerQuestion = quiz!.timePerQuestion; //quiz?.timePerQuestion;
   const numOfQuestions = quiz?.numOfQuestions;
   const questionBankId = quiz?.questionBankId;
   const quizTitle = quiz?.title;
@@ -36,9 +36,27 @@ export default async function Quiz({ params }: PageProps) {
       questionBank?.questions!.length!,
       numOfQuestions!
     );
+
+    if (!quiz) {
+      return (
+        <div className="flex flex-col items-center justify-center h-screen">
+          <p>No Quiz exists</p>
+        </div>
+      );
+    }
+
+    if (quiz?.status === "ENDED") {
+      return (
+        <div className="flex flex-col items-center justify-center h-screen">
+          <p>Quiz has ended</p>
+        </div>
+      );
+    }
+
     return (
       <div>
         <QuizView
+          quizId={quizId}
           questionBankId={questionBankId}
           quizTitle={quizTitle}
           initialData={questionBank}
