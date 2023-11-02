@@ -97,6 +97,7 @@ export const QuizView = ({
     }
   })
 
+  const quiz = trpc.quiz.get.useQuery(quizId);
 
   useEffect(() => {
     // only once: check if quiz currentQuestion is null, if so, change to first question
@@ -107,7 +108,7 @@ export const QuizView = ({
         questionDisplayMode: "QUESTION"
       })
     }
-  }, []);
+  }, [quiz.data]);
 
   function nextQn() {
     if (questionIndex < rngSequence.length - 1) {
@@ -133,8 +134,6 @@ export const QuizView = ({
     setManualControl(true);
     return;
   }
-
-  const quiz = trpc.quiz.get.useQuery(quizId);
 
   trpc.quizSession.timeLeft.useSubscription(
     {

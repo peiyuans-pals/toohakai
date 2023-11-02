@@ -254,21 +254,27 @@ export const quizSessionRouter = createTRPCRouter({
             };
           }
 
+          const initialTallyValueNestedArray = question.answers.map((answer) => (
+            [answer.id, {
+              id: answer.id,
+              text: answer.text,
+              isCorrect: answer.isCorrect,
+              tally: 0
+            }]
+          ))
+
+          const initialTallyValue = Object.fromEntries(initialTallyValueNestedArray)
+
           const resultsTally: HashMap = results.reduce((acc, result) => {
-            if (acc[result.answer.id.toString()]) {
+            if (acc[result.answer.id.toString()]?.tally) {
               // add to tally
               acc[result.answer.id.toString()].tally += 1;
             } else {
               // create new entry
-              acc[result.answer.id.toString()] = {
-                id: result.answer.id,
-                text: result.answer.text,
-                isCorrect: result.answer.isCorrect,
-                tally: 1
-              };
+              acc[result.answer.id.toString()].tally = 1;
             }
             return acc;
-          }, {} as HashMap);
+          }, initialTallyValue as HashMap);
 
           const resultsTallyWithLabel = Object.values(resultsTally).map(
             (resultTallyItem) => {
@@ -389,7 +395,7 @@ export const quizSessionRouter = createTRPCRouter({
                 // event on listeners
                 ee.on("currentQuestion", onCurrentQuestion);
               })
-              .catch((error: Error) => {});
+              .catch((_error: Error) => {});
           })
           .catch((error: Error) => {
             // todo
