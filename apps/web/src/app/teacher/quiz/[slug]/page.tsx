@@ -38,15 +38,19 @@ export default async function Quiz({ params }: PageProps) {
     );
 
     if (!quiz) {
-      return <div className="flex flex-col items-center justify-center h-screen">
-        <p>No Quiz exists</p>
-      </div>
+      return (
+        <div className="flex flex-col items-center justify-center h-screen">
+          <p>No Quiz exists</p>
+        </div>
+      );
     }
 
     if (quiz?.status === "ENDED") {
-      return <div className="flex flex-col items-center justify-center h-screen">
-        <p>Quiz has ended</p>
-      </div>
+      return (
+        <div className="flex flex-col items-center justify-center h-screen">
+          <p>Quiz has ended</p>
+        </div>
+      );
     }
 
     return (

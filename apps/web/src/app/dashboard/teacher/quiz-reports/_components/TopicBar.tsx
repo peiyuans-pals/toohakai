@@ -10,7 +10,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 
 interface Props {
   topic: string;
-  quizreport_topics: { topic: string }[] ;
+  quizreport_topics: { topic: string }[];
   setTopic: Dispatch<SetStateAction<string>>;
 }
 

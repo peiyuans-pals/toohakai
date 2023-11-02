@@ -9,8 +9,8 @@ import { MonthPicker } from "./_components/MonthPicker";
 import { trpc } from "../../../../utils/trpc/client";
 
 export default function QuizReports() {
-
-  const { data: reportsSummary, isLoading } = trpc.quiz.getReportsSummary.useQuery();
+  const { data: reportsSummary, isLoading } =
+    trpc.quiz.getReportsSummary.useQuery();
 
   const [topic, setTopic] = useState("");
   const [searchText, setSearchText] = useState("");
@@ -21,17 +21,21 @@ export default function QuizReports() {
   }
 
   if (!reportsSummary && !isLoading) {
-    return <div>
-      <p>No reports</p>
-    </div>;
+    return (
+      <div>
+        <p>No reports</p>
+      </div>
+    );
   }
 
   const reportsSummaryArray = Object.values(reportsSummary!);
 
-  const topics = reportsSummaryArray.map((item) => ({ topic: item.quiz.QuestionBank.title }));
+  const topics = reportsSummaryArray.map((item) => ({
+    topic: item.quiz.QuestionBank.title
+  }));
 
   //TODO: Do a proper fix for default
-  let sortedData = (reportsSummaryArray).filter((item) =>
+  let sortedData = reportsSummaryArray.filter((item) =>
     item.quiz.title.includes("")
   );
 
