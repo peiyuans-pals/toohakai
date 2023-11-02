@@ -32,7 +32,7 @@ export default function QuizReports() {
 
   const topics = reportsSummaryArray.map((item) => ({
     // @ts-ignore
-    topic: (item.quiz.QuestionBank).title
+    topic: item.quiz.QuestionBank.title
   }));
 
   //TODO: Do a proper fix for default
